@@ -29,7 +29,7 @@ var quicklinks_0000000001 = {
 
 				var QuickLink = document.createElement('a');
 				QuickLink.appendChild(document.createTextNode(ThisItem.title));
-				QuickLink.setAttribute("href","javascript:currenttab.Navigate('"+ThisItem.url+"');");
+				QuickLink.setAttribute("href","javascript:OhHaiBrowser.tabs.activePage.navigate('"+ThisItem.url+"');");
 
 				QuickItem.appendChild(QlinkIcon);
 				QuickItem.appendChild(QuickLink);
