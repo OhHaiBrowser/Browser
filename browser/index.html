@@ -1,21 +1,13 @@
 <html>
 	<head>
 		<title>OhHai Browser</title>
-		<link rel="StyleSheet" href="system_assets/navstyle.css"/>
 		<link rel="StyleSheet" href="system_assets/style.css"/>
-
 		<link id="ThemeStyle" rel="StyleSheet" href="themes/default.css"/>
-
 		<link rel="StyleSheet" href="system_assets/ohhai_ui.css"/>
-
 		<!--Window controls-->
-		<link rel="StyleSheet" href="../window/controls.css"/>
-		<script src="../window/functions.js"></script>
-
+		<link rel="StyleSheet" href="../window/controls.css"/>	
 		<!--Addins-->
-		<script src="system_assets\scripts\addons\account_0000000001.js"></script>
 		<script src="system_assets\scripts\addons\quicklinks_0000000001.js"></script>
-		<script src="system_assets\scripts\addons\history_0000000001.js"></script>
 		<script src="system_assets\scripts\addons\settings_0000000001.js"></script>
 		<script src="system_assets\scripts\addons\about_0000000001.js"></script>
 		<script src="system_assets\scripts\addons\webmods_0000000001.js"></script>
@@ -25,32 +17,36 @@
 
 		<div id="AppBound">
 			<header class="Navbar">
-				<ul class="Window_Controls">
+				<!--== window controls start =============================================================================-->
+				<ul id="Win_Controls" class="Window_Controls">
 					<li><a onclick="WindowControls.Left();" id="Left_FrameBtn" class="Left_FrameBtn"></a></li>
 					<li><a onclick="WindowControls.Center();" id="Center_FrameBtn" class="Center_FrameBtn"></a></li>
 					<li><a onclick="WindowControls.Right();" id="Right_FrameBtn" class="Right_FrameBtn"></a></li>
 				</ul>
-			
+				<!--== window controls end ===============================================================================-->
+				<!--== nav controls start ================================================================================-->
 				<div class="ControlsArea">
 					<div class="FlexControl">
-						<a id="HideShow" title="Open or close tab menu" onclick="OhHaiBrowser.ui.tabbar.toggle();" href="#" class="ControlButton TabMenu">
+						<button id="HideShow" title="Open or close tab menu" onclick="OhHaiBrowser.ui.tabbar.toggle();" class="ControlButton TabMenu">
 							<span id="HideShowCount">1</span>
-						</a>
+						</button>
 					</div>
 					<div class="Center">
 						<div class="FlexControl"><button id="Back" title="Click to go back" onclick="OhHaiBrowser.tabs.activePage.goBack();" class="ControlButton Back"></button></div>
-						<div class="CenterCenter">
+						<div id="URLBackColour" class="CenterCenter">
 							<a id="SecureCheck" class="DoubleURLBtn"></a>
-							<input class="URLBar" type="text" id="URLBar"/>	
-							<button id="BtnQuicklink" class="URLButton"></button>
+							<input class="URLBar" type="text" id="URLBar"/>		
+							<button id="BtnQuicklink" class="URLButton"></button>				
 							<button id="Refresh" title="Refresh this page" onclick="OhHaiBrowser.tabs.activePage.reload();" class="URLButton Refresh"></button>
+							<div id="URLAutoComplete" class="URL_AutoComplete AutoComplete_hidden"></div>
 						</div>
 						<button id="Forward" title="Click to go forward" onclick="OhHaiBrowser.tabs.activePage.goForward();" class="ControlButton Forward"></button>
 					</div>
 					<div class="FlexControl">
-						<button id="Menu" title="Browser options menu" onclick="BrowserSettingsMenu();" class="ControlButton OverflowMenu"></button>
+						<button id="Menu" title="Browser options menu" onclick="OhHaiBrowser.ui.overflowmenu.toggle();" class="ControlButton OverflowMenu"></button>
 					</div>
 				</div>  
+				<!--== nav controls end ==================================================================================-->
 			</header>
 
 			<div id="DoodlePopUp" class="" style="display:none;">
@@ -63,34 +59,10 @@
 				</div>
 			</div>
 
-			<div id="PageActionsMenu" class="popwin" style="display:none;">
-				<div class="speech-bubble-inner">
-					<div id="Pactions_StaticOptions">
-						<!--<button id="BtnQuicklink" class="webmod">Add bookmark</button>-->
-						<button id="BtnReaderMode" class="webmod">Reader mode</button>
-						<button id="BtnKillAdds" class="webmod">Kill ads</button>
-					</div>
-				</div>
-			</div>
-
 			<div id="Content">
-				<div id="OverFlowMenu" style="display:none;">
+				<div id="OverFlowMenu" class="OverflowHidden">
 					<div id="OverFlowOptions">
 						<div class="OverFlowContent">
-							<!--<div class="OverFlowTopMenu">
-								<a class="CloseOverflow" href="javascript:menu.hide('normal');"><</a>
-								<span class="MenuTitle">Close Menu</span>
-							</div>
-							<div class="OverflowToggleMenu">
-								<button id="OverFlowBack" title="Click to go back" onclick="currenttab.GoBack();" class="button Back"></button>
-
-								<button id="OverflowForward" title="Click to go forward" onclick="currenttab.GoForward();" class="button Forward"></button>
-							</div>
-							<div id="UserAccountMenu">
-								<img src="system_assets\Icons\icon-user-default.jpg"/>
-								<a onclick="menu.mega(account_0000000001.Load(),'Your profile');" href="#">Your profile ></a>
-								<hr/>
-							</div>-->
 							<ul id="overflow_list">
 								<li><a onclick="OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true});" href="#">New tab</a></li>
 								<li><a onclick="OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true,mode:'incog'});" href="#">New incognito tab</a></li>
@@ -98,12 +70,10 @@
 								<li><a onclick="menu.mega(webmods_0000000001.Load(),'Webmods')" href="#">Webmods</a></li>
 								<li><hr/></li>
 								<li><a onclick="OhHaiBrowser.tabs.add('history',undefined,{selected: true});" href="#">History</a></li>
-								<!--<li><a onclick="menu.mega(history_00000000001.Load(),'History')" href="#">History</a></li>-->
 								<li><hr/></li>
 								<li><a onclick="menu.mega(quicklinks_0000000001.Load(),'Bookmarks')" href="#">View bookmarks</a></li>					
 								<li><hr/></li>
 								<li><a onclick="menu.mega(settings_0000000001.Load(),'Settings')" href="#">Settings</a></li>	
-								<!--<li><a onclick="tabs.add('settings','default');" href="#">Settings</a></li>-->	
 								<li><a onclick="menu.mega(about_0000000001.Load(),'OhHai Browser')" href="#">About</a></li>
 							</ul>
 						</div>
@@ -113,39 +83,26 @@
 							<a class="CloseOverflow" href="javascript:menu.hide('mega');"><</a>
 							<span id="MenuTitle" class="MenuTitle"></span>
 						</div>
-						<div id="MegaMenuContent">
-
-						</div>
+						<div id="MegaMenuContent"></div>
 					</div>
 					<div id="OverFlowMiniMenu" style="display:none;">
 						<div class="OverFlowTopMenu">
 							<a class="CloseOverflow" href="javascript:menu.hide('mini');"><</a>
 						</div>
-						<div id="MiniMenuContent">
-
-						</div>
+						<div id="MiniMenuContent"></div>
 					</div>
 				</div>
 
-				<div id="LeftMenu" class="OhHai-TabMenu">
+				<div id="LeftMenu" class="OhHai-TabMenu LeftMenuShow">
 					<div class="TabContainer">
 						<div id="Tabs">
-							<ul id="tabs-dock" class="ohhai-docktabs">
-							</ul>
-							<ul id="tabs-menu" class="ohhai-maintabs">
-							</ul>
+							<ul id="tabs-dock" class="ohhai-docktabs"></ul>
+							<ul id="tabs-menu" class="ohhai-maintabs"></ul>
 						</div>
-
 						<button id="AddTab" title="Add a new tab" onclick="AddTabButton();" class="CommandBtn AddTab"></button>
-
 					</div>
-					<!--<div class="" id="NotificationBar">
-
-					</div>-->
 				</div>
-				<div id="BrowserWin">
-
-				</div>
+				<div id="BrowserWin"></div>
 
 				<div id="VideoPlayer" style="display:none;">
 					<div class="TogglePlayer" href="#" onmousedown='' onmouseup='' >][</div>
@@ -157,25 +114,16 @@
 				</div>
 
 			</div>
-
         </div>
 
-		<div id="Textpopwin" style="display:none;" class="popwin">
-			<p id="TextPopTitle" class="popTitle">Title</p>
-			<textarea id="PopText"></textarea>
-			<a href="" id="TextPopYes" class="popbtn">Submit</a>
-			<a href="javascript:OhHaiBrowser.hidetextpop();" id="TextPopNo" class="popbtn">Cancel</a>
-		</div>
-
+		<script src="../window/functions.js"></script>
 		<script>window.$ = window.jQuery = require('./system_assets/scripts/jquery-2.1.4.min.js');</script>
 		<script src="system_assets/scripts/jquery-ui.min.js"></script>
 		<script src="system_assets/scripts/dexie.min.js"></script>
 		<script src="system_assets/scripts/db.js"></script>
-
 		<script src="system_assets/scripts/browser_framework.js"></script>
-		<script src="system_assets/scripts/tabs/tabs.js"></script>
-		<script src="system_assets/scripts/navbar/browser_controls.js"></script>
+		<script src="system_assets/components/tab_views/script.js"></script>
+		<script src="system_assets/components/nav_bar/controls.js"></script>
 		<script src="system_assets/doodle/functions.js"></script>
-
 	</body>
 </html>

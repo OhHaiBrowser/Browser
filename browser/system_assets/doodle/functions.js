@@ -7,10 +7,10 @@ var Doodle = {
 		if (SiteType != null){
 			switch(SiteType.datatype){
 				case "VIDEO":	
-					Doodle.Notify(true,"I see you are watching a video, would you like to view it in a mini window?","OhHaiBrowser.ui.floatingVidPlayer('" + SiteType.responce + "');Doodle.Notify(false);");
+		//			Doodle.Notify(true,"I see you are watching a video, would you like to view it in a mini window?","OhHaiBrowser.ui.floatingVidPlayer('" + SiteType.responce + "');Doodle.Notify(false);");
 					break;
 				case "IMAGE":
-					Doodle.Notify(true,"I see you are viewing an image, would you like to view it in an image viewer?","Doodle.Notify(false);");
+		//			Doodle.Notify(true,"I see you are viewing an image, would you like to view it in an image viewer?","Doodle.Notify(false);");
 					break;
 			}
 		}
@@ -20,11 +20,15 @@ var Doodle = {
         switch (true){
 			case /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/.test(URL):	
 				var video_id = URL.split('v=')[1];
-				var ampersandPosition = video_id.indexOf('&');
-				if(ampersandPosition != -1) {
-					video_id = video_id.substring(0, ampersandPosition);
+				if(video_id > ""){
+					var ampersandPosition = video_id.indexOf('&');
+					if(ampersandPosition != -1) {
+						video_id = video_id.substring(0, ampersandPosition);
+					}
+					return {datatype:"VIDEO",responce:"https://www.youtube.com/embed/" + video_id};
+				}else{
+					return null;
 				}
-				return {datatype:"VIDEO",responce:"https://www.youtube.com/embed/" + video_id};
 				break;
             case /^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpe?g|gif|png)$/.test(URL):
                 //direct link to img, give the user the option to load this in a larger viewer

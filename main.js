@@ -1,6 +1,6 @@
 'use strict';
 
-var {electron,app, protocol,BrowserWindow} = require('electron');
+var {electron,app, protocol,BrowserWindow,globalShortcut} = require('electron');
 var Store = require('./browser/system_assets/scripts/window/store.js');
 //var OhHaiProtocol = require('./system_assets/Scripts/protocol/ohhai');
 
@@ -57,7 +57,13 @@ app.on('ready', function() {
       mainWindow.show();
       mainWindow.focus();
 	});
-	
+  
+  
+globalShortcut.register('CommandOrControl+Shift+D', () => {
+  if(mainWindow.isFocused() == true){
+      mainWindow.webContents.openDevTools();
+  }
+});
 	
 	mainWindow.loadURL("file:///" + __dirname + '/browser/index.html');
 
@@ -69,10 +75,6 @@ app.on('ready', function() {
     }
     store.set('isMaximised',mainWindow.isMaximized());
   });
-
-
-  // Open the DevTools.
-  //mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {

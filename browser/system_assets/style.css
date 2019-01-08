@@ -1,3 +1,7 @@
+/* Imports */
+@import url("components/tab_views/style.css");
+@import url("components/nav_bar/style.css");
+
 html, body {
     width: 100%;
     height: 100%;
@@ -7,8 +11,8 @@ html, body {
 }
 *{font-family:"Century Gothic", CenturyGothic, AppleGothic, sans-serif;}
 
-
 #AppBound{position:absolute;top:0;left:0;width:100%;height:100%;overflow: hidden;}
+
 /*Nav Bar*/
 
 		.PageLoading{-webkit-animation: LoadingAnimation 2s infinite;}
@@ -23,68 +27,33 @@ html, body {
 #Content{width:100%;overflow: hidden;}
 
 /*Tab Menu*/
-#LeftMenu{float:left;height: -webkit-calc(100% - 38px);background-color:#e9e9e9;border-right:1px solid #999;}
+#LeftMenu{float:left;height: -webkit-calc(100% - 38px);background-color:#e9e9e9;overflow-x:hidden;transition:width 0.25s;}
+.LeftMenuHidden{width:0px;border-right:0px;}
+.LeftMenuShow{width:200px;border-right:1px solid #999;}
 
 	#LeftMenu .popouttabs{border:none;position:initial;padding:0;border-right:1px solid #999;}
 	#LeftMenu .TabContainer{max-height:none;padding:0;}
 	#LeftMenu .tabcommands{padding:5px;}
 
-	#Tabs{max-height:-webkit-calc(100% - 38px);;overflow-y: auto;overflow-x:hidden;width:200px;}
-		#Tabs ul{margin:0;padding:0;list-style:none;/*width:191px;*/}
-			#Tabs ul .current{background-color:#C0DADE;}
-			#Tabs ul li img{float:left;width:16px;height:16px;margin:9px;}
-
-			#tabs-dock li{background-color:#e9e9e9;width:38px;height:34px;border-bottom:1px solid #999;border-right:1px solid #999;display:inline-block;transition:background-color 0.5s;}
-      #tabs-dock .current{}
-
-			#tabs-menu li{background-color:#e9e9e9;min-width:38px;height:34px;border-bottom:1px solid #999;/*border-right:10px solid #999;*/transition:background-color 0.5s;}
-     /* #tabs-menu .current{border-right:10px solid var(--main);}*/
-
-      #tabs-menu li span{cursor:default;float:left;margin:7px 4px 7px 4px;font-size:13px;width:120px;height:20px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; line-height: 20px;}
-			#tabs-menu li a{float:right;height:16px;width:16px;display:block;border-radius:4px;margin:9px 4px;transition:background-color 0.5s;}
-				#tabs-menu li a:hover{background-color:#f53355;}
-
-      #tabs-menu .IncognitoTab{background-color:#708090;}
-        #tabs-menu .IncognitoTab span{color:#fff;}
-		#tabs-menu .IncognitoTab.current{background-color: #2F4F4F;}
-		
-
-	#tabs-menu .group{border:none;border-bottom:1px solid #999;height: inherit;}
-		#tabs-menu .group .ohhai-group-header{padding: 5px;font-size: 14px;background-color: #c4c4c4;}
-
-			#tabs-menu .group .ohhai-group-txt{background-color: transparent;border: none;outline:none;}
-			#tabs-menu .group .ohhai-group-txt:hover{background-color: #dadada;}
-			#tabs-menu .group .ohhai-group-txt:focus{background-color: #fff;}
-
-			#tabs-menu .group .ohhai-togglegroup::before{content:"\21F3";display: block;text-align: center;line-height: 14px;}
-			#tabs-menu .group .ohhai-togglegroup{margin: 1px;background-color: #e4e4e4;}
-		#tabs-menu .group .ohhai-group-children{margin:5px;border-top:1px solid #999;border-left:1px solid #999;border-right:1px solid #999;}
-
-
-/*Browser Window*/
-
-#BrowserWin{background-color:#fff;height: -webkit-calc(100% - 38px);overflow: auto;position:relative;}
-#BrowserWin webview{position:absolute;height:100%;width:100%;outline: none;}
-#BrowserWin webview[hidden]{display:flex !important;visibility: hidden;}
-#BrowserWin webview.hidden {visibility: hidden;}
-
 /*Other Menu*/
 #OverFlowMenu{
 	position:fixed;
-	right:0;
 	height:100%;
 	z-index:100;
-	border:1px solid #999;
+	border:1px solid rgb(195, 195, 195);
 	background-color:rgba(233,233,233,1);
 	box-shadow: -5px 5px 15px #c4c4c4;
+	transition:right 0.25s;
 	}
+
+.OverflowHidden{right:-365px;}
+.OverflowShow{right:0;}
 
 	/* Overflow menu types */
 
 	#OverFlowDeepMenu{float:left;width:350px;height:100%;}
 	#MegaMenuContent{height: -webkit-calc(100% - 48px);overflow:auto;}
 	#MiniMenuContent{height: -webkit-calc(100% - 48px);overflow:auto;}
-
 
 	#OverFlowMiniMenu{float:left;width:50px;height:100%;}
 	.MiniMenuList{margin:0px;padding:0px;list-style:none;}
@@ -98,7 +67,6 @@ html, body {
 			.OverFlowContent ul li a{margin-left:auto;color:#000;text-decoration:none;margin-right:auto;display:block;padding:10px 15px;color:#000;}
 			.OverFlowContent ul li a:hover{background-color:var(--main);color: var(--controls);color:#fff;}
 
-	.OverflowToggleMenu{}
 
 	.OverFlowTopMenu{list-style:none;margin:0;height:47px;padding:0;border-bottom:1px solid #999;}
 	.MenuTitle{font-size:22px;height:40px;vertical-align:middle;}
@@ -137,19 +105,6 @@ button:focus{outline:none;}
     text-align: center;
     display: block;font-size:10px}
 .TabClose:hover::before{color:#fff;}
-
-.popwin{width: 400px;
-    position: fixed;
-    left: 50%;
-    top: 45px;
-    z-index: 100;
-    background-color: #fff;
-    border: 2px solid var(--main);
-    border-radius: 2px;
-    margin: 0 0 0 -200px;}
-.popTitle{font-weight:bold;margin:0px;padding:0px;}
-#popText{width:399px;height:150px;}
-.popbtn{display:inline-block;padding:5px;width:75px;background-color:#fff;margin:5px;text-align:center;color:#000;text-decoration:none;}
 
 
 #VideoPlayer{position:absolute;
@@ -309,3 +264,23 @@ button:focus{outline:none;}
 	#UserAccountMenu a:hover{
 		text-decoration:underline;
 	}
+
+
+
+
+	.WMC_popup{font-family:'Century Gothic', CenturyGothic, AppleGothic, sans-serif;cursor:pointer;position: fixed;height: 75px;border-radius: 4px;border: 1px solid rgba(39, 42, 46, 0.4);background-color:#fff;right:-560px;top:60px;box-shadow:1px 5px 10px rgba(39, 42, 46, 0.6);-webkit-transition: all 0.5s, -webkit-transform 0.5s; /* Safari */transition: all 0.5s, transform 0.5s;}
+	.WMC_Show{right:20px;}
+	.WCM_msg{font-size:15px;line-height: 75px;width: 300px;display: inline-block;padding: 0 10px;box-sizing: border-box;color:#000;}
+	.WCM_close{font-size:15px;cursor:pointer;float:right;background-color:transparent;height:65px;width:50px;border:none;outline:none;color:#999;font-family:'Century Gothic', CenturyGothic, AppleGothic, sans-serif;border-left:1px solid #c4c4c4;margin:5px 0;}
+
+
+	.bookmark_popup{display: block;width: 300px;position: absolute;background: #fff;border-radius: 4px;border: 1px solid #c4c4c4;padding: 5px;box-sizing: border-box;}
+	.bookmark_title{margin: 0;border-bottom: 1px solid #172467;margin-bottom: 5px;font-size: 16px;color: #172467;}	
+	.bookmark_nametxt{display: block;width: 100%;padding: 4px;outline:none;}
+		.bookmark_add{margin: 5px 5px 0 0;display: inline-block;width: 100px;padding:4px;border:1px solid #c4c4c4;background-color: #00ffff;}
+		.bookmark_cancel{margin: 5px 5px 0 0;display: inline-block;width: 100px;padding:4px;border:1px solid #c4c4c4;background-color:#fff;}
+
+
+
+	.URL_AutoComplete{position: absolute;width: 600px;height:auto;background-color: #fff;padding:5px;z-index: 500;margin-left: -3px;margin-top: -3px;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;box-sizing: border-box;box-shadow: 0px 10px 15px #999;-webkit-transition: all 0.25s, -webkit-transform 0.25s; /* Safari */transition: all 0.25s, transform 0.25s;}
+		.AutoComplete_hidden{height:0px;display:none;}

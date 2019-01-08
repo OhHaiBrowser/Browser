@@ -17,7 +17,12 @@ var OhHaiBrowser = {
 	},
 	templates: {
 		websession: function(_ID,_URL,callback){
-			var tabelement = "<li class='tab' title=''><img class='ohhai-tab-fav' src='system_assets/icons/logo.png'/><span class='ohhai-tab-txt'>New Tab</span><a class='TabClose'></a></li>";
+			var tabelement = `
+				<li class='tab' title=''>
+					<img class='ohhai-tab-fav' src='system_assets/icons/logo.png'/>
+					<span class='ohhai-tab-txt'>New Tab</span>
+					<a class='TabClose'></a>
+				</li>`;
 			var div = document.createElement('div')
       		div.innerHTML = tabelement
       		div.firstElementChild.setAttribute("id","t_" + _ID);
@@ -51,12 +56,19 @@ var OhHaiBrowser = {
 			callback({tab:div.firstElementChild, webview:ThisView});
 		},
 		group:function(_ID,_Title,callback){
-			var grouptemplate = "<li class='group' title=''><div class='ohhai-group-header'><input type='text' class='ohhai-group-txt' value='New Group'/><a class='ohhai-togglegroup'></a></div><ul class='ohhai-group-children'></ul></li>";
+			var grouptemplate = `
+				<li class='group' title=''>
+					<div class='ohhai-group-header'>
+						<input type='text' class='ohhai-group-txt' value='New Group'/>
+						<a class='ohhai-togglegroup'></a>
+					</div>
+					<ul class='ohhai-group-children'>
+					</ul>
+				</li>`;
 			var div = document.createElement('div');
 			div.innerHTML = grouptemplate;
 			 
 			div.firstElementChild.setAttribute("id",_ID);
-			
 
 			var Group = div.firstElementChild;
 			var GroupHead = Group.querySelector(".ohhai-group-header");
@@ -101,7 +113,7 @@ var OhHaiBrowser = {
 						OhHaiBrowser.tabs.setCurrent(NewWS.tab,NewWS.webview);
 					}
 					if(_OPTIONS.mode){
-						switch(_OPTIONS.mode){
+						switch(_OPTIONS.mode.toString().toLowerCase()){
 							case "dock":
 								OhHaiBrowser.ui.tabbar.pinnedtabcontainer.appendChild(NewWS.tab);
 							break;
@@ -112,13 +124,16 @@ var OhHaiBrowser = {
 							case "grouped":
 								if(_OPTIONS.parent){
 									if(typeof _OPTIONS.parent == "string"){_OPTIONS.parent = document.getElementById(_OPTIONS.parent);}
-
-									if(_OPTIONS.parent.classList.contains("ohhai-group-children")){
-										_OPTIONS.parent.appendChild(NewWS.tab);
+									if(_OPTIONS.parent != null){
+										if(_OPTIONS.parent.classList.contains("ohhai-group-children")){
+											_OPTIONS.parent.appendChild(NewWS.tab);
+										}else{
+											var GroupedTabs = _OPTIONS.parent.querySelector('.ohhai-group-children');
+											GroupedTabs.appendChild(NewWS.tab);
+										}
 									}else{
-										var GroupedTabs = _OPTIONS.parent.querySelector('.ohhai-group-children');
-										GroupedTabs.appendChild(NewWS.tab);
-									}	
+										OhHaiBrowser.ui.tabbar.tabcontainer.appendChild(NewWS.tab);
+									}		
 								}else{
 									_OPTIONS.parent.appendChild(NewWS.tab);
 								}
@@ -202,7 +217,7 @@ var OhHaiBrowser = {
 			if(Parent.classList.contains("ohhai-group-children")){
 				var ThisGroup = Parent.parentElement;
 				if(Parent.children.length == 0){
-					tabs.RemoveGroup(ThisGroup);
+					OhHaiBrowser.tabs.RemoveGroup(ThisGroup);
 				}
 			}	
 			OhHaiBrowser.tabs.count--;
@@ -277,7 +292,6 @@ var OhHaiBrowser = {
 			}			
 		},
 		setMode:function(_tab,_mode,callback){	
-
 			var TabSessionId = _tab.getAttribute("data-session");
 			var Tab_Text = _tab.querySelector(".ohhai-tab-txt");
 			var Tab_CloseBtn = _tab.querySelector('.TabClose');
@@ -408,7 +422,6 @@ var OhHaiBrowser = {
 
 				if(thisGroupList.children.length == 0){
 					OhHaiBrowser.tabs.groups.remove(thisGroup)
-					//tabs.RemoveGroup(thisGroup);
 				}
 				if(typeof callback == "function"){
 					callback(true);
@@ -517,10 +530,9 @@ var OhHaiBrowser = {
 				win.show();
 				win.focus();
 			 });
-			win.loadURL("file://" + __dirname + '/popup.html?url=' + params.url);
-			//win.webContents.openDevTools();
+			win.loadURL("file://" + __dirname + '/system_assets/components/pop_out_window/template.html?url=' + params.url);
 
-			 callback(win);
+			callback(win);
 		}
 	},
 	session: {
@@ -534,20 +546,55 @@ var OhHaiBrowser = {
 	},
 	bookmarks: {
 		btn_bookmark:document.getElementById("BtnQuicklink"),
-		add: function(bookmarkName,bookmarkUrl,bookmarkIcon,bookmarkDesc,callback){
-			Quicklinks.Add(bookmarkUrl,bookmarkName,bookmarkIcon,"",bookmarkDesc,function(newqlink){
-				var ReturnVal;
-				if(newqlink != 0 || -1){
-					//newqlink is the ID of the new record
-					ReturnVal = newqlink;
-				}else{
-					//error
-					ReturnVal = null;
-				}
-				if (typeof callback === "function") {
-					callback(ReturnVal);
-				}
+		add: function(bookmarkName,bookmarkUrl,bookmarkIcon,bookmarkDesc,popuplocal,callback){
+
+			var BookmarkPopup = document.createElement("div");
+			BookmarkPopup.className = "bookmark_popup";
+			BookmarkPopup.style.left = (popuplocal.left - 249);
+			BookmarkPopup.style.top = (popuplocal.top + 23);
+
+			var p_title = document.createElement("p");
+			p_title.innerText = "New bookmark";
+			p_title.className = "bookmark_title";
+
+			var Txt_Url = document.createElement("input");
+			Txt_Url.type = "text";
+			Txt_Url.className = "bookmark_nametxt";
+			Txt_Url.value = bookmarkName;
+
+			var Add_bookmark = document.createElement("input");
+			Add_bookmark.type = "button";
+			Add_bookmark.className = "bookmark_add";
+			Add_bookmark.value = "Add";
+			Add_bookmark.addEventListener("click", function(e) {
+				Quicklinks.Add(bookmarkUrl,Txt_Url.value,bookmarkIcon,"",bookmarkDesc,function(newqlink){
+					var ReturnVal = ((newqlink != 0||-1) ? newqlink : null);
+					if(ReturnVal != null){
+						OhHaiBrowser.bookmarks.btn_bookmark.setAttribute("data-id",newqlink);
+						OhHaiBrowser.bookmarks.btn_bookmark.classList.remove("QuicklinkInactive");
+						OhHaiBrowser.bookmarks.btn_bookmark.classList.add("QuicklinkActive");
+					}else{
+						//Error
+					}
+					BookmarkPopup.parentNode.removeChild(BookmarkPopup);
+				});
 			});
+
+			var Cancel_bookmark = document.createElement("input");
+			Cancel_bookmark.type = "button";
+			Cancel_bookmark.className = "bookmark_cancel";
+			Cancel_bookmark.value = "Cancel";
+			Cancel_bookmark.addEventListener("click", function(e) {
+				BookmarkPopup.parentNode.removeChild(BookmarkPopup);
+			});
+
+			BookmarkPopup.appendChild(p_title);
+			BookmarkPopup.appendChild(Txt_Url);
+			BookmarkPopup.appendChild(Add_bookmark);
+			BookmarkPopup.appendChild(Cancel_bookmark);
+			document.body.appendChild(BookmarkPopup);
+
+			callback("done");
 		},
 		remove: function(bookmarkId,callback){
 			if (typeof callback === "function") {
@@ -622,7 +669,7 @@ var OhHaiBrowser = {
 			var callbackval = "";
 			OhHaiBrowser.validate.url(url,function(isurl){
 				if(isurl == true){
-					currenttab.InsertJS("document.getElementsByTagName('video')[0].pause();");
+					OhHaiBrowser.tabs.activePage.executeJavaScript("document.getElementsByTagName('video')[0].pause();");
 
 					$("#VideoPlayer").show();
 					$("#VidInner").animate({ width: 'show' }, 150);
@@ -637,6 +684,32 @@ var OhHaiBrowser = {
 					callback(callbackval);
 				}
 			});	
+		},
+		videoPlayer:function(params,callback){
+			//This is a pop up window - Does the user want this pop up, does it have a parent control? 
+			const remote = require('electron').remote;
+			var ThisWindow = remote.getCurrentWindow();
+			const BrowserWindow = remote.BrowserWindow;
+			var win = new BrowserWindow({ 
+				width: 534, 
+				height: 300,
+				frame: false,
+				minimizable:false,
+				maximizable:false,
+				fullscreenable:false,
+				alwaysOnTop:true,
+				icon: __dirname + '/window/assets/OhHaiIcon.ico',
+				show: false
+			});
+			win.webContents.on('did-finish-load', ()=>{
+				win.show();
+				win.focus();
+			});
+			win.loadURL("file://" + __dirname + '/system_assets/components/pop_out_player/template.html?url=' + params.url);
+			win.webContents.openDevTools();
+			if (typeof callback === "function") {
+				callback(win);
+			}			
 		},
 		closeFloatingVidPlayer: function(){
 			$("#VideoPlayer").fadeOut();
@@ -734,9 +807,13 @@ var OhHaiBrowser = {
 					NewMenu.append(new MenuItem({label: 'Add tab to group', type:'submenu' ,submenu:GroupMenu}))
 				}
 				if(ThisWebview.isAudioMuted() == true){
-					NewMenu.append(new MenuItem({label: 'Unmute Tab', click() { ThisWebview.setAudioMuted(false); }}))
+					NewMenu.append(new MenuItem({label: 'Unmute Tab', click() {
+						 ThisWebview.setAudioMuted(false); 
+					}}))
 				}else{
-					NewMenu.append(new MenuItem({label: 'Mute Tab', click() { ThisWebview.setAudioMuted(true); }}))
+					NewMenu.append(new MenuItem({label: 'Mute Tab', click() {
+						ThisWebview.setAudioMuted(true); 
+					}}))
 				}
 				OhHaiBrowser.tabs.ismode(ThisTab,"docked",function(returnval){
 					if(returnval == true){
@@ -786,11 +863,37 @@ var OhHaiBrowser = {
 			}
 		},
 		overflowmenu: {
+			panel: document.getElementById("OverFlowMenu"),
+			opened:false,
+			toggle:function(){
+				if(OhHaiBrowser.ui.overflowmenu.opened == true){
+					OhHaiBrowser.ui.overflowmenu.panel.classList.add("OverflowHidden");
+					OhHaiBrowser.ui.overflowmenu.panel.classList.remove("OverflowShow");
+					OhHaiBrowser.ui.overflowmenu.opened = false;
+				}else{
+					OhHaiBrowser.ui.overflowmenu.panel.classList.add("OverflowShow");
+					OhHaiBrowser.ui.overflowmenu.panel.classList.remove("OverflowHidden");
+					OhHaiBrowser.ui.overflowmenu.opened = true;
+				}
 
+				event.stopPropagation();
+			},
+			setvis:function(toggle){
+				if(toggle == true){
+					OhHaiBrowser.ui.overflowmenu.panel.classList.add("OverflowShow");
+					OhHaiBrowser.ui.overflowmenu.panel.classList.remove("OverflowHidden");
+					OhHaiBrowser.ui.overflowmenu.opened = true;
+				}else{
+					OhHaiBrowser.ui.overflowmenu.panel.classList.add("OverflowHidden");
+					OhHaiBrowser.ui.overflowmenu.panel.classList.remove("OverflowShow");
+					OhHaiBrowser.ui.overflowmenu.opened = false;
+				}
+			}
 		},
 		navbar:{
 			txt_urlBar: document.getElementById("URLBar"),
 			btn_pageInfo: document.getElementById("SecureCheck"),
+			btn_bookmark: document.getElementById("BtnQuicklink"),
 			updateTabCounter: function(){
 				document.getElementById("HideShowCount").textContent = OhHaiBrowser.tabs.count;
 			},
@@ -836,14 +939,45 @@ var OhHaiBrowser = {
 			pined: true,
 			toggle: function(){
 				if(OhHaiBrowser.ui.tabbar.pined == true){
+					OhHaiBrowser.ui.tabbar.panel.classList.add("LeftMenuHidden");
+					OhHaiBrowser.ui.tabbar.panel.classList.remove("LeftMenuShow");
 					OhHaiBrowser.ui.tabbar.pined = false;
-					$(OhHaiBrowser.ui.tabbar.panel).animate({ width: 'hide' }, 150);
 					Settings.Set("TabBar",false, function(){});
 				}else{
+					OhHaiBrowser.ui.tabbar.panel.classList.add("LeftMenuShow");
+					OhHaiBrowser.ui.tabbar.panel.classList.remove("LeftMenuHidden");
 					OhHaiBrowser.ui.tabbar.pined = true;
-					$(OhHaiBrowser.ui.tabbar.panel).animate({ width: 'show' }, 150);
 					Settings.Set("TabBar",true, function(){});	
 				}
+			}
+		},
+		wcm:{
+			template:"<div class='WMC_popup'><span class='WCM_msg'></span><input type='button' class='WCM_close' value='X'/></div>",
+			post:function(msg,onclick_func,callback){
+				var Popup_Win = document.createElement("div");
+				Popup_Win.innerHTML = this.template;
+                var this_WCM = Popup_Win.firstChild;
+
+                this_WCM.querySelector(".WCM_msg").textContent = msg;
+                this_WCM.querySelector(".WCM_close").addEventListener("click",function(){
+					this_WCM.classList.remove("WMC_Show");                       
+                    setTimeout(function(){this_WCM.remove();},800);
+				});
+                this_WCM.querySelector(".WCM_msg").addEventListener("click",function(){
+					this_WCM.classList.remove("WMC_Show");                       
+                    setTimeout(function(){this_WCM.remove();},800);
+					onclick_func();
+				});
+
+				document.body.appendChild(this_WCM)
+				setTimeout(function(){this_WCM.classList.add("WMC_Show");},10);   
+
+				//auto close after 5 seconds
+				setTimeout(function(){
+					this_WCM.classList.remove("WMC_Show");                       
+                    setTimeout(function(){this_WCM.remove();},800);
+				},5000);
+
 			}
 		}
 	},
@@ -915,27 +1049,5 @@ var OhHaiBrowser = {
 		generateId: function(){
 			return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 		}
-	},
-	showtextpop: function(yesfunction,title){
-		var textpopTitle = document.getElementById('TextPopTitle');
-		var textpopYes = document.getElementById('TextPopYes');
-		var textpop = document.getElementById('Textpopwin');
-		textpopTitle.textContent = title;
-		$(textpop).fadeIn();
-		textpopYes.setAttribute("href","javascript:OhHaiBrowser.TextPopFunction(" + yesfunction +");");
-	},
-	hidetextpop: function(){
-		var textpop = document.getElementById('Textpopwin');
-		$(textpop).fadeOut();
-		$("#PageActionsMenu").hide();
-	},
-	TextPopFunction: function(returnfunction){
-		var textpopValue = document.getElementById('PopText').value;
-		returnfunction(textpopValue);
-		OhHaiBrowser.hidetextpop();
-	},
-	OnWebChange: function(){
-		OhHaiBrowser.hidetextpop();				//Close popups
-		$("#OverFlowMenu").hide();				//Close menus
 	}
 }
