@@ -1,0 +1,110 @@
+<html>
+	<head>
+		<title>OhHai History</title>
+		<link rel="stylesheet" href="assets/style.css"/>
+		<style>
+			#MainContent{max-width:900px;min-width:300px;margin:0 auto 0 auto;}	
+
+			#HistList{margin:10px;}
+			.listborder{border:1px solid #999;border-radius:2px;box-shadow: 5px 5px 5px #c4c4c4;}
+			
+			#HistList h3{text-align:center;font-size:50px;color:#999;}
+			
+			.histitem{padding:15px;border-radius:2px;}
+			.histitem + .histitem{border-top:1px solid #999;}
+			
+			#HistList img{float:left;height:20px;}
+			#HistList a{float:left;margin:0 0 0 30px;line-height:20px;}
+			#HistList span{float:right;line-height:20px;}
+			
+			.clear{clear:both;}
+		</style>
+	</head>
+	<body>
+		
+		<header>
+			<h1>History</h1>
+			<a href="#" id="RefreshHist" onclick="load_history()">Reload History</a>
+			<a href="#" id="ClearHist" onclick="clear_history()">Clear History</a>
+		</header>
+	
+		<div id='MainContent'>
+		
+			<div id="HistList">
+				
+			</div>
+			
+			<ul class="pagination"></ul>
+			
+		</div>
+
+		<script src="../scripts/jquery-2.1.4.min.js"></script>
+		<script src="../scripts/jquery.easyPaginate.js"></script>
+		
+		<script src="../scripts/dexie.min.js"></script>
+		<script src="../scripts/db.js"></script>
+		<script>	
+			load_history();
+			
+			function load_history(){
+				var dom_hist_list = document.getElementById("HistList");
+				var dom_refresh_btn = document.getElementById("RefreshHist");
+				var dom_clear_btn = document.getElementById("ClearHist");
+				
+				dom_hist_list.innerHTML = '';
+				
+				var history_template = "<img class='hist_img' src=''/><a class='hist_link' href='#'></a><span class='hist_datetime'></span><div class='clear'></div>";		
+				History.List(function(HistArray){
+					if (!Array.isArray(HistArray) || !HistArray.length) {
+					
+						dom_clear_btn.setAttribute("style","display:none;");
+						dom_hist_list.setAttribute("class","");
+						var NoItems = document.createElement('h3');
+						NoItems.appendChild(document.createTextNode("No history :("));
+						dom_hist_list.appendChild(NoItems);
+					}else{
+						dom_hist_list.setAttribute("class","listborder");
+						dom_clear_btn.setAttribute("style","");
+						
+						var i,len;
+						for (i = 0, len = HistArray.length; i < len; i++) {
+							var thisitem = HistArray[i];
+							var div = document.createElement('div');
+							div.setAttribute("class","histitem");
+							div.innerHTML = history_template;
+						
+							div.querySelector('.hist_img').setAttribute("src",thisitem.icon);
+							div.querySelector('.hist_link').appendChild(document.createTextNode(thisitem.title));	
+							div.querySelector('.hist_link').setAttribute("href",thisitem.url);
+							div.querySelector('.hist_datetime').appendChild(document.createTextNode(Convert_DateTimeStamp(thisitem.timestamp)));
+						
+							dom_hist_list.appendChild(div);
+						}	
+					}
+					
+				});
+				
+				$('#HistList').easyPaginate({
+					paginateElement: 'div',
+					elementsPerPage: 10,
+					effect: 'default'
+				});
+			}
+			
+			function Convert_DateTimeStamp(timestamp){	
+				var days = ["Sunday","Monday","Tuesday","Wedneday","Thursday","Friday","Saturday"]
+				var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+				var d = new Date(timestamp);
+						
+				return days[d.getDay()] + ", " + months[d.getMonth()] + " " + d.getDate() + " - " + d.getHours() + ":" + d.getMinutes()
+			}
+
+			function clear_history(){
+				History.Clear(function(){
+					load_history();
+				});
+			}
+
+		</script>
+	</body>
+</html>

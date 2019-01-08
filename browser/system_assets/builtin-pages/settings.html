@@ -1,0 +1,167 @@
+<html>
+	<head>
+		<title>OhHai Settings</title>
+		<link rel="stylesheet" href="assets/style.css"/>
+		<style>			
+			#MainContent{max-width:900px;min-width:300px;margin:0 auto 0 auto;}
+				#Logo{width:250px;height:75px;background-color:#999;display:block;margin:30px auto 0 auto;}
+				.box{padding:5px;display:block;max-width:600px;min-width:300px;min-height:70px;border:1px solid #c4c4c4;margin:20px auto 20px auto;border-radius:2px;background-color:#fff;box-shadow: 5px 5px 5px #c4c4c4;color:#000;}
+				h3{margin:0 0 5px 0;}
+				.ddl{width:350px;font-size:16px;border-radius:2px;border:none;border:0.5px solid #999;}
+				
+				form{margin:0;}
+		</style>
+		
+		<script src="../scripts/dexie.min.js"></script>
+		<script src="../scripts/db.js"></script>	
+	</head>
+	<body>
+		
+		<header>
+			<h1>Settings</h1>
+		</header>
+	
+		<div id='MainContent'>
+
+			<!--<div class="box">
+				<h3>Themes</h3>
+				<span>These options change the look of your browser.</span></br>
+				<select id="ddl_themes" onchange="Save_Theme();" class="ddl">
+					<option value="themes/Default.css">Default</option>
+					<option value="themes/OhHaiBlue.css">OhHai Blue</option>
+				</select>
+				<span>* You need to restart your browser for this to take effect</span>
+				
+				<script>
+					Load_Theme();
+					function Save_Theme(){
+						var Theme_DDL = document.getElementById("ddl_themes");
+						Settings.Set("Theme",Theme_DDL.value,function(id){
+							
+						});
+					}
+					function Load_Theme(){
+						var Theme_DDL = document.getElementById("ddl_themes");
+						Settings.Get("Theme",function(item){
+							if(item != undefined){
+								Theme_DDL.value = item.value;
+							}else{
+								Theme_DDL.value = "themes/Default.css";
+							}
+						});
+					}
+				</script>
+			</div>-->
+
+			<div class="box">
+				<h3>When browser opens</h3>
+				<span>What do you want your browser to do when it opens?</span></br>
+				<form id="Form_Launch">
+					<input type="radio" onclick="Save_Launch();" checked name="rad_launch" value="default"/>Default - Continue where I left off</br>
+					<input type="radio" onclick="Save_Launch();" name="rad_launch" value="fresh"/> Start fresh
+				</form>
+				<script>
+					Load_Launch();
+					function Save_Launch(){
+						var Launch_Radio = document.getElementById("Form_Homepage").elements.namedItem("rad_home").value;
+						Settings.Set("Launch",Launch_Radio,function(id){
+									
+						});
+					}
+					function Load_Launch(){
+						var Launch_Radio = document.getElementById("Form_Launch").elements.namedItem("rad_launch");
+						Settings.Get("Launch",function(item){
+							if(item != undefined){
+								Launch_Radio.value = item.value;
+							}else{
+								Launch_Radio.value = "default";
+							}
+						});
+					}
+				</script>
+			</div>
+
+			<div class="box">
+				<h3>Homepage</h3>
+				<span>When you open a new tab what would you like to see?</span></br>
+				<form id="Form_Homepage">
+					<input type="radio" onclick="Save_Homepage();" checked name="rad_home" value="default"/> Default - Tab home</br>
+					<input type="radio" onclick="Save_Homepage();" name="rad_home" value="custom"/> <input type="text" id="customhometxt" placeholder="Custom homepage"/>
+				</form>			
+				<script>
+					Load_Homepage();	
+					function Save_Homepage() {			
+						var Home_Radio = document.getElementById("Form_Homepage").elements.namedItem("rad_home").value;
+						var input = document.getElementById("customhometxt");
+						switch(Home_Radio){
+							case "custom":
+								input.disabled = false;
+								Settings.Set("Home",input.value,function(id){
+									
+								});
+							break;
+							default:
+								input.disabled = true;
+								Settings.Set("Home","default",function(id){
+									
+								});
+						}
+					}
+					function Load_Homepage(){
+						var Home_Radio = document.getElementById("Form_Homepage").elements.namedItem("rad_home");
+						var input = document.getElementById("customhometxt");
+						
+						Settings.Get("Home",function(item){
+							if(item != undefined){
+								Home_Radio.value = item.value;
+							}else{
+								Home_Radio.value = "default";
+							}
+							
+							switch(Home_Radio.value){
+							case "custom":
+								input.disabled = false;
+							break;
+							default:
+								input.disabled = true;
+							}
+							
+						});
+					}
+				</script>
+			</div>
+
+			<div class="box">
+				<h3>Search</h3>
+				<span>When searching in the URL bar who would you like to search with?</span></br>
+				<select onchange="Save_Search();" class="ddl" id="ddl_search">
+					<option value="https://www.google.co.uk/search?q=">Google</option>
+					<option value="https://search.yahoo.com/search;?p=">Yahoo</option>
+					<option value="http://www.bing.com/search?go=Submit&q=">Bing</option>
+				</select>
+				<script>
+					Load_Search();
+					function Save_Search(){
+						var Search_DDL = document.getElementById("ddl_search");
+						Settings.Set("Search",Search_DDL.value,function(id){
+							
+						});
+					}
+					function Load_Search(){
+						var Search_DDL = document.getElementById("ddl_search");
+						Settings.Get("Search",function(item){
+							if(item != undefined){
+								Search_DDL.value = item.value;
+							}else{
+								Search_DDL.value = "https://www.google.co.uk/search?q=";
+							}
+						});
+					}
+				</script>
+			</div>
+
+		</div>
+
+		
+	</body>
+</html>

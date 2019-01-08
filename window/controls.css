@@ -1,0 +1,19 @@
+.Window_Controls{position:fixed;top:0px;right:0px;margin:0;padding:0;}
+	.Window_Controls li{margin: 0;padding: 0;list-style: none;display:inline-block;float:left;}
+		.Window_Controls li a{-webkit-app-region: no-drag;display: block;width:45px;height:20px;-webkit-user-select: none;cursor:default;}
+
+		#Left_FrameBtn{background: url('assets/light_minimize.png') 0 0;}
+		#Left_FrameBtn:hover{background: url('assets/light_minimize.png') -45px 0;}
+		#Left_FrameBtn:active{background: url('assets/light_minimize.png') -90px 0;}
+
+		.Center_FrameBtn{background: url('assets/light_maximize.png') 0 0;}
+		.Center_FrameBtn:hover{background: url('assets/light_maximize.png') -45px 0;}
+		.Center_FrameBtn:active{background: url('assets/light_maximize.png') -90px 0;}
+
+		.Center_FrameBtn2{background: url('assets/light_restore.png') 0 0;}
+		.Center_FrameBtn2:hover{background: url('assets/light_restore.png') -45px 0;}
+		.Center_FrameBtn2:active{background: url('assets/light_restore.png') -90px 0;}
+
+		#Right_FrameBtn{background: url('assets/light_close.png') 0 0;}
+		#Right_FrameBtn:hover{background: url('assets/light_close.png') -45px 0;}
+		#Right_FrameBtn:active{background: url('assets/light_close.png') -90px 0;}

@@ -1,0 +1,213 @@
+body{margin:0px;}
+*{font-family:"Century Gothic", CenturyGothic, AppleGothic, sans-serif;}
+h1,h2,h3,h4,h5{margin:0;}
+
+
+.ohui-pane{
+	border:1px solid #c4c4c4;
+	margin:10px 0;
+	padding:5px;
+}
+
+
+/*===== Buttons =====*/
+.ohui-button{
+	display:inline-block;
+	border:2px solid #172467;
+	padding:5px;
+	width:150px;
+	text-align:center;
+	font-size:14px;
+	text-decoration:none;
+	color:#172467;
+	background-color:#fff;
+	cursor:pointer;
+	border-radius:2px;
+	
+	-webkit-transition: background-color 0.25s; /* Safari */
+    transition:background-color 0.25s;
+}
+.ohui-button:hover{
+	background-color:#172467;
+	color:#fff;
+}
+.ohui-button:focus{
+	outline: none;
+}
+/* ===== Disabled Buttons =====*/
+.ohui-button[disabled]{
+	border: 2px solid #c4c4c4;
+	background-color:#fff;
+	color:#999;
+	cursor:default;
+}
+/*===== Grouped Buttons =====*/
+.ohui-group .ohui-button{
+	margin:0 -2.5px;
+	border-radius:0;
+}
+.ohui-group .ohui-button+.ohui-button{
+	border-left:none;
+}
+.ohui-group .ohui-button:first-child{
+	border-top-left-radius:2px;
+	border-bottom-left-radius:2px;
+}
+
+.ohui-group .ohui-button:last-child{
+	border-top-right-radius:2px;
+	border-bottom-right-radius:2px;
+}
+
+
+.ohui-list .ohui-button{
+	argin:0 -2.5px;
+	border-radius:0;
+	display:block;
+}
+.ohui-list .ohui-button+.ohui-button{
+	border-top:none;
+}
+.ohui-list .ohui-button:first-child{
+	border-top-left-radius:2px;
+	border-top-right-radius:2px;
+}
+
+.ohui-list .ohui-button:last-child{
+	border-bottom-left-radius:2px;
+	border-bottom-right-radius:2px;
+}
+
+
+
+
+
+.ohui-txtbox{
+	border:2px solid #999;;
+	border-radius:2px;
+	padding:5px;
+}
+.ohui-txtbox:focus{
+	border:2px solid #172467;
+	outline: none;
+}
+
+.ohui-label{}
+
+.ohui-control{}
+
+.ohui-dropdown{
+	border:2px solid #999;;
+	border-radius:2px;
+	padding:5px;
+}
+.ohui-dropdown:focus{
+	border:2px solid #172467;
+	outline: none;
+}
+
+
+.ohui-radio{
+	display:inline-block;
+}
+.ohui-radio [type="radio"]:checked,
+.ohui-radio [type="radio"]:not(:checked) {
+    position: absolute;
+    left: -9999px;
+}
+.ohui-radio [type="radio"]:checked + label,
+.ohui-radio [type="radio"]:not(:checked) + label
+{
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    line-height: 20px;
+    display: inline-block;
+    color: #000;
+}
+.ohui-radio [type="radio"]:checked + label:before,
+.ohui-radio [type="radio"]:not(:checked) + label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #172467;
+    border-radius: 4px;
+    background: #fff;
+}
+.ohui-radio [type="radio"]:checked + label:after,
+.ohui-radio [type="radio"]:not(:checked) + label:after {
+    content: '';
+    width: 14px;
+    height: 14px;
+    background: #172467;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    border-radius: 3px;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+.ohui-radio [type="radio"]:not(:checked) + label:after {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+.ohui-radio [type="radio"]:checked + label:after {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+
+
+
+.ohui-check {
+  position: relative;
+  display: inline-block;
+  width: 53px;
+  height: 26px;
+}
+
+.ohui-check input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius:4px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius:3px;
+}
+
+input:checked + .slider {
+  background-color: #172467;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}

@@ -1,0 +1,19 @@
+:root{
+	/* UI related styles */
+	--UI-LIGHT:#5E6CB3;
+	--UI-DARK:#172467;
+	--UI-BORDER:#000;
+	
+	/* Tab related styles */
+	--TAB-DEFAULT:#172467;
+	--TAB-SELECTED:#283FB3;
+	
+	/* Button related styles */
+	--BTN-DEFAULT:#172467;
+	--BTN-HOVER:#283FB3;
+	
+	/* Notification bar */
+	--NOTIFICATION:#283FB3;
+}
+
+	

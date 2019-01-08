@@ -1,0 +1,13 @@
+:root{
+	/*This is the navbar colour and also the theme colour*/
+	--main:#172467;
+	
+	/*This is the colour of the navbar controls and text*/
+	--controls:#fff;
+	
+	/*Colour of the URL bar when a page is loading*/
+	--loading:#1A2874;
+
+}
+
+	
