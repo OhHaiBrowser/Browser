@@ -662,6 +662,15 @@ var OhHaiBrowser = {
 					return "https://www.google.co.uk/search?q=";
 				}
 			});
+		},
+		generic: function(settingName){
+			Settings.Get(settingName,function(item){
+				if(item != undefined){
+					return item.value;
+				}else{
+					return null;
+				}
+			});
 		}
 	},
 	ui: {

@@ -140,6 +140,123 @@ var settings_0000000001 = {
 
 		Settings_Form.appendChild(Search_Input1);
 
+
+
+		var AdBlock_Header = document.createElement('p');
+		AdBlock_Header.appendChild(document.createTextNode("Block Adverts?"));
+
+		var AdBlock_Form =document.createElement('form');
+
+		var Div_AdBlockYes = document.createElement('div');
+		Div_AdBlockYes.setAttribute('class','RadioBtnDiv');
+		var IP_AdBlockYes = document.createElement('input');
+		IP_AdBlockYes.setAttribute('type','radio');
+		IP_AdBlockYes.setAttribute('id','Rad_AdBlockYes');
+		IP_AdBlockYes.setAttribute('name','AdBlock');
+		IP_AdBlockYes.setAttribute('value','true');
+		IP_AdBlockYes.setAttribute('onclick','Settings.Set("adBlock",this.value,function(){});');
+		var Lbl_AdBlockYes = document.createElement('label');
+		var Sp_AdBlockYes = document.createElement('span');
+		Lbl_AdBlockYes.setAttribute('for','Rad_AdBlockYes');
+		Lbl_AdBlockYes.appendChild(Sp_AdBlockYes);
+		Lbl_AdBlockYes.appendChild(document.createTextNode("Yes"));
+
+		Div_AdBlockYes.appendChild(IP_AdBlockYes);
+		Div_AdBlockYes.appendChild(Lbl_AdBlockYes);
+
+		var Div_AdBlockNo = document.createElement('div');
+		Div_AdBlockNo.setAttribute('class','RadioBtnDiv');
+		var IP_AdBlockNo = document.createElement('input');
+		IP_AdBlockNo.setAttribute('type','radio');
+		IP_AdBlockNo.setAttribute('id','Rad_AdBlockNo');
+		IP_AdBlockNo.setAttribute('name','AdBlock');
+		IP_AdBlockNo.setAttribute('value','false');
+		IP_AdBlockNo.setAttribute('onclick','Settings.Set("adBlock",this.value,function(){});');
+		var Lbl_AdBlockNo = document.createElement('label');
+		var Sp_AdBlockNo = document.createElement('span');
+		Lbl_AdBlockNo.appendChild(Sp_AdBlockNo);
+		Lbl_AdBlockNo.appendChild(document.createTextNode("No"));
+		Lbl_AdBlockNo.setAttribute('for','Rad_AdBlockNo');
+		Div_AdBlockNo.appendChild(IP_AdBlockNo);
+		Div_AdBlockNo.appendChild(Lbl_AdBlockNo);
+
+		Settings.Get("adBlock",function(item){
+			if(item != undefined){
+				if(item.value == "true"){
+					IP_AdBlockYes.setAttribute("checked","checked");
+				}else{
+					IP_AdBlockNo.setAttribute("checked","checked");
+				}
+			}else{
+				IP_AdBlockNo.setAttribute("checked","checked");
+			}
+		});
+
+		AdBlock_Form.appendChild(Div_AdBlockYes);
+		AdBlock_Form.appendChild(Div_AdBlockNo);
+
+
+
+		var TrackBlock_Header = document.createElement('p');
+		TrackBlock_Header.appendChild(document.createTextNode("Block Adverts?"));
+
+		var TrackBlock_Form =document.createElement('form');
+
+		var Div_TrackBlockYes = document.createElement('div');
+		Div_TrackBlockYes.setAttribute('class','RadioBtnDiv');
+		var IP_TrackBlockYes = document.createElement('input');
+		IP_TrackBlockYes.setAttribute('type','radio');
+		IP_TrackBlockYes.setAttribute('id','Rad_AdBlockYes');
+		IP_TrackBlockYes.setAttribute('name','AdBlock');
+		IP_TrackBlockYes.setAttribute('value','true');
+		IP_TrackBlockYes.setAttribute('onclick','Settings.Set("trackBlock",this.value,function(){});');
+		var Lbl_TrackBlockYes = document.createElement('label');
+		var Sp_TrackBlockYes = document.createElement('span');
+		Lbl_TrackBlockYes.setAttribute('for','Rad_AdBlockYes');
+		Lbl_TrackBlockYes.appendChild(Sp_TrackBlockYes);
+		Lbl_TrackBlockYes.appendChild(document.createTextNode("Yes"));
+
+		Div_TrackBlockYes.appendChild(IP_TrackBlockYes);
+		Div_TrackBlockYes.appendChild(Lbl_TrackBlockYes);
+
+		var Div_TrackBlockNo = document.createElement('div');
+		Div_TrackBlockNo.setAttribute('class','RadioBtnDiv');
+		var IP_TrackBlockNo = document.createElement('input');
+		IP_TrackBlockNo.setAttribute('type','radio');
+		IP_TrackBlockNo.setAttribute('id','Rad_AdBlockNo');
+		IP_TrackBlockNo.setAttribute('name','AdBlock');
+		IP_TrackBlockNo.setAttribute('value','false');
+		IP_TrackBlockNo.setAttribute('onclick','Settings.Set("trackBlock",this.value,function(){});');
+		var Lbl_TrackBlockNo = document.createElement('label');
+		var Sp_TrackBlockNo = document.createElement('span');
+		Lbl_TrackBlockNo.appendChild(Sp_TrackBlockNo);
+		Lbl_TrackBlockNo.appendChild(document.createTextNode("No"));
+		Lbl_TrackBlockNo.setAttribute('for','Rad_AdBlockNo');
+		Div_TrackBlockNo.appendChild(IP_TrackBlockNo);
+		Div_TrackBlockNo.appendChild(Lbl_TrackBlockNo);
+
+		Settings.Get("trackBlock",function(item){
+			if(item != undefined){
+				if(item.value == "true"){
+					IP_TrackBlockYes.setAttribute("checked","checked");
+				}else{
+					IP_TrackBlockNo.setAttribute("checked","checked");
+				}
+			}else{
+				IP_TrackBlockNo.setAttribute("checked","checked");
+			}
+		});
+
+		TrackBlock_Form.appendChild(Div_TrackBlockYes);
+		TrackBlock_Form.appendChild(Div_TrackBlockNo);
+
+
+
+
+
+
+
+
 		//Final Assembly
 		//Themes
 		//outer_div.appendChild(Themes_Header);
@@ -156,6 +273,14 @@ var settings_0000000001 = {
 		//Search
 		outer_div.appendChild(Settings_Header);
 		outer_div.appendChild(Settings_Form);
+
+		//AdBlock
+		outer_div.appendChild(AdBlock_Header);
+		outer_div.appendChild(AdBlock_Form);
+
+		//TrackBlock
+		outer_div.appendChild(TrackBlock_Header);
+		outer_div.appendChild(TrackBlock_Form);
 
 
 		return outer_div;
