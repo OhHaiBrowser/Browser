@@ -2,9 +2,29 @@
 //-------------------------------------------------------------------
 function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
 
+	var sessionEventAdded = false;
+
 	webview.addEventListener("did-start-loading", function() {
 		if(OhHaiBrowser.tabs.isCurrent(fulltab)){
 			loadstart(tabtext,tabimg,webview);
+		}
+		if(!sessionEventAdded){
+			var thisWebContent =  webview.getWebContents();
+			var thisSession = thisWebContent.session;
+			if(thisSession){
+				thisSession.webRequest.onBeforeRequest(['*://*./*'], function(details, callback) {
+					if(OhHaiBrowser.settings.generic("adBlock") != null || OhHaiBrowser.settings.generic("adBlock") != "false"){
+
+					}
+					if(OhHaiBrowser.settings.generic("trackBlock") != null){
+
+					}
+
+					console.log(details);
+					callback({cancel: false});
+				});
+				sessionEventAdded = true;
+			}
 		}
 	});
 
