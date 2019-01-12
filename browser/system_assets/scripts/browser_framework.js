@@ -19,6 +19,7 @@ var OhHaiBrowser = {
 		websession: function(_ID,_URL,callback){
 			var tabelement = `
 				<li class='tab' title=''>
+					<a class='PlayingMedia tabMediaBtn hidden'></a>
 					<img class='ohhai-tab-fav' src='system_assets/icons/logo.png'/>
 					<span class='ohhai-tab-txt'>New Tab</span>
 					<a class='TabClose'></a>
@@ -217,7 +218,8 @@ var OhHaiBrowser = {
 			if(Parent.classList.contains("ohhai-group-children")){
 				var ThisGroup = Parent.parentElement;
 				if(Parent.children.length == 0){
-					OhHaiBrowser.tabs.RemoveGroup(ThisGroup);
+					OhHaiBrowser.tabs.groups.remove(ThisGroup,null,null);
+					//OhHaiBrowser.tabs.RemoveGroup(ThisGroup);
 				}
 			}	
 			OhHaiBrowser.tabs.count--;
@@ -990,6 +992,14 @@ var OhHaiBrowser = {
 			}
 		}
 	},
+	toggleLock:function(){
+		if(OhHaiBrowser.isLocked){
+
+		}else{
+
+		}
+	},
+	isLocked: false,
 	about: {
 		onlineStatus: function(callback){
 			if (typeof callback === "function") {

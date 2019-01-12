@@ -130,10 +130,14 @@ function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
 	});
 	
   	webview.addEventListener("media-started-playing", function (e) {
+		var PlayPauseBtn = fulltab.querySelector('.tabMediaBtn');
+
 		
 	});
 	webview.addEventListener("media-paused", function (e) {
-		
+		var PlayPauseBtn = fulltab.querySelector('.tabMediaBtn');
+
+
 	});
 
 	webview.addEventListener("page-favicon-updated",function(e){
