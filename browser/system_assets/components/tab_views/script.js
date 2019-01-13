@@ -1,3 +1,18 @@
+//Functions for tab reordering
+new Slip(OhHaiBrowser.ui.tabbar.tabcontainer);
+
+OhHaiBrowser.ui.tabbar.tabcontainer.addEventListener('slip:beforeswipe', function(e){
+	e.preventDefault();
+}, false);
+
+OhHaiBrowser.ui.tabbar.tabcontainer.addEventListener('slip:reorder', function(e){
+    e.target.parentNode.insertBefore(e.target, e.detail.insertBefore);
+    return false;
+}, false);
+
+
+
+
 //Functions for webview events
 //-------------------------------------------------------------------
 function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
@@ -186,8 +201,6 @@ function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
 		TbMen.popup(remote.getCurrentWindow())
 	}, false);
 }
-
-
 
 function loadstart(tabtext,tabimg,webview){
 	$('#SecureCheck').addClass("Loading");
