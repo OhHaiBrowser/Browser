@@ -143,7 +143,7 @@ var settings_0000000001 = {
 
 
 		var AdBlock_Header = document.createElement('p');
-		AdBlock_Header.appendChild(document.createTextNode("Block Adverts?"));
+		AdBlock_Header.appendChild(document.createTextNode("Block Adverts? (Beta)"));
 
 		var AdBlock_Form =document.createElement('form');
 
@@ -198,7 +198,7 @@ var settings_0000000001 = {
 
 
 		var TrackBlock_Header = document.createElement('p');
-		TrackBlock_Header.appendChild(document.createTextNode("Block Adverts?"));
+		TrackBlock_Header.appendChild(document.createTextNode("Block Trackers? (Beta)"));
 
 		var TrackBlock_Form =document.createElement('form');
 
@@ -223,15 +223,15 @@ var settings_0000000001 = {
 		Div_TrackBlockNo.setAttribute('class','RadioBtnDiv');
 		var IP_TrackBlockNo = document.createElement('input');
 		IP_TrackBlockNo.setAttribute('type','radio');
-		IP_TrackBlockNo.setAttribute('id','Rad_AdBlockNo');
-		IP_TrackBlockNo.setAttribute('name','AdBlock');
+		IP_TrackBlockNo.setAttribute('id','Rad_TrackBlockNo');
+		IP_TrackBlockNo.setAttribute('name','TrackBlock');
 		IP_TrackBlockNo.setAttribute('value','false');
 		IP_TrackBlockNo.setAttribute('onclick','Settings.Set("trackBlock",this.value,function(){});');
 		var Lbl_TrackBlockNo = document.createElement('label');
 		var Sp_TrackBlockNo = document.createElement('span');
 		Lbl_TrackBlockNo.appendChild(Sp_TrackBlockNo);
 		Lbl_TrackBlockNo.appendChild(document.createTextNode("No"));
-		Lbl_TrackBlockNo.setAttribute('for','Rad_AdBlockNo');
+		Lbl_TrackBlockNo.setAttribute('for','Rad_TrackBlockNo');
 		Div_TrackBlockNo.appendChild(IP_TrackBlockNo);
 		Div_TrackBlockNo.appendChild(Lbl_TrackBlockNo);
 
