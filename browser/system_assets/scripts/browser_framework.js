@@ -646,7 +646,7 @@ var OhHaiBrowser = {
 			});
 		}
 	},
-	settings: {
+	settings: {		
 		homepage: function(){
 			Settings.Get("homepage",function(homeitem){
 				if(homeitem != undefined){
@@ -665,12 +665,12 @@ var OhHaiBrowser = {
 				}
 			});
 		},
-		generic: function(settingName){
+		generic: function(settingName, callback){
 			Settings.Get(settingName,function(item){
 				if(item != undefined){
-					return item.value;
+					callback(item.value);
 				}else{
-					return null;
+					callback(null);
 				}
 			});
 		}

@@ -16,8 +16,7 @@ var tabs = {
 			GroupChildren.appendChild(_tab);
 
 			var TabSessionId = _tab.getAttribute("data-session");
-			Sessions.UpdateParent(TabSessionId,_group.id,function(id){console.log("AddToGroup - Parent updated:" + _group.id);});
-			
+			Sessions.UpdateParent(TabSessionId,_group.id,function(id){console.log("AddToGroup - Parent updated:" + _group.id);});		
 		}
 	},
 	RemoveFromGroup: function(_tab){
@@ -32,7 +31,6 @@ var tabs = {
 		if(thisGroupList.children.length == 0){
 			tabs.RemoveGroup(thisGroup);
 		}
-
 	},
 	RemoveGroup: function(Group){
 		var GroupTabs = Group.querySelector('.ohhai-group-children');
