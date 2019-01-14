@@ -42,7 +42,7 @@ html, body {
 	z-index:100;
 	border:1px solid rgb(195, 195, 195);
 	background-color:rgba(233,233,233,1);
-	box-shadow: -5px 5px 15px #c4c4c4;
+	box-shadow: 2px 0px 5px #c4c4c4;
 	transition:right 0.25s;
 	}
 

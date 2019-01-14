@@ -868,7 +868,7 @@ var OhHaiBrowser = {
 				GroupMenu.append(new MenuItem({label: 'Add tab to group', click() {OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true,mode:"grouped",parent:GroupChildren}); }}))
 				GroupMenu.append(new MenuItem({type: 'separator'}))
 				GroupMenu.append(new MenuItem({label: 'Remove group, keep tabs', click() { OhHaiBrowser.tabs.groups.remove(Group,{keepChildren:true});}}))
-				GroupMenu.append(new MenuItem({label: 'Remove group & tabs', click() { OhHaiBrowser.tabs.groups.remove(Group,{keepChildren:false});}}))
+				GroupMenu.append(new MenuItem({label: 'Remove group and tabs', click() { OhHaiBrowser.tabs.groups.remove(Group,{keepChildren:false});}}))
 
 				return GroupMenu;
 			}

@@ -1,10 +1,10 @@
 
-#Tabs{max-height:-webkit-calc(100% - 38px);;overflow-y: auto;overflow-x:hidden;width:200px;}
+#Tabs{max-height:-webkit-calc(100% - 38px);;overflow-y: auto;overflow-x:hidden;width:200px;outline:none;}
     #Tabs ul{margin:0;padding:0;list-style:none;}
         #Tabs ul .current{background-color:#a2a7c2;box-shadow: 0px 1px 5px #999;}
         #Tabs ul .current:hover{background-color:#a2a7c2;}
             #Tabs ul .current .TabClose{opacity: 1;}
-        #Tabs ul .tab{cursor: pointer;}
+        #Tabs ul .tab{cursor: pointer;outline:none;}
             #Tabs ul .tab .ohhai-tab-fav{float:left;width:16px;height:16px;margin:9px;-webkit-user-select: none;}
 
         .tabs .tabMediaBtn{width: 16px; height: 16px; display: inline-block; position: absolute; margin: 9px;}
