@@ -8,6 +8,10 @@
 	/*Colour of the URL bar when a page is loading*/
 	--loading:#1A2874;
 
+	--tabDefault:#fff;
+	--tabHover:#fff;
+	--tabClicked:#fff;
+
 }
 
 	

@@ -1,7 +1,7 @@
 'use strict';
 
 var {electron,app, protocol,BrowserWindow,globalShortcut} = require('electron');
-var Store = require('./browser/system_assets/scripts/window/store.js');
+var Store = require('./browser/system_assets/scripts/store.js');
 //var OhHaiProtocol = require('./system_assets/Scripts/protocol/ohhai');
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -80,6 +80,16 @@ globalShortcut.register('CommandOrControl+Shift+D', () => {
   mainWindow.on('closed', function() {
 
     mainWindow = null;
+  });
+
+
+  protocol.registerStringProtocol('mailto', function (req, cb) {
+    electron.shell.openExternal(req.url)
+    return null
+  }, function (error) {
+    if (error) {
+      console.log('Could not register mailto protocol.')
+    }
   });
 
 

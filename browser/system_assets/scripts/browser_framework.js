@@ -782,14 +782,14 @@ var OhHaiBrowser = {
 					break;
 				}
 
-				Web_menu.append(new MenuItem({label: 'Select all', click() { webviewcontent.selectAll(); }}))
+				Web_menu.append(new MenuItem({label: 'Select all', accelerator: 'CtrlOrCmd+A', click() { webviewcontent.selectAll(); }}))
 				Web_menu.append(new MenuItem({type: 'separator'}))
 
-				Web_menu.append(new MenuItem({label: 'Back', click() { OhHaiBrowser.tabs.activePage.goBack(); }}))
-				Web_menu.append(new MenuItem({label: 'Refresh',accelerator: 'CmdOrCtrl+R', click() { OhHaiBrowser.tabs.activePage.reload(); }}))
-				Web_menu.append(new MenuItem({label: 'Forward', click() { OhHaiBrowser.tabs.activePage.goForward(); }}))
+				Web_menu.append(new MenuItem({label: 'Back', accelerator: 'Alt+Left', click() { OhHaiBrowser.tabs.activePage.goBack(); }}))
+				Web_menu.append(new MenuItem({label: 'Refresh',accelerator: 'CtrlOrCmd+R', click() { OhHaiBrowser.tabs.activePage.reload(); }}))
+				Web_menu.append(new MenuItem({label: 'Forward', accelerator: 'Alt+Right', click() { OhHaiBrowser.tabs.activePage.goForward(); }}))
 				Web_menu.append(new MenuItem({type: 'separator'}))
-				Web_menu.append(new MenuItem({label: 'Inspect', click() { webviewcontent.inspectElement(params.x, params.y); }}))
+				Web_menu.append(new MenuItem({label: 'Inspect', accelerator: 'CmdOrCtrl+Shift+I' , click() { webviewcontent.inspectElement(params.x, params.y); }}))
 				
 				return Web_menu
 			},

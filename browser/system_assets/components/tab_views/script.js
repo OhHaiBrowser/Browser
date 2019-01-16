@@ -18,8 +18,13 @@ OhHaiBrowser.ui.tabbar.tabcontainer.addEventListener('slip:reorder', function(e)
 function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
 
 	var sessionEventAdded = false;
+	var tabMediaBtn = fulltab.querySelector(".tabMediaBtn");
 
 	webview.addEventListener("did-start-loading", function() {
+		if(!tabMediaBtn.classList.contains("hidden")){
+			tabMediaBtn.classList.add("hidden");
+		}
+		
 		if(OhHaiBrowser.tabs.isCurrent(fulltab)){
 			loadstart(tabtext,tabimg,webview);
 		}
@@ -148,25 +153,32 @@ function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
 				OhHaiBrowser.tabs.add(e.url,undefined);
 			break;
 			default:
-				//tabs.add(e.url,"default");
 				OhHaiBrowser.tabs.add(e.url,undefined,{selected: true});
 		}
 	});
 	
+	
+
   	webview.addEventListener("media-started-playing", function (e) {
 		if(webview.isAudioMuted()){
-			console.log(webview + " Im mute!");
+			tabMediaBtn.classList.add("tabMute");
+			tabMediaBtn.classList.remove("hidden");
 		}else{
-			console.log(webview + " You can here me!");
+			tabMediaBtn.classList.add("tabPlaying");
+			tabMediaBtn.classList.remove("hidden");
 		}
 	});
 	webview.addEventListener("media-paused", function (e) {
 		if(webview.isAudioMuted()){
-			console.log(webview + " Im mute!");
+			tabMediaBtn.classList.add("tabMute");
+			tabMediaBtn.classList.remove("hidden");
 		}else{
-			console.log(webview + " You can here me!");
+			tabMediaBtn.classList.add("tabPlaying");
+			tabMediaBtn.classList.remove("hidden");
 		}
 	});
+
+
 
 	webview.addEventListener("page-favicon-updated",function(e){
 		tabimg.src= e.favicons[0];
@@ -181,17 +193,15 @@ function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
      		case "TabClose":
 				 OhHaiBrowser.tabs.remove(fulltab);
 				break;
-			case "PlayingMedia":
+			case "tabPlaying":
 				webview.setAudioMuted(true);
 				break;
-			case "PausedMedia":
+			case "tabMute":
 				webview.setAudioMuted(false);
 				break;
 			  default:
 				  OhHaiBrowser.tabs.setCurrent(fulltab,webview);
 				  OhHaiBrowser.ui.navbar.updateURLBar(webview);
-        		//tabs.setSelected(fulltab,webview);
-        		//tabs.updateURLBar(webview);
     	}
 	});
 
