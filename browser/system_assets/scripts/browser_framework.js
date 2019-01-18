@@ -19,7 +19,7 @@ var OhHaiBrowser = {
 		websession: function(_ID,_URL,callback){
 			var tabelement = `
 				<li class='tab' title=''>
-					<a class='PlayingMedia tabMediaBtn hidden'></a>
+					<a class='tabMediaBtn hidden'></a>
 					<img class='ohhai-tab-fav' src='system_assets/icons/logo.png'/>
 					<span class='ohhai-tab-txt'>New Tab</span>
 					<a class='TabClose'></a>
@@ -782,11 +782,23 @@ var OhHaiBrowser = {
 					break;
 				}
 
-				Web_menu.append(new MenuItem({label: 'Select all', accelerator: 'CtrlOrCmd+A', click() { webviewcontent.selectAll(); }}))
+				Web_menu.append(new MenuItem({label: 'Select all', accelerator: 'CmdOrCtrl+A', click() { webviewcontent.selectAll(); }}))
 				Web_menu.append(new MenuItem({type: 'separator'}))
 
-				Web_menu.append(new MenuItem({label: 'Back', accelerator: 'Alt+Left', click() { OhHaiBrowser.tabs.activePage.goBack(); }}))
-				Web_menu.append(new MenuItem({label: 'Refresh',accelerator: 'CtrlOrCmd+R', click() { OhHaiBrowser.tabs.activePage.reload(); }}))
+				Web_menu.append(new MenuItem({
+					label: 'Back', 
+					accelerator: 'Alt+Left', 
+					click() { 
+						OhHaiBrowser.tabs.activePage.goBack(); 
+					}
+				}))
+				Web_menu.append(new MenuItem({
+					label: 'Refresh',
+					accelerator: 'CmdOrCtrl+R', 
+					click() { 
+						OhHaiBrowser.tabs.activePage.reload(); 
+					}
+				}))
 				Web_menu.append(new MenuItem({label: 'Forward', accelerator: 'Alt+Right', click() { OhHaiBrowser.tabs.activePage.goForward(); }}))
 				Web_menu.append(new MenuItem({type: 'separator'}))
 				Web_menu.append(new MenuItem({label: 'Inspect', accelerator: 'CmdOrCtrl+Shift+I' , click() { webviewcontent.inspectElement(params.x, params.y); }}))

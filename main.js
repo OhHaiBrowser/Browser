@@ -64,6 +64,9 @@ globalShortcut.register('CommandOrControl+Shift+D', () => {
       mainWindow.webContents.openDevTools();
   }
 });
+
+
+  mainWindow.setMenu(null);
 	
 	mainWindow.loadURL("file:///" + __dirname + '/browser/index.html');
 
