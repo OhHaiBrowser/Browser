@@ -28,7 +28,7 @@ Settings.Get("Launch",function(item){
 				if(Slist.length != 0){
 				  for(s in Slist){
 					  //tabs.add(Slist[s].url,Slist[s].mode,Slist[s].sessionid,Slist[s].parent);
-					  OhHaiBrowser.tabs.add(Slist[s].url,Slist[s].sessionid,{selected: true,mode:Slist[s].mode,parent:Slist[s].parent});
+					  OhHaiBrowser.tabs.add(Slist[s].url,Slist[s].sessionid,{selected: true,mode:Slist[s].mode,parent:Slist[s].parent, title: Slist[s].title});
 				  }
 				}else{
 					//No session
@@ -52,7 +52,7 @@ Settings.Get("Launch",function(item){
 				if(Slist.length != 0){
 				  for(s in Slist){
 					  //tabs.add(Slist[s].url,Slist[s].mode,Slist[s].sessionid,Slist[s].parent);
-					OhHaiBrowser.tabs.add(Slist[s].url,Slist[s].sessionid,{selected: true,mode:Slist[s].mode,parent:Slist[s].parent});
+					OhHaiBrowser.tabs.add(Slist[s].url,Slist[s].sessionid,{selected: true,mode:Slist[s].mode,parent:Slist[s].parent, title: Slist[s].title});
 				  }
 				}else{
 					 //tabs.add("default","default");

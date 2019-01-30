@@ -6,6 +6,10 @@ function s4() {
 }
 
 var OhHaiBrowser = {
+	sessionStartTime: "",
+	sessionDuration: function(){
+		return Date.now() - OhHaiBrowser.sessionStartTime;
+	},
 	builtInPages: {
 		home : "file:///" + __dirname + "/system_assets/builtin-pages/home.html",
 		settings : "file:///" + __dirname + "/system_assets/builtin-pages/settings.html",
@@ -147,6 +151,14 @@ var OhHaiBrowser = {
 						_OPTIONS.mode = "default";
 						OhHaiBrowser.ui.tabbar.tabcontainer.appendChild(NewWS.tab);
 					}
+					if(_OPTIONS.title){
+						var tabTxt = NewWS.tab.querySelector('.ohhai-tab-txt');
+						tabTxt.textContent = _OPTIONS.title;
+					}
+					if(_OPTIONS.favicon){
+						var tabFav = NewWS.tab.querySelector('.ohhai-tab-fav');
+						tabFav.src = _OPTIONS.favicon;
+					}
 				}else{
 					//load basic defaults
 					OhHaiBrowser.ui.tabbar.tabcontainer.appendChild(NewWS.tab);
@@ -165,7 +177,7 @@ var OhHaiBrowser = {
 							TabParent = NewWS.tab.parentElement.id;
 						}
 		
-						Sessions.Set(_ID,"default","TempTitle",_OPTIONS.mode,function(id){
+						Sessions.Set(_ID,"default","TempTitle",_OPTIONS.mode,"system_assets/icons/logo.png",function(id){
 							if(id != null){
 								NewWS.tab.setAttribute("data-session",_ID);
 								Sessions.UpdateParent(_ID,TabParent,function(id){});
@@ -1082,3 +1094,5 @@ var OhHaiBrowser = {
 		}
 	}
 }
+
+OhHaiBrowser.sessionStartTime = Date.now();

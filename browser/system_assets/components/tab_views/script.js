@@ -125,7 +125,7 @@ function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
 		domloaded(fulltab,webview);
 		UpdateTab(tabtext,tabimg,webview);
 
-		if(!fulltab.classList.contains("IncognitoTab")){Sessions.UpdateWebPage(ControlsId,webview.getURL(),webview.getTitle(),function(id){});}
+		if(!fulltab.classList.contains("IncognitoTab")){Sessions.UpdateWebPage(ControlsId,webview.getURL(),webview.getTitle(), tabimg.src ,function(id){});}
 
 		var webviewcontent = webview.getWebContents();	
 		webviewcontent.on("context-menu", (e, params) => {

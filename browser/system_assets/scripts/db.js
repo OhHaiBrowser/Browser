@@ -9,6 +9,12 @@ db.version(1).stores({
   currentsession: '&sessionid,url,title,mode,parent,timestamp',
   browser_groups: '&groupid,name,timestamp'
 });
+//Version 2
+db.version(2).stores({
+  currentsession: '&sessionid, url, icon, title, mode, parent, timestamp'
+});
+
+
 
 db.open().then(function () {
   console.log('database opened ', performance.now())
@@ -84,11 +90,11 @@ var Sessions = {
   Get: function(callbackfun){
     db.currentsession.toArray(callbackfun);
   },
-  Set: function(s,u,t,m,callback){
-    db.currentsession.put({sessionid: s, url: u, title: t, mode: m,timestamp:Date.now()}).then(callback);
+  Set: function(s,u,t,m,i,callback){
+    db.currentsession.put({sessionid: s, url: u, title: t, mode: m, icon: i, timestamp:Date.now()}).then(callback);
   },
-  UpdateWebPage: function(s,u,t,callback){
-    db.currentsession.update(s, {url: u, title: t}).then(callback);
+  UpdateWebPage: function(s,u,t,i,callback){
+    db.currentsession.update(s, {url: u, title: t, icon: i}).then(callback);
   },
   UpdateMode: function(s,m,callback){
     db.currentsession.update(s, {mode: m}).then(callback);
