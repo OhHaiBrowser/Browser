@@ -1091,8 +1091,26 @@ var OhHaiBrowser = {
 	core:{
 		generateId: function(){
 			return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+		},
+		generateElement: function(elTemplate){
+			var div = document.createElement('div');
+      		div.innerHTML = elTemplate;
+      		return div.firstElementChild;
 		}
 	}
 }
 
 OhHaiBrowser.sessionStartTime = Date.now();
+
+
+//Functions for tab reordering
+new Slip(OhHaiBrowser.ui.tabbar.tabcontainer);
+
+OhHaiBrowser.ui.tabbar.tabcontainer.addEventListener('slip:beforeswipe', function(e){
+	e.preventDefault();
+}, false);
+
+OhHaiBrowser.ui.tabbar.tabcontainer.addEventListener('slip:reorder', function(e){
+    e.target.parentNode.insertBefore(e.target, e.detail.insertBefore);
+    return false;
+}, false);

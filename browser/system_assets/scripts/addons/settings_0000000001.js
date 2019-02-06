@@ -1,3 +1,15 @@
+const ohhai_settings_0000_0000_0001 = {
+	uiTemplate: `
+	
+	`,
+	load: function(){
+		let addonEl = OhHaiBrowser.core.generateElement(this.uiTemplate);
+
+
+		return addonEl;
+	}
+}
+
 
 var settings_0000000001 = {
 	Load: function(){
