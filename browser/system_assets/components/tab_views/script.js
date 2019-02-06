@@ -1,16 +1,20 @@
-//Functions for tab reordering
-new Slip(OhHaiBrowser.ui.tabbar.tabcontainer);
+//WebSession Class
+function WebSession_Component(sOptions){
+	let tabTemplate = `
+	<li class='tab' title=''>
+		<a class='tabMediaBtn hidden'></a>
+		<img class='ohhai-tab-fav' src='system_assets/icons/logo.png'/>
+		<span class='ohhai-tab-txt'>New Tab</span>
+		<a class='TabClose'></a>
+	</li>`;
+	this.Id = sOptions.id ? sOptions.id : OhHaiBrowser.core.generateId();
+	this.tabElement = OhHaiBrowser.core.generateElement(tabTemplate);
+	this.webElement = document.createElement("webview");
 
-OhHaiBrowser.ui.tabbar.tabcontainer.addEventListener('slip:beforeswipe', function(e){
-	e.preventDefault();
-}, false);
-
-OhHaiBrowser.ui.tabbar.tabcontainer.addEventListener('slip:reorder', function(e){
-    e.target.parentNode.insertBefore(e.target, e.detail.insertBefore);
-    return false;
-}, false);
 
 
+
+}
 
 
 //Functions for webview events
