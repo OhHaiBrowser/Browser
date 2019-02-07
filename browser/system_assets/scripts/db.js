@@ -11,9 +11,9 @@ db.version(1).stores({
 });
 //Version 2
 db.version(2).stores({
-  currentsession: '&sessionid, url, icon, title, mode, parent, timestamp'
+  currentsession: '&sessionid, url, icon, title, mode, parent, timestamp',
+  firstrun: null
 });
-
 
 
 db.open().then(function () {
@@ -22,16 +22,6 @@ db.open().then(function () {
     // We explicitely catch the error, so it wont bubble to db.on('error')
     console.warn('database error occured', error)
 });
-
-//===== Is this the users first run? ===========================================
-var FirstRun = {
-  get: function(callbackfun){
-    db.firstrun.where('run').equals("true").first(callbackfun);
-  },
-  set: function(){
-    db.firstrun.add({run: "true",timestamp: Date.now()});
-  }
-}
 
 //===== Quicklink functions ====================================================
 var Quicklinks = {
