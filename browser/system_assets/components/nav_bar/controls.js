@@ -5,6 +5,14 @@ var MiniOverFlowContent = document.getElementById("MiniMenuContent");
 var launchparams = remote.getGlobal('sharedObject').prop1;
 var IsLaunchParam = function(){if(launchparams.length == 1){return false}else{return true}};
 
+Settings.Get("FirstRun",function(i){
+	if(i == undefined){
+		//this is a new user!
+		Settings.Set("FirstRun",Date.now(),function(c){});
+		
+	}
+});
+
 //var arguments = launchparams.split(",");
 Settings.Get("Launch",function(item){
 	if(item != undefined){
