@@ -7,7 +7,7 @@ var about_0000000001 = {
 		Version_header.appendChild(document.createTextNode("Browser Version"));
 		
 		var browser_version_text = document.createElement('span');
-		browser_version_text.appendChild(document.createTextNode("3.0.0 (Nucleus)"));
+		browser_version_text.appendChild(document.createTextNode("3.1.0"));
 		
 		var Update_header = document.createElement('p');
 		Update_header.appendChild(document.createTextNode("Update Status"));
