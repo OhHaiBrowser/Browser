@@ -39,8 +39,16 @@
       ]
     },
     "win": {
-      "target": "NSIS",
-      "icon": "window/assets/icon.ico"
+      "icon": "window/assets/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
     },
     "fileAssociations": {
       "ext": [
