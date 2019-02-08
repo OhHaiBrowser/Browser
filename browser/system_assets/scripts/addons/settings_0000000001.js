@@ -1,44 +1,8 @@
-const ohhai_settings_0000_0000_0001 = {
-	uiTemplate: `
-	
-	`,
-	load: function(){
-		let addonEl = OhHaiBrowser.core.generateElement(this.uiTemplate);
-
-
-		return addonEl;
-	}
-}
-
-
 var settings_0000000001 = {
 	Load: function(){
 		//Main Outer
 		var outer_div = document.createElement('div');
 		outer_div.setAttribute("class","SettingsList");
-
-		//Themes settings
-		//var Themes_Header = document.createElement('p');
-		//Themes_Header.appendChild(document.createTextNode("Themes"));
-
-		//var Themes_Form =document.createElement('form');
-		//var Themes_Select =document.createElement('select');
-		//Themes_Select.setAttribute('class',"ddl");
-		//Themes_Select.setAttribute('onchange',"Themes.Load(this.value)");
-
-		//var ThemesList = Themes.List();
-		//var c,leg;
-		//for (c = 0, leg = ThemesList.length; c < leg; c++) {
-		//	var ThisTheme = ThemesList[c];
-		//	var ThemeItem = document.createElement('option');
-		//	ThemeItem.setAttribute('value',ThisTheme.src);
-			//ThemeItem.setAttribute('style','backgroundColor:'+ThisTheme.basecolour);
-		//	ThemeItem.appendChild(document.createTextNode(ThisTheme.name));
-		//	if(ThisTheme.src == UserPref.GetTheme()){ThemeItem.setAttribute('selected','selected');}
-
-		//	Themes_Select.appendChild(ThemeItem);
-		//}
-		//Themes_Form.appendChild(Themes_Select);
 
 		//On Load
 		var Load_Header = document.createElement('p');

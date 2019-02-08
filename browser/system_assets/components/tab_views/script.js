@@ -1,22 +1,3 @@
-//WebSession Class
-function WebSession_Component(sOptions){
-	let tabTemplate = `
-	<li class='tab' title=''>
-		<a class='tabMediaBtn hidden'></a>
-		<img class='ohhai-tab-fav' src='system_assets/icons/logo.png'/>
-		<span class='ohhai-tab-txt'>New Tab</span>
-		<a class='TabClose'></a>
-	</li>`;
-	this.Id = sOptions.id ? sOptions.id : OhHaiBrowser.core.generateId();
-	this.tabElement = OhHaiBrowser.core.generateElement(tabTemplate);
-	this.webElement = document.createElement("webview");
-
-
-
-
-}
-
-
 //Functions for webview events
 //-------------------------------------------------------------------
 function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
