@@ -7,9 +7,7 @@ function s4() {
 
 var OhHaiBrowser = {
 	sessionStartTime: "",
-	sessionDuration: function(){
-		return Date.now() - OhHaiBrowser.sessionStartTime;
-	},
+	sessionDuration: function(){return Date.now() - OhHaiBrowser.sessionStartTime;},
 	builtInPages: {
 		home : "file:///" + __dirname + "/system_assets/builtin-pages/home.html",
 		settings : "file:///" + __dirname + "/system_assets/builtin-pages/settings.html",

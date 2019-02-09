@@ -226,18 +226,7 @@ var settings_0000000001 = {
 		TrackBlock_Form.appendChild(Div_TrackBlockYes);
 		TrackBlock_Form.appendChild(Div_TrackBlockNo);
 
-
-
-
-
-
-
-
-		//Final Assembly
-		//Themes
-		//outer_div.appendChild(Themes_Header);
-		//outer_div.appendChild(Themes_Form);
-
+		
 		//Onload setting
 		outer_div.appendChild(Load_Header);
 		outer_div.appendChild(Load_Form);

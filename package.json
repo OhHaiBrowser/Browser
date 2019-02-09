@@ -17,22 +17,17 @@
     "node_modules"
   ],
   "build": {
+    "icon": "window/assets/icon.png",
     "appId": "OhHai.Browser",
-    "dmg": {
-      "contents": [
-        {
-          "x": 110,
-          "y": 150
-        },
-        {
-          "x": 240,
-          "y": 150,
-          "type": "link",
-          "path": "/Applications"
-        }
+    "mac": {
+      "icon": "window/assets/icon.png",
+      "category":"public.app-category.utilities",
+      "target": [
+        "default"
       ]
     },
     "linux": {
+      "icon": "window/assets/icon.png",
       "target": [
         "AppImage",
         "deb"
