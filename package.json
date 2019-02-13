@@ -21,7 +21,7 @@
     "appId": "OhHai.Browser",
     "mac": {
       "icon": "window/assets/icon.png",
-      "category":"public.app-category.utilities",
+      "category": "public.app-category.utilities",
       "target": [
         "default"
       ]
@@ -67,7 +67,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "electron": "1.7.10",
+    "electron": "^4.0.4",
     "electron-builder": "^20.38.5"
   }
 }
