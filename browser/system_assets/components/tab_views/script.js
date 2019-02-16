@@ -121,7 +121,7 @@ function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
 	
 	});
 	webview.addEventListener("did-fail-load", function (e) {
-		if (e.errorCode != -3 && e.validatedURL == e.target.getURL()) {webview.loadURL(OhHaiBrowser.builtInPages.errorPage);}
+		if (e.errorCode != -3 && e.validatedURL == e.target.getURL()) {webview.loadURL(OhHaiBrowser.builtInPages.errorPage + "?code=" + e.errorCode + "&url=" + e.validatedURL);}
 	});
 	webview.addEventListener("close", function() {
 		OhHaiBrowser.tabs.remove(fulltab);

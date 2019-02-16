@@ -1,5 +1,5 @@
-var {clipboard,remote} = require('electron')
-var {Menu, MenuItem} = remote
+var {clipboard,remote} = require('electron');
+var {Menu, MenuItem} = remote;
 
 function s4() {
 	return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
@@ -9,13 +9,11 @@ var OhHaiBrowser = {
 	sessionStartTime: "",
 	sessionDuration: function(){return Date.now() - OhHaiBrowser.sessionStartTime;},
 	builtInPages: {
-		home : "file:///" + __dirname + "/system_assets/builtin-pages/home.html",
+		home : "file:///" + __dirname + "/system_assets/components/home_page/index.html",
 		settings : "file:///" + __dirname + "/system_assets/builtin-pages/settings.html",
-		history : "file:///" + __dirname + "/system_assets/builtin-pages/history.html",
+		history : "file:///" + __dirname + "/system_assets/components/history_page/index.html",
 		bookmarks : "file:///" + __dirname + "/system_assets/builtin-pages/quiclinks.html",
-		phishingWarningPage : "file:///" + __dirname + "/",
-		crashedWebviewPage : "file:///" + __dirname + "/",
-		errorPage : "file:///" + __dirname + "/"
+		errorPage : "file:///" + __dirname + "/system_assets/components/error_page/index.html"
 	},
 	templates: {
 		websession: function(_ID,_URL,callback){
@@ -26,9 +24,9 @@ var OhHaiBrowser = {
 					<span class='ohhai-tab-txt'>New Tab</span>
 					<a class='TabClose'></a>
 				</li>`;
-			var div = document.createElement('div')
-      		div.innerHTML = tabelement
-      		div.firstElementChild.setAttribute("id","t_" + _ID);
+			var div = document.createElement('div');
+      div.innerHTML = tabelement
+      div.firstElementChild.setAttribute("id","t_" + _ID);
 			div.firstElementChild.setAttribute("data-container","wv_" + _ID);
 
 			var ThisView = document.createElement("webview");
