@@ -1,3 +1,5 @@
+
+
 var db = new Dexie("ohhai_browser_db");
 
 //Version 1
@@ -15,13 +17,7 @@ db.version(2).stores({
   firstrun: null
 });
 
-
-db.open().then(function () {
-  console.log('database opened ', performance.now())
-}).catch(function (err) {
-    // We explicitely catch the error, so it wont bubble to db.on('error')
-    console.warn('database error occured', error)
-});
+db.open().then(function () {}).catch(function (err) {console.warn('database error occured', error)});
 
 //===== Quicklink functions ====================================================
 var Quicklinks = {
