@@ -1,7 +1,4 @@
-
-
-var db = new Dexie("ohhai_browser_db");
-
+const db = new Dexie("ohhai_browser_db");
 //Version 1
 db.version(1).stores({
   quicklinks: '++id,&url, title, icon, text, desc, timestamp',
@@ -16,8 +13,8 @@ db.version(2).stores({
   currentsession: '&sessionid, url, icon, title, mode, parent, timestamp',
   firstrun: null
 });
-
 db.open().then(function () {}).catch(function (err) {console.warn('database error occured', error)});
+
 
 //===== Quicklink functions ====================================================
 var Quicklinks = {
