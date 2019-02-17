@@ -558,24 +558,18 @@ var OhHaiBrowser = {
 		btn_bookmark:document.getElementById("BtnQuicklink"),
 		add: function(bookmarkName,bookmarkUrl,bookmarkIcon,bookmarkDesc,popuplocal,callback){
 
-			var BookmarkPopup = document.createElement("div");
-			BookmarkPopup.className = "bookmark_popup";
-			BookmarkPopup.style.left = (popuplocal.left - 249);
-			BookmarkPopup.style.top = (popuplocal.top + 23);
+			let BookmarkPopup = OhHaiBrowser.core.generateElement(`
+			<div class='bookmark_popup' style='left:${(popuplocal.left - 249)};top:${(popuplocal.top + 23)};'>
+				<p class='bookmark_title'>New bookmark</p>
+				<input type='text' class='bookmark_nametxt' value='${bookmarkName}'>
+				<input type='button' class='bookmark_add' value='Add'>
+				<input type='button' class='bookmark_cancel' value='Cancel'>
+			</div>`);
 
-			var p_title = document.createElement("p");
-			p_title.innerText = "New bookmark";
-			p_title.className = "bookmark_title";
+			var Txt_Url = BookmarkPopup.querySelector('.bookmark_nametxt');
+			var Add_bookmark = BookmarkPopup.querySelector('.bookmark_add');
+			var Cancel_bookmark = BookmarkPopup.querySelector('.bookmark_cancel');
 
-			var Txt_Url = document.createElement("input");
-			Txt_Url.type = "text";
-			Txt_Url.className = "bookmark_nametxt";
-			Txt_Url.value = bookmarkName;
-
-			var Add_bookmark = document.createElement("input");
-			Add_bookmark.type = "button";
-			Add_bookmark.className = "bookmark_add";
-			Add_bookmark.value = "Add";
 			Add_bookmark.addEventListener("click", function(e) {
 				Quicklinks.Add(bookmarkUrl,Txt_Url.value,bookmarkIcon,"",bookmarkDesc,function(newqlink){
 					var ReturnVal = ((newqlink != 0||-1) ? newqlink : null);
@@ -590,18 +584,10 @@ var OhHaiBrowser = {
 				});
 			});
 
-			var Cancel_bookmark = document.createElement("input");
-			Cancel_bookmark.type = "button";
-			Cancel_bookmark.className = "bookmark_cancel";
-			Cancel_bookmark.value = "Cancel";
 			Cancel_bookmark.addEventListener("click", function(e) {
 				BookmarkPopup.parentNode.removeChild(BookmarkPopup);
 			});
 
-			BookmarkPopup.appendChild(p_title);
-			BookmarkPopup.appendChild(Txt_Url);
-			BookmarkPopup.appendChild(Add_bookmark);
-			BookmarkPopup.appendChild(Cancel_bookmark);
 			document.body.appendChild(BookmarkPopup);
 
 			callback("done");
@@ -985,18 +971,16 @@ var OhHaiBrowser = {
 		wcm:{
 			template:"<div class='WMC_popup'><span class='WCM_msg'></span><input type='button' class='WCM_close' value='X'/></div>",
 			post:function(msg,onclick_func,callback){
-				var Popup_Win = document.createElement("div");
-				Popup_Win.innerHTML = this.template;
-                var this_WCM = Popup_Win.firstChild;
+        var this_WCM = OhHaiBrowser.core.generateElement(this.template);
 
-                this_WCM.querySelector(".WCM_msg").textContent = msg;
-                this_WCM.querySelector(".WCM_close").addEventListener("click",function(){
-					this_WCM.classList.remove("WMC_Show");                       
-                    setTimeout(function(){this_WCM.remove();},800);
+        this_WCM.querySelector(".WCM_msg").textContent = msg;
+        this_WCM.querySelector(".WCM_close").addEventListener("click",function(){
+				this_WCM.classList.remove("WMC_Show");                       
+          setTimeout(function(){this_WCM.remove();},800);
 				});
-                this_WCM.querySelector(".WCM_msg").addEventListener("click",function(){
+        this_WCM.querySelector(".WCM_msg").addEventListener("click",function(){
 					this_WCM.classList.remove("WMC_Show");                       
-                    setTimeout(function(){this_WCM.remove();},800);
+        	setTimeout(function(){this_WCM.remove();},800);
 					onclick_func();
 				});
 
@@ -1006,7 +990,7 @@ var OhHaiBrowser = {
 				//auto close after 5 seconds
 				setTimeout(function(){
 					this_WCM.classList.remove("WMC_Show");                       
-                    setTimeout(function(){this_WCM.remove();},800);
+          setTimeout(function(){this_WCM.remove();},800);
 				},5000);
 
 			}
