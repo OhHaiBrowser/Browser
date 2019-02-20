@@ -1,6 +1,6 @@
 var settings_0000000001 = {
 	Load: function(){
-
+		
 		let settingsMenu = OhHaiBrowser.core.generateElement(`
 		<div class='SettingsList'>
 			<p>When browser opens</p>

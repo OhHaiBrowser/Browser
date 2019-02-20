@@ -1,5 +1,5 @@
-//Functions for webview events
-//-------------------------------------------------------------------
+// Functions for webview events
+// -------------------------------------------------------------------
 function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
 
 	var sessionEventAdded = false;
