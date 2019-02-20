@@ -881,6 +881,11 @@ var OhHaiBrowser = {
 		},
 		overflowmenu: {
 			panel: document.getElementById("OverFlowMenu"),
+			items: {
+				overflowOptionsMenu: document.getElementById('OverFlowOptions'),
+				overflowDeepMenu: document.getElementById('OverFlowDeepMenu'),
+				overflowDeepMenuTitle: document.getElementById('MenuTitle')
+			},
 			opened:false,
 			toggle:function(){
 				if(OhHaiBrowser.ui.overflowmenu.opened == true){
@@ -998,7 +1003,7 @@ var OhHaiBrowser = {
 	},
 	toggleLock:function(){
 		if(OhHaiBrowser.isLocked){
-
+			
 		}else{
 
 		}
@@ -1076,6 +1081,9 @@ var OhHaiBrowser = {
 			var div = document.createElement('div');
       		div.innerHTML = elTemplate;
       		return div.firstElementChild;
+		},
+		checkForUpdate: function(){
+
 		}
 	}
 }

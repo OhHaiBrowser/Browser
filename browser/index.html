@@ -10,7 +10,6 @@
 		<script src="system_assets\scripts\addons\quicklinks_0000000001.js"></script>
 		<script src="system_assets\scripts\addons\settings_0000000001.js"></script>
 		<script src="system_assets\scripts\addons\about_0000000001.js"></script>
-		<script src="system_assets\scripts\addons\webmods_0000000001.js"></script>
 	</head>
 	<body>
 		<input type="hidden" id="CurWebWin" value="">
@@ -66,8 +65,6 @@
 							<ul id="overflow_list">
 								<li><a onclick="OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true});" href="#">New tab</a></li>
 								<li><a onclick="OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true,mode:'incog'});" href="#">New incognito tab</a></li>
-								<!--<li><hr/></li>
-								<li><a onclick="menu.mega(webmods_0000000001.Load(),'Webmods')" href="#">Webmods</a></li>-->
 								<li><hr/></li>
 								<li><a onclick="OhHaiBrowser.tabs.add('history',undefined,{selected: true});" href="#">History</a></li>
 								<li><hr/></li>
@@ -84,12 +81,6 @@
 							<span id="MenuTitle" class="MenuTitle"></span>
 						</div>
 						<div id="MegaMenuContent"></div>
-					</div>
-					<div id="OverFlowMiniMenu" style="display:none;">
-						<div class="OverFlowTopMenu">
-							<a class="CloseOverflow" href="javascript:menu.hide('mini');"><</a>
-						</div>
-						<div id="MiniMenuContent"></div>
 					</div>
 				</div>
 

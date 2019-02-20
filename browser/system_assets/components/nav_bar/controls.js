@@ -161,7 +161,6 @@ OhHaiBrowser.ui.navbar.txt_urlBar.addEventListener("focus",function(e){
 	URLOuter.classList.add("CenterFocus");
 });
 
-
 OhHaiBrowser.ui.navbar.txt_urlBar.addEventListener("focusout", function (e) {
 	OhHaiBrowser.ui.navbar.txt_urlBar.value = OhHaiBrowser.ui.navbar.txt_urlBar.getAttribute("data-text-original");
 	URLOuter.classList.remove("CenterFocus");
@@ -208,67 +207,17 @@ var menu = {
 			MegaOverFlowContent.removeChild(MegaOverFlowContent.lastChild);
 		}
 
-		//MegaOverFlowContent.appendChild("");
-		$("#MenuTitle").text(MenuTitle);
+		OhHaiBrowser.ui.overflowmenu.items.overflowDeepMenuTitle.textContent = MenuTitle;
 		//Load content into menu area
-		MegaOverFlowContent.appendChild(loadfunction);
-		
+		MegaOverFlowContent.appendChild(loadfunction);		
 
 		//Show menu area
-		$("#OverFlowOptions").hide();
-		$("#OverFlowDeepMenu").show();
+		OhHaiBrowser.ui.overflowmenu.items.overflowOptionsMenu.style.display = 'none';
+		OhHaiBrowser.ui.overflowmenu.items.overflowDeepMenu.style.display = '';
 	},
-	app: function(src,title){
-
-
-		//MegaOverFlowContent.appendChild("");
-		$("#MenuTitle").text(title);
-
-		//Show menu area
-		$("#OverFlowOptions").hide();
-		$("#OverFlowDeepMenu").show();
-	},
-	webview: function(src,title){
-		//Load content into menu area
-		var menuview = document.createElement('webview')
-		menuview.setAttribute("src",src);
-		menuview.setAttribute("style","height:100%;");
-	
-		MegaOverFlowContent.appendChild(menuview);
-		$("#MenuTitle").text(title);
-
-		//Show menu area
-		$("#OverFlowOptions").hide();
-		$("#OverFlowDeepMenu").show();
-	},
-	mini: function(loadfunction){
-		//Load content into mini area
-		MiniOverFlowContent.appendChild(loadfunction);
-
-		$("#OverFlowOptions").hide();
-		$("#OverFlowMiniMenu").show();
-	},
-	normal: function(){
-
-	},
-	none: function(){
-		//This is an intreresting one- come back to this.
-	},
-	hide: function(menutype){
-		switch(menutype){
-			case "mega":
-				$("#OverFlowDeepMenu").hide();
-				$("#OverFlowOptions").show();
-				MegaOverFlowContent.removeChild(MegaOverFlowContent.lastChild);
-				break;
-			case "mini":
-				$("#OverFlowMiniMenu").hide();
-				$("#OverFlowOptions").show();
-				MiniOverFlowContent.removeChild(MiniOverFlowContent.lastChild);
-				break;
-			case "normal":
-				$("#OverFlowMenu").animate({ height: 'hide' }, 150);
-				break;
-		}
+	hide: function(){
+		OhHaiBrowser.ui.overflowmenu.items.overflowDeepMenu.style.display = 'none';
+		OhHaiBrowser.ui.overflowmenu.items.overflowOptionsMenu.style.display = '';
+		MegaOverFlowContent.removeChild(MegaOverFlowContent.lastChild);
 	}
 }
