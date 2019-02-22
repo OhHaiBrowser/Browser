@@ -1,3 +1,5 @@
+
+
 // Functions for webview events
 // -------------------------------------------------------------------
 function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){

@@ -1,28 +1,25 @@
-var {remote} = require('electron');
-var ThisWindow = remote.getCurrentWindow();
-var Window_Controls = document.getElementById("Win_Controls");
+var {remote} = require('electron'),
+ThisWindow = remote.getCurrentWindow(),
+Window_Controls = document.getElementById("Win_Controls"),
+Window_Left_Control = document.getElementById('Left_FrameBtn'),
+Window_Center_Control = document.getElementById('Center_FrameBtn'),
+Window_Right_Control = document.getElementById('Right_FrameBtn');
 
-var WindowControls = {
-	Left: function(){
-		ThisWindow.minimize();
-	},
-	Center: function(){
-		var ResizeBtn = document.getElementById("Center_FrameBtn");
-		if (!ThisWindow.isMaximized()) { 
-			//ResizeBtn.className = "";
-			ResizeBtn.className = "Center_FrameBtn2";	
-			ThisWindow.maximize(); 
-		} else { 
-			//ResizeBtn.className = "";
-			ResizeBtn.className = "Center_FrameBtn";
-			ThisWindow.restore(); 
-		} 
-	},
-	Right: function(){
-		ThisWindow.close(); 
-	}
-}
-
+Window_Left_Control.addEventListener('click',() => {
+	ThisWindow.minimize();
+});
+Window_Center_Control.addEventListener('click',() => {
+	if (!ThisWindow.isMaximized()) { 
+		Window_Center_Control.className = "Center_FrameBtn2";	
+		ThisWindow.maximize(); 
+	} else { 
+		Window_Center_Control.className = "Center_FrameBtn";
+		ThisWindow.restore(); 
+	} 
+});
+Window_Right_Control.addEventListener('click',() => {
+	ThisWindow.close(); 
+});
 
 switch(! -1){
 	case window.navigator.userAgent.indexOf("Mac"):
@@ -39,16 +36,6 @@ switch(! -1){
 	Window_Controls.classList.add("win");
 	console.log("Windows");
 }
-
-
-ThisWindow.on("blur", function() {
-	//alert("blur");
-});
-
-ThisWindow.on("focus", function() {
-	//alert("focus");
-});
-
 
 
 //==== Keybard Shortcuts ===============================================================================================//
