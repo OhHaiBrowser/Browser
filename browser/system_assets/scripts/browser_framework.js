@@ -1,10 +1,6 @@
 var {clipboard,remote} = require('electron');
 var {Menu, MenuItem} = remote;
 
-function s4() {
-	return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-}
-
 var OhHaiBrowser = {
 	sessionStartTime: "",
 	sessionDuration: function(){return Date.now() - OhHaiBrowser.sessionStartTime;},
@@ -1074,8 +1070,12 @@ var OhHaiBrowser = {
 		}
 	},
 	core:{
-		generateId: function(){
-			return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+		generateId: function(){	
+			let uNums = [];
+			for(i = 0; i < 7; i++){
+				uNums.push(Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1));
+			}
+			return `${uNums[0] + uNums[1]}-${uNums[2]}-${uNums[3]}-${uNums[4]}-${uNums[5] + uNums[6]}`;
 		},
 		generateElement: function(elTemplate){
 			var div = document.createElement('div');
@@ -1088,8 +1088,8 @@ var OhHaiBrowser = {
 	}
 }
 
-OhHaiBrowser.sessionStartTime = Date.now();
 
+OhHaiBrowser.sessionStartTime = Date.now();
 
 //Functions for tab reordering
 new Slip(OhHaiBrowser.ui.tabbar.tabcontainer);

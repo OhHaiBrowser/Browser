@@ -6,10 +6,6 @@
 		<link rel="StyleSheet" href="system_assets/ohhai_ui.css"/>
 		<!--Window controls-->
 		<link rel="StyleSheet" href="../window/controls.css"/>	
-		<!--Addins-->
-		<script src="system_assets\scripts\addons\quicklinks_0000000001.js"></script>
-		<script src="system_assets\scripts\addons\settings_0000000001.js"></script>
-		<script src="system_assets\scripts\addons\about_0000000001.js"></script>
 	</head>
 	<body>
 		<input type="hidden" id="CurWebWin" value="">
@@ -18,9 +14,9 @@
 			<header class="Navbar">
 				<!--== window controls start =============================================================================-->
 				<ul id="Win_Controls" class="Window_Controls">
-					<li><a onclick="WindowControls.Left();" id="Left_FrameBtn" class="Left_FrameBtn"></a></li>
-					<li><a onclick="WindowControls.Center();" id="Center_FrameBtn" class="Center_FrameBtn"></a></li>
-					<li><a onclick="WindowControls.Right();" id="Right_FrameBtn" class="Right_FrameBtn"></a></li>
+					<li><a id="Left_FrameBtn" class="Left_FrameBtn"></a></li>
+					<li><a id="Center_FrameBtn" class="Center_FrameBtn"></a></li>
+					<li><a id="Right_FrameBtn" class="Right_FrameBtn"></a></li>
 				</ul>
 				<!--== window controls end ===============================================================================-->
 				<!--== nav controls start ================================================================================-->
@@ -68,10 +64,10 @@
 								<li><hr/></li>
 								<li><a onclick="OhHaiBrowser.tabs.add('history',undefined,{selected: true});" href="#">History</a></li>
 								<li><hr/></li>
-								<li><a onclick="menu.mega(quicklinks_0000000001.Load(),'Bookmarks')" href="#">View bookmarks</a></li>					
+								<li><a onclick="menu.mega(BookmarkMenu(),'Bookmarks')" href="#">View bookmarks</a></li>					
 								<li><hr/></li>
-								<li><a onclick="menu.mega(settings_0000000001.Load(),'Settings')" href="#">Settings</a></li>	
-								<li><a onclick="menu.mega(about_0000000001.Load(),'OhHai Browser')" href="#">About</a></li>
+								<li><a onclick="menu.mega(SettingsMenu(),'Settings')" href="#">Settings</a></li>	
+								<li><a onclick="menu.mega(AboutMenu(),'OhHai Browser')" href="#">About</a></li>
 							</ul>
 						</div>
 					</div>

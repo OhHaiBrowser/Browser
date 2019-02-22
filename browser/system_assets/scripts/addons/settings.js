@@ -1,7 +1,5 @@
-var settings_0000000001 = {
-	Load: function(){
-		
-		let settingsMenu = OhHaiBrowser.core.generateElement(`
+module.exports = function load(){
+	let settingsMenu = OhHaiBrowser.core.generateElement(`
 		<div class='SettingsList'>
 			<p>When browser opens</p>
 			<form>
@@ -142,5 +140,4 @@ var settings_0000000001 = {
 		//});
 
 		return settingsMenu;
-	}
-}
+};

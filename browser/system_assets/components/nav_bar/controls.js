@@ -1,15 +1,14 @@
-var MegaOverFlowContent = document.getElementById("MegaMenuContent");
-var MiniOverFlowContent = document.getElementById("MiniMenuContent");
-
-//CreateTabOnLoad
-var launchparams = remote.getGlobal('sharedObject').prop1;
-var IsLaunchParam = function(){if(launchparams.length == 1){return false}else{return true}};
+let AboutMenu = require('./system_assets/scripts/addons/about.js'),
+BookmarkMenu = require('./system_assets/scripts/addons/bookmarks.js'),
+SettingsMenu = require('./system_assets/scripts/addons/settings.js'),
+MegaOverFlowContent = document.getElementById("MegaMenuContent"),
+launchparams = remote.getGlobal('sharedObject').prop1,
+IsLaunchParam = function(){if(launchparams.length == 1){return false}else{return true}};
 
 Settings.Get("FirstRun",function(i){
 	if(i == undefined){
 		//this is a new user!
 		Settings.Set("FirstRun",Date.now(),function(c){});
-		
 	}
 });
 
