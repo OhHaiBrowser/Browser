@@ -29,18 +29,9 @@
 		</header>
 	
 		<div id='MainContent'>
-		
 			<div id="HistList">
-				
 			</div>
-			
-			<ul class="pagination"></ul>
-			
 		</div>
-
-		<script src="../../scripts/jquery-2.1.4.min.js"></script>
-		<script src="../../scripts/jquery.easyPaginate.js"></script>
-		
 		<script src="../../scripts/dexie.min.js"></script>
 		<script src="../../scripts/db.js"></script>
 		<script>	
@@ -81,13 +72,6 @@
 							dom_hist_list.appendChild(div);
 						}	
 					}
-					
-				});
-				
-				$('#HistList').easyPaginate({
-					paginateElement: 'div',
-					elementsPerPage: 10,
-					effect: 'default'
 				});
 			}
 			
