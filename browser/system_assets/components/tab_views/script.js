@@ -112,7 +112,9 @@ function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
 		domloaded(fulltab,webview);
 		UpdateTab(tabtext,tabimg,webview);
 
-		if(!fulltab.classList.contains("IncognitoTab")){Sessions.UpdateWebPage(ControlsId,webview.getURL(),webview.getTitle(), tabimg.src ,function(id){});}
+		if(!fulltab.classList.contains("IncognitoTab")){
+			Sessions.UpdateWebPage(ControlsId,webview.getURL(),webview.getTitle(), tabimg.src ,function(id){});
+		}
 
 		var webviewcontent = webview.getWebContents();	
 		webviewcontent.on("context-menu", (e, params) => {
@@ -226,18 +228,6 @@ function UpdateTab(tabtext,tabimg,webview){
 	}
 }
 
-function FindFavIcon(Webview){
-	Webview.executeJavaScript("links = document.getElementsByTagName('link');",function(e){ var CodeBreak = e[0]; });
-}
 function SetFavIcon(control,webview) {
-
-	var Content = webview.webContents;
-
-	webview.executeJavaScript("window.location.host",
-	function(e){
-		var TestFavUri = "http://"+ e +"/favicon.ico";
-			//Look somewhere else
-			FindFavIcon(webview);
-			control.src = 'file:///' + __dirname + '/system_assets/icons/favicon_default.png';//FindFavIcon(webview);
-	});
+	control.src = 'file:///' + __dirname + '/system_assets/icons/favicon_default.png';
 }

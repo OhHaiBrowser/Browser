@@ -2,7 +2,6 @@
 
 var {electron,app, protocol,BrowserWindow,globalShortcut} = require('electron');
 var Store = require('./browser/system_assets/scripts/store.js');
-//var OhHaiProtocol = require('./system_assets/Scripts/protocol/ohhai');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -30,20 +29,18 @@ app.on('window-all-closed', function() {
   }
 });
 
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
 
 	let { width, height } = store.get('windowBounds');
 
-
   // Create the browser window.
   mainWindow = new BrowserWindow({
 		width: width,
 		height: height,
 		frame: false,
-		icon: __dirname + '/window/assets/icon.ico',
+		icon: `${__dirname}/window/assets/icon.ico`,
 		show: false,
     minHeight: 350,
     minWidth: 485
@@ -58,18 +55,15 @@ app.on('ready', function() {
       mainWindow.focus();
 	});
   
-  
-globalShortcut.register('CommandOrControl+Shift+D', () => {
-  if(mainWindow.isFocused() == true){
+  globalShortcut.register('CommandOrControl+Shift+D', () => {
+    if(mainWindow.isFocused() == true){
       mainWindow.webContents.openDevTools();
-  }
-});
-
+    }
+  });
 
   mainWindow.setMenu(null);
 	
-	mainWindow.loadURL("file:///" + __dirname + '/browser/index.html');
-
+	mainWindow.loadURL(`${__dirname}/browser/index.html`);
 		
   mainWindow.on('resize', () => {
     let { width, height } = mainWindow.getBounds();
@@ -81,7 +75,6 @@ globalShortcut.register('CommandOrControl+Shift+D', () => {
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {
-
     mainWindow = null;
   });
 
@@ -94,7 +87,5 @@ globalShortcut.register('CommandOrControl+Shift+D', () => {
       console.log('Could not register mailto protocol.')
     }
   });
-
-
 
 });

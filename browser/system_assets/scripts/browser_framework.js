@@ -5,11 +5,11 @@ var OhHaiBrowser = {
 	sessionStartTime: "",
 	sessionDuration: function(){return Date.now() - OhHaiBrowser.sessionStartTime;},
 	builtInPages: {
-		home : "file:///" + __dirname + "/system_assets/components/home_page/index.html",
-		settings : "file:///" + __dirname + "/system_assets/builtin-pages/settings.html",
-		history : "file:///" + __dirname + "/system_assets/components/history_page/index.html",
-		bookmarks : "file:///" + __dirname + "/system_assets/builtin-pages/quiclinks.html",
-		errorPage : "file:///" + __dirname + "/system_assets/components/error_page/index.html"
+		home : `file://${__dirname}/system_assets/components/home_page/index.html`,
+		settings : `file://${__dirname}/system_assets/builtin-pages/settings.html`,
+		history : `ile://${__dirname}/system_assets/components/history_page/index.html`,
+		bookmarks : `file://${__dirname}/system_assets/builtin-pages/quiclinks.html`,
+		errorPage : `file://${__dirname}/system_assets/components/error_page/index.html`
 	},
 	templates: {
 		websession: function(_ID,_URL,callback){
@@ -1065,27 +1065,11 @@ var OhHaiBrowser = {
     		}
 		},
 		internalpage: function(input){
-			var RunDir = decodeURI("file:///" + __dirname).replace(/\\/g, "/");
+			var RunDir = decodeURI("file://" + __dirname).replace(/\\/g, "/");
 			return isInternalPage = input.indexOf(RunDir) !== -1
 		}
 	},
-	core:{
-		generateId: function(){	
-			let uNums = [];
-			for(i = 0; i < 7; i++){
-				uNums.push(Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1));
-			}
-			return `${uNums[0] + uNums[1]}-${uNums[2]}-${uNums[3]}-${uNums[4]}-${uNums[5] + uNums[6]}`;
-		},
-		generateElement: function(elTemplate){
-			var div = document.createElement('div');
-      		div.innerHTML = elTemplate;
-      		return div.firstElementChild;
-		},
-		checkForUpdate: function(){
-
-		}
-	}
+	core: require(`./system_assets/modules/OhHaiBrowser.Core.js`)
 }
 
 
