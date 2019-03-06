@@ -65,7 +65,9 @@
       "perMachine": "true"
     }
   },
-  "dependencies": {},
+  "dependencies": {
+    "dexie": "^2.0.4"
+  },
   "devDependencies": {
     "electron": "^4.0.4",
     "electron-builder": "^20.38.5"

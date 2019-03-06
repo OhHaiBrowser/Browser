@@ -6,17 +6,7 @@
 		<style>
 			body{margin:0;padding:0;}
 			#MainContent{max-width:1000px;min-width:200px;margin:200px auto 0 auto;}
-			#MainContent h3{margin:5px;}
-			
-			header{border:none;}
-			
-			.UserBubble{background-color:#fff;padding: 3px;margin: 5px;border-radius: 77px;border:1px solid #e4e4e4;display:block;margin:30px auto 0 auto;width:150px;}
-			.UserBubble img{border-radius:77px;}
-			
-			.UserBubble:hover{background-color:#fff;}
-			
-			.SearchBar{font-size: 18px; margin: 14px 0;}
-			
+
 			.RecentPages{list-style:none;margin:10px;padding:0;text-align:center;}
 			.RecentPages li{display:inline-block;margin:10px;}
 			
@@ -30,51 +20,9 @@
 		</script>
 	</head>
 	<body>
-	
-		<!--<a href="http://www.OhHaiBrowser.com" class="UserBubble"><img src="../Icons/Logo.png" width="150"/></a>-->
-		
 		<div id='MainContent'>			
 			<ul class="RecentPages" id="RecentList">
 			</ul>
-
-
-		</div>
-		
-		<script src="../../scripts/dexie.min.js"></script>
-		<script src="../../scripts/db.js"></script>
-		
-		<script>
-			var dom_hist_list = document.getElementById("RecentList");
-			var ItemTemplate = "<a class='RecentPageLink' href='#'><img class='RecentPageImg' src='#'/><span class='RecentPageTitle'></span></a>";
-			History.ListMostViewed(function(histlist){
-				if (!Array.isArray(histlist) || !histlist.length) {
-					//Nothing
-					var li = document.createElement('li');
-					li.innerHTML = "<h1 class='HomeTitleMessage'>Welcome to OhHai Browser</h1>";
-					dom_hist_list.appendChild(li);
-				}else{
-					//Items!
-					var i,len;
-					for (i = 0, len = histlist.length; i < len; i++) {
-						var thisitem = histlist[i];
-							
-						
-						History.GetItemByID(thisitem,function(histitem){
-							var li = document.createElement('li');
-							li.innerHTML = ItemTemplate;
-						
-							li.querySelector('.RecentPageImg').setAttribute("src",histitem.icon);
-							li.querySelector('.RecentPageTitle').appendChild(document.createTextNode(histitem.title));	
-							li.querySelector('.RecentPageLink').setAttribute("href",histitem.url);
-								
-							
-							dom_hist_list.appendChild(li);
-						});	
-					}	
-
-				}
-			});
-		</script>
-		
+		</div>		
 	</body>
 </html>

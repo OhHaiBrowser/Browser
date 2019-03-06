@@ -1,5 +1,8 @@
 var {clipboard,remote} = require('electron');
 var {Menu, MenuItem} = remote;
+var {Quicklinks, Settings, Sessions, History, Groups} = require('./system_assets/modules/OhHaiBrowser.Data.js');
+var HistoryList = require('./system_assets/scripts/addons/history.js');
+var BookmarksList = require('./system_assets/scripts/addons/bookmarks.js')
 
 var OhHaiBrowser = {
 	sessionStartTime: "",
@@ -230,7 +233,7 @@ var OhHaiBrowser = {
 			OhHaiBrowser.ui.navbar.updateTabCounter();
 	
 			if (OhHaiBrowser.tabs.count == 0){
-				OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true});
+				OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true});
 			}
 	
 			if(!_TAB.classList.contains("IncognitoTab")){
@@ -355,7 +358,7 @@ var OhHaiBrowser = {
 					switch(_tab){
 						case null:
 						//tabs.add('default','default',null,GroupChildren);
-						OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true,mode:"grouped",parent:this_groupChildren});
+						OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true,mode:"grouped",parent:this_groupChildren});
 						break;
 						case "session":
 						break;
@@ -550,8 +553,18 @@ var OhHaiBrowser = {
 			});
 		}
 	},
+	history: {
+		container: document.getElementById('HistoryContainer'),
+		load: () => {
+			OhHaiBrowser.history.container.appendChild(HistoryList());
+		}
+	},
 	bookmarks: {
+		container: document.getElementById('BookmarkContainer'),
 		btn_bookmark:document.getElementById("BtnQuicklink"),
+		load: () => {
+			OhHaiBrowser.bookmarks.container.appendChild(BookmarksList());
+		},
 		add: function(bookmarkName,bookmarkUrl,bookmarkIcon,bookmarkDesc,popuplocal,callback){
 
 			let BookmarkPopup = OhHaiBrowser.core.generateElement(`
@@ -626,39 +639,13 @@ var OhHaiBrowser = {
 			}
 		}
 	},
-	history: {
-		list: function(callback){
-			var HistList;
-			History.List(function(arraylist){
-				if (typeof callback === "function") {
-					callback(arraylist);
-				}
-			});
-		}
-	},
-	settings: {		
-		homepage: function(){
-			Settings.Get("homepage",function(homeitem){
-				if(homeitem != undefined){
-					return homeitem.value;
-				}else{
-					return "default";
-				}
-			});
-		},
-		search: function(){
-			Settings.Get("search",function(item){
-				if(item != undefined){
-					return item.value;
-				}else{
-					return "https://www.google.co.uk/search?q=";
-				}
-			});
-		},
+	settings: {
+		homepage: '',
+		search: '',
 		generic: function(settingName, callback){
-			Settings.Get(settingName,function(item){
-				if(item != undefined){
-					callback(item.value);
+			Settings.Get(settingName,(genericItem) => {
+				if(genericItem != undefined){
+					callback(genericItem.value);
 				}else{
 					callback(null);
 				}
@@ -798,8 +785,8 @@ var OhHaiBrowser = {
 			tab: function(ThisTab,ThisWebview,TabLbl,TabEx){
 
 				var NewMenu = new Menu()
-				NewMenu.append(new MenuItem({label: 'New Tab', click() {OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true});}}))
-				NewMenu.append(new MenuItem({label: 'New Incognito Tab', click() { OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true,mode:"incog"}); }}))
+				NewMenu.append(new MenuItem({label: 'New Tab', click() {OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true});}}))
+				NewMenu.append(new MenuItem({label: 'New Incognito Tab', click() { OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true,mode:"incog"}); }}))
 				NewMenu.append(new MenuItem({type: 'separator'}))
 				if(ThisTab.parentElement.classList.contains("ohhai-group-children")){
 					//This tabs is in a group
@@ -843,8 +830,8 @@ var OhHaiBrowser = {
 			},
 			tabmenu: function(){
 				var NewMenu = new Menu()
-				NewMenu.append(new MenuItem({label: 'New Tab', click() {OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true});}}))
-				NewMenu.append(new MenuItem({label: 'New Incognito Tab', click() { OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true,mode:"incog"}); }}));
+				NewMenu.append(new MenuItem({label: 'New Tab', click() {OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true});}}))
+				NewMenu.append(new MenuItem({label: 'New Incognito Tab', click() { OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true,mode:"incog"}); }}));
 				NewMenu.append(new MenuItem({label: 'New Group', click() {OhHaiBrowser.tabs.groups.add(null,null,null); }}));
 			
 				return NewMenu;
@@ -867,7 +854,7 @@ var OhHaiBrowser = {
 			},
 			group: function(Group,GroupChildren){
 				var GroupMenu = new Menu()
-				GroupMenu.append(new MenuItem({label: 'Add tab to group', click() {OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true,mode:"grouped",parent:GroupChildren}); }}))
+				GroupMenu.append(new MenuItem({label: 'Add tab to group', click() {OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true,mode:"grouped",parent:GroupChildren}); }}))
 				GroupMenu.append(new MenuItem({type: 'separator'}))
 				GroupMenu.append(new MenuItem({label: 'Remove group, keep tabs', click() { OhHaiBrowser.tabs.groups.remove(Group,{keepChildren:true});}}))
 				GroupMenu.append(new MenuItem({label: 'Remove group and tabs', click() { OhHaiBrowser.tabs.groups.remove(Group,{keepChildren:false});}}))
@@ -1039,41 +1026,29 @@ var OhHaiBrowser = {
 			}
 		}
 	},
-	validate: {
-		url: function(testvalue, callback){
-			var myRegExp =/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i;
-			var returnbol = false;
-			if(!myRegExp.test(testvalue)){returnbol = false;}
-			else{returnbol = true;}
-			if (typeof callback === "function") {
-				callback(returnbol);
-			}	
-		},
-		string: function(input){
-			return typeof input === 'string' || input instanceof String;
-		},
-		number: function(input){
-			return typeof input === 'number' && isFinite(input);
-		},
-		hostname: function(url){
-			var match = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
-		    if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) {
-    			return match[2];
-   			}
-    		else {
-        		return null;
-    		}
-		},
-		internalpage: function(input){
-			var RunDir = decodeURI("file://" + __dirname).replace(/\\/g, "/");
-			return isInternalPage = input.indexOf(RunDir) !== -1
-		}
-	},
+	validate: require(`./system_assets/modules/OhHaiBrowser.Validation.js`),
 	core: require(`./system_assets/modules/OhHaiBrowser.Core.js`)
 }
 
-
 OhHaiBrowser.sessionStartTime = Date.now();
+
+Settings.Get("Homepage",(homeitem) => {
+	if(homeitem != undefined){
+		OhHaiBrowser.settings.homepage = homeitem.value;
+	}else{
+		OhHaiBrowser.settings.homepage = "default";
+	}
+});
+
+Settings.Get("search",(settingItem) => {
+	if(settingItem !== undefined){
+		OhHaiBrowser.settings.search = settingItem.value;
+	}else{
+		OhHaiBrowser.settings.search = 'https://www.google.co.uk/search?q=';
+	}
+});
+
+
 
 //Functions for tab reordering
 new Slip(OhHaiBrowser.ui.tabbar.tabcontainer);

@@ -1,13 +1,15 @@
 let AboutMenu = require('./system_assets/scripts/addons/about.js'),
 BookmarkMenu = require('./system_assets/scripts/addons/bookmarks.js'),
 SettingsMenu = require('./system_assets/scripts/addons/settings.js'),
+HistoryMenu = require('./system_assets/scripts/addons/history.js'),
+UrlService = require('./system_assets/services/navbar.js');
 MegaOverFlowContent = document.getElementById("MegaMenuContent"),
 launchparams = remote.getGlobal('sharedObject').prop1,
 IsLaunchParam = function(){if(launchparams.length == 1){return false}else{return true}};
 
 Settings.Get("FirstRun",function(i){
 	if(i == undefined){
-		//this is a new user!
+		//this is a new user! - Show them the setup page
 		Settings.Set("FirstRun",Date.now(),function(c){});
 	}
 });
@@ -17,36 +19,33 @@ Settings.Get("Launch",function(item){
 	if(item != undefined){
 		switch (item.value) {
 		case "fresh":
-			console.log("Fresh Session");
+				//Fresh session
 				if(!IsLaunchParam){
-					//tabs.add(OhHaiBrowser.settings.homepage(),"default");
-					OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true});
+					OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true});
 				}
-			break;
+		break;
 		default:
-		console.log("Use old session");
-		Groups.Get(function(Glist){
-			if(Glist.length != 0){
-				for(g in Glist){
-					OhHaiBrowser.tabs.groups.add(Glist[g].groupid,Glist[g].name,"session");
-				}	
-			}
-			Sessions.Get(function(Slist){
-				if(Slist.length != 0){
-				  for(s in Slist){
-					  //tabs.add(Slist[s].url,Slist[s].mode,Slist[s].sessionid,Slist[s].parent);
-					  OhHaiBrowser.tabs.add(Slist[s].url,Slist[s].sessionid,{selected: true,mode:Slist[s].mode,parent:Slist[s].parent, title: Slist[s].title});
-				  }
-				}else{
-					//No session
-					if(!IsLaunchParam){
-						//tabs.add(OhHaiBrowser.settings.homepage(),"default");
-						OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true});
-				  	}
+			//Old session
+			Groups.Get(function(Glist){
+				if(Glist.length != 0){
+					for(g in Glist){
+						OhHaiBrowser.tabs.groups.add(Glist[g].groupid,Glist[g].name,"session");
+					}	
 				}
-		   });
-		});
-	}
+				Sessions.Get(function(Slist){
+					if(Slist.length != 0){
+				  	for(s in Slist){
+					  	OhHaiBrowser.tabs.add(Slist[s].url,Slist[s].sessionid,{selected: true,mode:Slist[s].mode,parent:Slist[s].parent, title: Slist[s].title});
+				  	}
+					}else{
+						//No session
+						if(!IsLaunchParam){
+							OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true});
+				  	}
+					}
+		   	});
+			});
+		}
 	}
 	else{
 		Groups.Get(function(Glist){
@@ -58,11 +57,9 @@ Settings.Get("Launch",function(item){
 			Sessions.Get(function(Slist){
 				if(Slist.length != 0){
 				  for(s in Slist){
-					  //tabs.add(Slist[s].url,Slist[s].mode,Slist[s].sessionid,Slist[s].parent);
-					OhHaiBrowser.tabs.add(Slist[s].url,Slist[s].sessionid,{selected: true,mode:Slist[s].mode,parent:Slist[s].parent, title: Slist[s].title});
+						OhHaiBrowser.tabs.add(Slist[s].url,Slist[s].sessionid,{selected: true,mode:Slist[s].mode,parent:Slist[s].parent, title: Slist[s].title});
 				  }
 				}else{
-					 //tabs.add("default","default");
 					OhHaiBrowser.tabs.add("default",undefined,{selected: true});
 				}
 		   });
@@ -79,11 +76,13 @@ if (IsLaunchParam){
 	});
 }
 
-Settings.Get("Theme",function(item){
-	if(item != undefined){
-		OhHaiBrowser.ui.theme.load(item.value);
-	}
-});
+OhHaiBrowser.bookmarks.load();
+OhHaiBrowser.history.load();
+//Settings.Get("Theme",function(item){
+//	if(item != undefined){
+//		OhHaiBrowser.ui.theme.load(item.value);
+//	}
+//});
 
 Settings.Get("TabBar",function(item){
 	if(item != undefined){
@@ -118,7 +117,7 @@ OhHaiBrowser.ui.tabbar.panel.addEventListener('contextmenu', (e) => {
 }, false);
 
 function AddTabButton(){
-	OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true});
+	OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true});
 }
 
 //--------------------------------------------------------------------------------------------------------------
@@ -129,21 +128,15 @@ OhHaiBrowser.ui.navbar.txt_urlBar.addEventListener('contextmenu', (e) => {
 	URlMenu.popup(remote.getCurrentWindow())
 }, false);
 
+let urlbarValid = {};
 OhHaiBrowser.ui.navbar.txt_urlBar.addEventListener('keydown', function(event) {
+	//Check validity of URL content
+	UrlService(this.value, (resp) => {
+		urlbarValid = resp;
+	});
+	//On Enter
 	if(event.which == 13){
-		OhHaiBrowser.validate.url(OhHaiBrowser.ui.navbar.txt_urlBar.value,function(isurl){
-			if(isurl == true){
-				OhHaiBrowser.tabs.activePage.navigate(OhHaiBrowser.ui.navbar.txt_urlBar.value);
-			}else{
-				OhHaiBrowser.validate.url('http://' + OhHaiBrowser.ui.navbar.txt_urlBar.value,function(isotherurl){
-					if(isotherurl == true){
-						OhHaiBrowser.tabs.activePage.navigate('http://'+ OhHaiBrowser.ui.navbar.txt_urlBar.value);
-					}else{
-						OhHaiBrowser.tabs.activePage.navigate(OhHaiBrowser.settings.search() + OhHaiBrowser.ui.navbar.txt_urlBar.value);
-					}
-				});
-			}
-		});
+		OhHaiBrowser.tabs.activePage.navigate(urlbarValid.output);		
 	}
 });
 
@@ -220,3 +213,31 @@ var menu = {
 		MegaOverFlowContent.removeChild(MegaOverFlowContent.lastChild);
 	}
 }
+
+
+
+function initAccordion(accordionElem){
+  
+  //when panel is clicked, handlePanelClick is called.          
+  function handlePanelClick(event){
+      showPanel(event.currentTarget);
+  }
+//Hide currentPanel and show new panel.  
+  
+  function showPanel(panel){
+    //Hide current one. First time it will be null. 
+     var expandedPanel = accordionElem.querySelector(".acc_active");
+     if (expandedPanel){
+         expandedPanel.classList.remove("acc_active");
+     }
+     //Show new one
+     panel.classList.add("acc_active");
+  }
+  var allPanelElems = accordionElem.querySelectorAll(".acc_panel");
+  for (var i = 0, len = allPanelElems.length; i < len; i++){
+       allPanelElems[i].addEventListener("click", handlePanelClick);
+  }
+  //By Default Show first panel
+  showPanel(allPanelElems[0])
+}
+initAccordion(document.getElementById("leftAccordion"));
