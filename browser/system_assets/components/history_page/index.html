@@ -33,46 +33,56 @@
 			</div>
 		</div>
 		<script src="../../scripts/dexie.min.js"></script>
-		<script src="../../scripts/db.js"></script>
 		<script>	
 			load_history();
 			
 			function load_history(){
 				var dom_hist_list = document.getElementById("HistList");
 				var dom_refresh_btn = document.getElementById("RefreshHist");
-				var dom_clear_btn = document.getElementById("ClearHist");
-				
+				var dom_clear_btn = document.getElementById("ClearHist");	
 				dom_hist_list.innerHTML = '';
 				
-				var history_template = "<img class='hist_img' src=''/><a class='hist_link' href='#'></a><span class='hist_datetime'></span><div class='clear'></div>";		
-				History.List(function(HistArray){
-					if (!Array.isArray(HistArray) || !HistArray.length) {
-					
-						dom_clear_btn.setAttribute("style","display:none;");
-						dom_hist_list.setAttribute("class","");
-						var NoItems = document.createElement('h3');
-						NoItems.appendChild(document.createTextNode("No history :("));
-						dom_hist_list.appendChild(NoItems);
-					}else{
-						dom_hist_list.setAttribute("class","listborder");
-						dom_clear_btn.setAttribute("style","");
-						
-						var i,len;
-						for (i = 0, len = HistArray.length; i < len; i++) {
-							var thisitem = HistArray[i];
-							var div = document.createElement('div');
-							div.setAttribute("class","histitem");
-							div.innerHTML = history_template;
-						
-							div.querySelector('.hist_img').setAttribute("src",thisitem.icon);
-							div.querySelector('.hist_link').appendChild(document.createTextNode(thisitem.title));	
-							div.querySelector('.hist_link').setAttribute("href",thisitem.url);
-							div.querySelector('.hist_datetime').appendChild(document.createTextNode(Convert_DateTimeStamp(thisitem.timestamp)));
-						
-							dom_hist_list.appendChild(div);
-						}	
-					}
+				const db = new Dexie("ohhai_browser_db");
+				//Version 1
+				db.version(1).stores({
+				quicklinks: '++id,&url, title, icon, text, desc, timestamp',
+				history: '++id,url, title, icon, visitCount, lastVisit,parentSite, extraData,timestamp',
+				settings: '&name,value',
+				firstrun: 'run,timestamp',
+				currentsession: '&sessionid,url,title,mode,parent,timestamp',
+				browser_groups: '&groupid,name,timestamp'
 				});
+				//Version 2
+				db.version(2).stores({
+				currentsession: '&sessionid, url, icon, title, mode, parent, timestamp',
+				firstrun: null
+				});
+				db.open().then(function () {
+				console.log('database loaded')
+					db.history.reverse().toArray((HistArray) => {
+						if (!Array.isArray(HistArray) || !HistArray.length) {	
+							dom_clear_btn.setAttribute("style","display:none;");
+							dom_hist_list.setAttribute("class","");
+							var NoItems = document.createElement('h3');
+							NoItems.appendChild(document.createTextNode("No history :("));
+							dom_hist_list.appendChild(NoItems);
+						}else{
+							dom_hist_list.setAttribute("class","listborder");
+							dom_clear_btn.setAttribute("style","");
+					
+							var i,len;
+							for (i = 0, len = HistArray.length; i < len; i++) {
+								var thisitem = HistArray[i];
+								var div = document.createElement('div');
+								div.setAttribute("class","histitem");
+								var history_template = `<img class='hist_img' src='${thisitem.icon}'/><a class='hist_link' href='${thisitem.url}'>${thisitem.title}</a><span class='hist_datetime'>${Convert_DateTimeStamp(thisitem.timestamp)}</span><div class='clear'></div>`;		
+								div.innerHTML = history_template;
+			
+								dom_hist_list.appendChild(div);
+							}	
+						}
+					});
+				}).catch(function (err) {console.warn('database error occured', error)});
 			}
 			
 			function Convert_DateTimeStamp(timestamp){	

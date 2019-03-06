@@ -35,6 +35,76 @@ html, body {
 	#LeftMenu .TabContainer{max-height:none;padding:0;}
 	#LeftMenu .tabcommands{padding:5px;}
 
+#leftAccordion{
+	display: flex;
+  flex-flow: column;
+  height: 100%;
+}
+	#leftAccordion .acc_panel{
+		flex: 0 1 auto;
+		transition: flex 0.3s;
+	}
+	#leftAccordion .acc_panel .acc_header::before{
+		content: '>';
+		display: inline-block;
+		margin-right: 3px;
+		transition: all 0.3s;
+	}
+	#leftAccordion .acc_panel .acc_header{
+		font-size: 14px;
+    padding: 0 5px;
+    background: #c4c4c4;
+    height: 30px;
+		line-height: 30px;
+		cursor: pointer;
+	}
+
+	#leftAccordion .acc_panel .acc_content{
+		display : none;
+		opacity: 0;
+		transition: all 0.3s;
+	}
+
+	#leftAccordion .acc_active{
+		flex: 1 1 auto;
+	}
+	#leftAccordion .acc_active .acc_header::before{
+		transform: rotate(90deg);
+	}
+	#leftAccordion .acc_active .acc_header{
+		background-color:#a2a7c2;
+	}
+
+	#leftAccordion .acc_active .acc_content{
+		display : block;
+		opacity: 1;
+	}
+
+	#BookmarkContainer ul{
+		margin: 5px;
+    padding: 0px;
+    list-style: none;
+	}
+		#BookmarkContainer li p{
+			margin:10px 0px;
+			font-size:14px;
+		}
+
+		#BookmarkContainer .bookmark{
+			margin:5px 0px;
+		}
+			#BookmarkContainer .bookmark img{
+				height: 16px;
+				width: 16px;
+			}
+			#BookmarkContainer .bookmark a{
+				display: inline-block;
+			}
+
+		
+
+
+
 /*Other Menu*/
 #OverFlowMenu{
 	position:fixed;
@@ -52,7 +122,7 @@ html, body {
 	/* Overflow menu types */
 
 	#OverFlowDeepMenu{float:left;width:350px;height:100%;}
-	#MegaMenuContent{height: -webkit-calc(100% - 48px);overflow:auto;}
+	#MegaMenuContent{height: -webkit-calc(100% - 87px);overflow:auto;}
 	#MiniMenuContent{height: -webkit-calc(100% - 48px);overflow:auto;}
 
 	#OverFlowMiniMenu{float:left;width:50px;height:100%;}
@@ -284,3 +354,31 @@ button:focus{outline:none;}
 
 	.URL_AutoComplete{position: absolute;width: 600px;height:auto;background-color: #fff;padding:5px;z-index: 500;margin-left: -3px;margin-top: -3px;border-bottom-left-radius: 4px;border-bottom-right-radius: 4px;box-sizing: border-box;box-shadow: 0px 10px 15px #999;-webkit-transition: all 0.25s, -webkit-transform 0.25s; /* Safari */transition: all 0.25s, transform 0.25s;}
 		.AutoComplete_hidden{height:0px;display:none;}
+
+		.Datetitle{
+			margin: 0;
+			padding: 10px;
+			background-color: #d2d4f2;
+		}
+
+		.histitem{
+			margin: 10px;
+		}
+			.hist_img{
+				height: 20px;
+				width: 20px;
+				margin-right: 10px;
+				float: left;
+			}
+			.hist_link{
+				display: inline-block;
+				width: 240px;
+    		height: 20px;
+    		overflow: hidden;
+    		text-overflow: ellipsis;
+    		white-space: nowrap;
+    		line-height: 20px;
+			}
+			.hist_datetime{
+				float: right;
+			}

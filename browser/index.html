@@ -62,10 +62,11 @@
 								<li><a onclick="OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true});" href="#">New tab</a></li>
 								<li><a onclick="OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true,mode:'incog'});" href="#">New incognito tab</a></li>
 								<li><hr/></li>
-								<li><a onclick="OhHaiBrowser.tabs.add('history',undefined,{selected: true});" href="#">History</a></li>
+								<!--<li><a onclick="OhHaiBrowser.tabs.add('history',undefined,{selected: true});" href="#">History</a></li>-->
+								<li><a onclick="menu.mega(HistoryMenu(),'History')" href="#">History</a></li>
 								<li><hr/></li>
-								<li><a onclick="menu.mega(BookmarkMenu(),'Bookmarks')" href="#">View bookmarks</a></li>					
-								<li><hr/></li>
+								<!--<li><a onclick="menu.mega(BookmarkMenu(),'Bookmarks')" href="#">View bookmarks</a></li>					
+								<li><hr/></li>-->
 								<li><a onclick="menu.mega(SettingsMenu(),'Settings')" href="#">Settings</a></li>	
 								<li><a onclick="menu.mega(AboutMenu(),'OhHai Browser')" href="#">About</a></li>
 							</ul>
@@ -81,12 +82,41 @@
 				</div>
 
 				<div id="LeftMenu" class="OhHai-TabMenu LeftMenuShow">
-					<div class="TabContainer">
-						<div id="Tabs">
-							<ul id="tabs-dock" class="ohhai-docktabs"></ul>
-							<ul id="tabs-menu" class="ohhai-maintabs"></ul>
+					<div id="leftAccordion">
+						<div class="acc_panel acc_active">
+							<div class="acc_header">
+								<span class="acc_title">Tabs</span>
+							</div>
+							<div class="acc_content">
+								<div class="TabContainer">
+									<div id="Tabs">
+										<ul id="tabs-dock" class="ohhai-docktabs"></ul>
+										<ul id="tabs-menu" class="ohhai-maintabs"></ul>
+									</div>
+									<button id="AddTab" title="Add a new tab" onclick="AddTabButton();" class="CommandBtn AddTab"></button>
+								</div>
+							</div>
 						</div>
-						<button id="AddTab" title="Add a new tab" onclick="AddTabButton();" class="CommandBtn AddTab"></button>
+						<div class="acc_panel">
+							<div class="acc_header">
+								<span class="acc_title">Bookmarks</span>
+							</div>
+							<div class="acc_content">
+								<div id="BookmarkContainer">
+									
+								</div>
+							</div>
+						</div>
+						<div class="acc_panel">
+							<div class="acc_header">
+								<span class="acc_title">History</span>
+							</div>
+							<div class="acc_content">
+								<div id="HistoryContainer">
+									
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div id="BrowserWin"></div>
@@ -108,9 +138,7 @@
 		<script src="../window/functions.js"></script>
 		<script>window.$ = window.jQuery = require('./system_assets/scripts/jquery-2.1.4.min.js');</script>
 		<script src="system_assets/scripts/jquery-ui.min.js"></script>
-		<script src="system_assets/scripts/dexie.min.js"></script>
 		<!-- Load main functionality scripts -->
-		<script src="system_assets/scripts/db.js"></script>
 		<script src="system_assets/scripts/browser_framework.js"></script>
 		<script src="system_assets/components/tab_views/script.js"></script>
 		<script src="system_assets/components/nav_bar/controls.js"></script>

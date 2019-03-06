@@ -1,5 +1,4 @@
 'use strict';
-
 var {electron,app, protocol,BrowserWindow,globalShortcut} = require('electron');
 var Store = require('./browser/system_assets/scripts/store.js');
 

@@ -1,3 +1,4 @@
+
 module.exports = function load(){
 	let settingsMenu = OhHaiBrowser.core.generateElement(`
 		<div class='SettingsList'>
