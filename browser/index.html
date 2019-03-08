@@ -62,10 +62,10 @@
 								<li><a onclick="OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true});" href="#">New tab</a></li>
 								<li><a onclick="OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true,mode:'incog'});" href="#">New incognito tab</a></li>
 								<li><hr/></li>
-								<!--<li><a onclick="OhHaiBrowser.tabs.add('history',undefined,{selected: true});" href="#">History</a></li>-->
+								<!--<li><a onclick="OhHaiBrowser.tabs.add('history',undefined,{selected: true});" href="#">History</a></li>
 								<li><a onclick="menu.mega(HistoryMenu(),'History')" href="#">History</a></li>
 								<li><hr/></li>
-								<!--<li><a onclick="menu.mega(BookmarkMenu(),'Bookmarks')" href="#">View bookmarks</a></li>					
+								<li><a onclick="menu.mega(BookmarkMenu(),'Bookmarks')" href="#">View bookmarks</a></li>					
 								<li><hr/></li>-->
 								<li><a onclick="menu.mega(SettingsMenu(),'Settings')" href="#">Settings</a></li>	
 								<li><a onclick="menu.mega(AboutMenu(),'OhHai Browser')" href="#">About</a></li>
@@ -102,9 +102,7 @@
 								<span class="acc_title">Bookmarks</span>
 							</div>
 							<div class="acc_content">
-								<div id="BookmarkContainer">
-									
-								</div>
+								<div id="BookmarkContainer"></div>
 							</div>
 						</div>
 						<div class="acc_panel">
@@ -112,9 +110,7 @@
 								<span class="acc_title">History</span>
 							</div>
 							<div class="acc_content">
-								<div id="HistoryContainer">
-									
-								</div>
+								<div id="HistoryContainer"></div>
 							</div>
 						</div>
 					</div>
@@ -134,7 +130,6 @@
         </div>
 
 		<!-- Load 3rd party & browser window scripts -->
-		<script src="system_assets/scripts/slip.js"></script>
 		<script src="../window/functions.js"></script>
 		<script>window.$ = window.jQuery = require('./system_assets/scripts/jquery-2.1.4.min.js');</script>
 		<script src="system_assets/scripts/jquery-ui.min.js"></script>

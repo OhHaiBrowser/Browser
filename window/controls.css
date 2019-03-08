@@ -1,70 +1,221 @@
-.Window_Controls{position:fixed;top:0px;right:0px;margin:0;padding:0;}
-	.Window_Controls li{margin: 0;padding: 0;list-style: none;display:inline-block;float:left;}
-		.Window_Controls li a{-webkit-app-region: no-drag;display: block;width:45px;height:20px;-webkit-user-select: none;cursor:default;}
+.Window_Controls {
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	margin: 0;
+	padding: 0;
+}
 
-		#Left_FrameBtn.Left_FrameBtn{background: url('assets/win/light_minimize.png') 0 0;}
-		#Left_FrameBtn.Left_FrameBtn:hover{background: url('assets/win/light_minimize.png') -45px 0;}
-		#Left_FrameBtn.Left_FrameBtn:active{background: url('assets/win/light_minimize.png') -90px 0;}
+.Window_Controls li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: sblock;
+	float: left;
+}
 
-		#Center_FrameBtn.Center_FrameBtn{background: url('assets/win/light_maximize.png') 0 0;}
-		#Center_FrameBtn.Center_FrameBtn:hover{background: url('assets/win/light_maximize.png') -45px 0;}
-		#Center_FrameBtn.Center_FrameBtn:active{background: url('assets/win/light_maximize.png') -90px 0;}
+.Window_Controls li a {
+	-webkit-app-region: no-drag;
+	display: block;
+	width: 45px;
+	height: 20px;
+	-webkit-user-select: none;
+	cursor: default;
+}
 
-		#Center_FrameBtn.Center_FrameBtn2{background: url('assets/win/light_restore.png') 0 0;}
-		#Center_FrameBtn.Center_FrameBtn2:hover{background: url('assets/win/light_restore.png') -45px 0;}
-		#Center_FrameBtn.Center_FrameBtn2:active{background: url('assets/win/light_restore.png') -90px 0;}
+#Left_FrameBtn.Left_FrameBtn {
+	background: url('assets/win/light_minimize.png') 0 0;
+}
 
-		#Right_FrameBtn.Right_FrameBtn{background: url('assets/win/light_close.png') 0 0;}
-		#Right_FrameBtn.Right_FrameBtn:hover{background: url('assets/win/light_close.png') -45px 0;}
-		#Right_FrameBtn.Right_FrameBtn:active{background: url('assets/win/light_close.png') -90px 0;}
+#Left_FrameBtn.Left_FrameBtn:hover {
+	background: url('assets/win/light_minimize.png') -45px 0;
+}
+
+#Left_FrameBtn.Left_FrameBtn:active {
+	background: url('assets/win/light_minimize.png') -90px 0;
+}
+
+#Center_FrameBtn.Center_FrameBtn {
+	background: url('assets/win/light_maximize.png') 0 0;
+}
+
+#Center_FrameBtn.Center_FrameBtn:hover {
+	background: url('assets/win/light_maximize.png') -45px 0;
+}
+
+#Center_FrameBtn.Center_FrameBtn:active {
+	background: url('assets/win/light_maximize.png') -90px 0;
+}
+
+#Center_FrameBtn.Center_FrameBtn2 {
+	background: url('assets/win/light_restore.png') 0 0;
+}
+
+#Center_FrameBtn.Center_FrameBtn2:hover {
+	background: url('assets/win/light_restore.png') -45px 0;
+}
+
+#Center_FrameBtn.Center_FrameBtn2:active {
+	background: url('assets/win/light_restore.png') -90px 0;
+}
+
+#Right_FrameBtn.Right_FrameBtn {
+	background: url('assets/win/light_close.png') 0 0;
+}
+
+#Right_FrameBtn.Right_FrameBtn:hover {
+	background: url('assets/win/light_close.png') -45px 0;
+}
+
+#Right_FrameBtn.Right_FrameBtn:active {
+	background: url('assets/win/light_close.png') -90px 0;
+}
 
 
-#Win_Controls{position:fixed;margin:0;padding:0;}
-#Win_Controls li{margin: 0;padding: 0;list-style: none;display:inline-block;float:left;}
+#Win_Controls {
+	position: fixed;
+	margin: 0;
+	padding: 0;
+}
 
-#Win_Controls.win{top:0;right:0;}
-#Win_Cnotrols.win a{-webkit-app-region: no-drag;display: block;width:45px;height:20px;-webkit-user-select: none;cursor:default;}
-	#Win_Controls.win .Left_FrameBtn{background: url('assets/win/light_minimize.png') 0 0;}
-		#Win_Controls.win .Left_FrameBtn:hover{background: url('assets/win/light_minimize.png') -45px 0;}
-		#Win_Controls.win .Left_FrameBtn:active{background: url('assets/win/light_minimize.png') -90px 0;}
+#Win_Controls li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: block;
+	float: left;
+}
 
-	#Win_Controls.win .Center_FrameBtn{background: url('assets/win/light_maximize.png') 0 0;}
-		#Win_Controls.win .Center_FrameBtn:hover{background: url('assets/win/light_maximize.png') -45px 0;}
-		#Win_Controls.win .Center_FrameBtn:active{background: url('assets/win/light_maximize.png') -90px 0;}
+#Win_Controls.win {
+	top: 0;
+	right: 0;
+}
 
-	#Win_Controls.win .Center_FrameBtn2{background: url('assets/win/light_restore.png') 0 0;}	
-		#Win_Controls.win .Center_FrameBtn2:hover{background: url('assets/win/light_restore.png') -45px 0;}
-		#Win_Controls.win .Center_FrameBtn2:active{background: url('assets/win/light_restore.png') -90px 0;}
+#Win_Cnotrols.win a {
+	-webkit-app-region: no-drag;
+	display: block;
+	width: 45px;
+	height: 20px;
+	-webkit-user-select: none;
+	cursor: default;
+}
 
-	#Win_Controls.win .Right_FrameBtn{background: url('assets/win/light_close.png') 0 0;}
-		#Win_Controls.win .Right_FrameBtn:hover{background: url('assets/win/light_close.png') -45px 0;}
-		#Win_Controls.win .Right_FrameBtn:active{background: url('assets/win/light_close.png') -90px 0;}
+#Win_Controls.win .Left_FrameBtn {
+	background: url('assets/win/light_minimize.png') 0 0;
+}
 
-#Win_Controls.mac{top:0;left:0;}
-#Win_Controls.mac a{-webkit-app-region: no-drag;display: block;width:12px;height:12px;-webkit-user-select: none;cursor:default;border-radius:6px;}
-	#Win_Controls.mac .Left_FrameBtn{background-color:#ff6159;}
-		#Win_Controls.mac .Left_FrameBtn:hover{}
-		#Win_Controls.mac .Left_FrameBtn:active{background-color:#bf4942;}
-	#Win_Controls.mac .Center_FrameBtn{background-color:#ffbd2e;}
-		#Win_Controls.mac .Center_FrameBtn:hover{}
-		#Win_Controls.mac .Center_FrameBtn:active{background-color:#bf8e22;}
-	#Win_Controls.mac .Center_FrameBtn2{background-color:#ffbd2e;}	
-		#Win_Controls.mac .Center_FrameBtn2:hover{}
-		#Win_Controls.mac .Center_FrameBtn2:active{background-color:#bf8e22;}
-	#Win_Controls.mac .Right_FrameBtn{background-color:#28c941;}
-		#Win_Controls.mac .Right_FrameBtn:hover{}
-		#Win_Controls.mac .Right_FrameBtn:active{background-color:#1d9730;}
+#Win_Controls.win .Left_FrameBtn:hover {
+	background: url('assets/win/light_minimize.png') -45px 0;
+}
 
-#Win_Controls.lin{top:0;right:0;}
-	#Win_Controls.lin .Left_FrameBtn{}
-		#Win_Controls.lin .Left_FrameBtn:hover{}
-		#Win_Controls.lin .Left_FrameBtn:active{}
-	#Win_Controls.lin .Center_FrameBtn{}
-		#Win_Controls.lin .Center_FrameBtn:hover{}
-		#Win_Controls.lin .Center_FrameBtn:active{}
-	#Win_Controls.lin .Center_FrameBtn2{}	
-		#Win_Controls.lin .Center_FrameBtn2:hover{}
-		#Win_Controls.lin .Center_FrameBtn2:active{}
-	#Win_Controls.lin .Right_FrameBtn{}
-		#Win_Controls.lin .Right_FrameBtn:hover{}
-		#Win_Controls.lin .Right_FrameBtn:active{}
+#Win_Controls.win .Left_FrameBtn:active {
+	background: url('assets/win/light_minimize.png') -90px 0;
+}
+
+#Win_Controls.win .Center_FrameBtn {
+	background: url('assets/win/light_maximize.png') 0 0;
+}
+
+#Win_Controls.win .Center_FrameBtn:hover {
+	background: url('assets/win/light_maximize.png') -45px 0;
+}
+
+#Win_Controls.win .Center_FrameBtn:active {
+	background: url('assets/win/light_maximize.png') -90px 0;
+}
+
+#Win_Controls.win .Center_FrameBtn2 {
+	background: url('assets/win/light_restore.png') 0 0;
+}
+
+#Win_Controls.win .Center_FrameBtn2:hover {
+	background: url('assets/win/light_restore.png') -45px 0;
+}
+
+#Win_Controls.win .Center_FrameBtn2:active {
+	background: url('assets/win/light_restore.png') -90px 0;
+}
+
+#Win_Controls.win .Right_FrameBtn {
+	background: url('assets/win/light_close.png') 0 0;
+}
+
+#Win_Controls.win .Right_FrameBtn:hover {
+	background: url('assets/win/light_close.png') -45px 0;
+}
+
+#Win_Controls.win .Right_FrameBtn:active {
+	background: url('assets/win/light_close.png') -90px 0;
+}
+
+#Win_Controls.mac {
+	top: 0;
+	left: 0;
+}
+
+#Win_Controls.mac a {
+	-webkit-app-region: no-drag;
+	display: block;
+	width: 12px;
+	height: 12px;
+	-webkit-user-select: none;
+	cursor: default;
+	border-radius: 6px;
+}
+
+#Win_Controls.mac .Left_FrameBtn {
+	background-color: #ff6159;
+}
+#Win_Controls.mac .Left_FrameBtn:active {
+	background-color: #bf4942;
+}
+
+#Win_Controls.mac .Center_FrameBtn {
+	background-color: #ffbd2e;
+}
+#Win_Controls.mac .Center_FrameBtn:active {
+	background-color: #bf8e22;
+}
+
+#Win_Controls.mac .Center_FrameBtn2 {
+	background-color: #ffbd2e;
+}
+#Win_Controls.mac .Center_FrameBtn2:active {
+	background-color: #bf8e22;
+}
+
+#Win_Controls.mac .Right_FrameBtn {
+	background-color: #28c941;
+}
+#Win_Controls.mac .Right_FrameBtn:active {
+	background-color: #1d9730;
+}
+
+#Win_Controls.lin {
+	top: 0;
+	right: 0;
+}
+
+#Win_Controls.lin .Left_FrameBtn {}
+
+#Win_Controls.lin .Left_FrameBtn:hover {}
+
+#Win_Controls.lin .Left_FrameBtn:active {}
+
+#Win_Controls.lin .Center_FrameBtn {}
+
+#Win_Controls.lin .Center_FrameBtn:hover {}
+
+#Win_Controls.lin .Center_FrameBtn:active {}
+
+#Win_Controls.lin .Center_FrameBtn2 {}
+
+#Win_Controls.lin .Center_FrameBtn2:hover {}
+
+#Win_Controls.lin .Center_FrameBtn2:active {}
+
+#Win_Controls.lin .Right_FrameBtn {}
+
+#Win_Controls.lin .Right_FrameBtn:hover {}
+
+#Win_Controls.lin .Right_FrameBtn:active {}
