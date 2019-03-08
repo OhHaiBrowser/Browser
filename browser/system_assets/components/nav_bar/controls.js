@@ -1,7 +1,5 @@
 let AboutMenu = require('./system_assets/scripts/addons/about.js'),
-BookmarkMenu = require('./system_assets/scripts/addons/bookmarks.js'),
 SettingsMenu = require('./system_assets/scripts/addons/settings.js'),
-HistoryMenu = require('./system_assets/scripts/addons/history.js'),
 UrlService = require('./system_assets/services/navbar.js');
 MegaOverFlowContent = document.getElementById("MegaMenuContent"),
 launchparams = remote.getGlobal('sharedObject').prop1,
@@ -78,11 +76,6 @@ if (IsLaunchParam){
 
 OhHaiBrowser.bookmarks.load();
 OhHaiBrowser.history.load();
-//Settings.Get("Theme",function(item){
-//	if(item != undefined){
-//		OhHaiBrowser.ui.theme.load(item.value);
-//	}
-//});
 
 Settings.Get("TabBar",function(item){
 	if(item != undefined){
