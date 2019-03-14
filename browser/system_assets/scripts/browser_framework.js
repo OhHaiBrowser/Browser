@@ -1,8 +1,10 @@
-var {	clipboard,	remote} = require('electron');
-var {	Menu,	MenuItem} = remote;
-var {Quicklinks, Settings, Sessions, Groups, History} = require('./system_assets/modules/OhHaiBrowser.Data.js');
-var HistoryList = require('./system_assets/scripts/addons/history.js');
-var BookmarksList = require('./system_assets/scripts/addons/bookmarks.js');
+var {clipboard,	remote} = require('electron'),
+	{Menu,	MenuItem} = remote,
+	{Quicklinks, Settings, Sessions, Groups, History} = require('./system_assets/modules/OhHaiBrowser.Data.js'),
+	HistoryList = require('./system_assets/scripts/addons/history.js'),
+	BookmarksList = require('./system_assets/scripts/addons/bookmarks.js'),
+	AddListeners = require('./system_assets/components/tab_views/script.js'),
+	{functions} = require('./system_assets/components/nav_bar/controls.js');
 
 var OhHaiBrowser = {
 	sessionStartTime: '',
@@ -111,7 +113,7 @@ var OhHaiBrowser = {
 
 			OhHaiBrowser.templates.websession(_ID, _URL, function (NewWS) {
 				//Add fuctionality
-				AddListeners(NewWS.webview, NewWS.tab, NewWS.tab.querySelector('.ohhai-tab-fav'), NewWS.tab.querySelector('.ohhai-tab-txt'), _ID);
+				AddListeners(NewWS.webview, NewWS.tab, _ID);
 
 				//Are there options?
 				if (_OPTIONS) {
@@ -1123,7 +1125,6 @@ var OhHaiBrowser = {
 					OhHaiBrowser.ui.overflowmenu.panel.classList.remove('OverflowHidden');
 					OhHaiBrowser.ui.overflowmenu.opened = true;
 				}
-
 				event.stopPropagation();
 			},
 			setvis: function (toggle) {
@@ -1138,69 +1139,8 @@ var OhHaiBrowser = {
 				}
 			}
 		},
-		navbar: {
-			txt_urlBar: document.getElementById('URLBar'),
-			btn_pageInfo: document.getElementById('SecureCheck'),
-			btn_bookmark: document.getElementById('BtnQuicklink'),
-			updateTabCounter: function () {
-				document.getElementById('HideShowCount').textContent = OhHaiBrowser.tabs.count;
-			},
-			updateURLBar: function (webview, callback) {
-				if (!OhHaiBrowser.validate.internalpage(decodeURI(webview.getURL()))) {
-					OhHaiBrowser.ui.navbar.updatePageInfo(webview);
-					OhHaiBrowser.ui.navbar.txt_urlBar.value = webview.getTitle();
-					OhHaiBrowser.ui.navbar.txt_urlBar.setAttribute('data-text-swap', webview.getURL());
-					OhHaiBrowser.ui.navbar.txt_urlBar.setAttribute('data-text-original', webview.getTitle());
-				} else {
-					OhHaiBrowser.ui.navbar.btn_pageInfo.classList.remove('Http', 'Https', 'CirtError', 'Loading');
-					OhHaiBrowser.ui.navbar.btn_pageInfo.classList.add('Internal');
-					OhHaiBrowser.ui.navbar.txt_urlBar.value = '';
-					OhHaiBrowser.ui.navbar.txt_urlBar.setAttribute('data-text-swap', '');
-					OhHaiBrowser.ui.navbar.txt_urlBar.setAttribute('data-text-original', '');
-				}
-				if (typeof callback == 'function') {
-					callback(true);
-				}
-			},
-			updatePageInfo: function (webview) {
-				var webviewcontent = webview.getWebContents();
-				var CurrentURL = decodeURI(webview.getURL());
-
-				OhHaiBrowser.ui.navbar.btn_pageInfo.classList.remove('Http', 'Https', 'CirtError', 'Loading', 'Internal');
-				switch (true) {
-				case CurrentURL.includes('http://'):
-					OhHaiBrowser.ui.navbar.btn_pageInfo.classList.add('Http');
-					break;
-				case CurrentURL.includes('https://'):
-					OhHaiBrowser.ui.navbar.btn_pageInfo.classList.add('Https');
-					break;
-				}
-
-				webviewcontent.on('certificate-error', (e, url, error, cert) => {
-					OhHaiBrowser.ui.navbar.btn_pageInfo.classList.add('CirtError');
-				});
-			}
-		},
-		tabbar: {
-			panel: document.getElementById('LeftMenu'),
-			tabcontainer: document.getElementById('tabs-menu'),
-			pinnedtabcontainer: document.getElementById('tabs-dock'),
-			webviewcontainer: document.getElementById('BrowserWin'),
-			pined: true,
-			toggle: function () {
-				if (OhHaiBrowser.ui.tabbar.pined == true) {
-					OhHaiBrowser.ui.tabbar.panel.classList.add('LeftMenuHidden');
-					OhHaiBrowser.ui.tabbar.panel.classList.remove('LeftMenuShow');
-					OhHaiBrowser.ui.tabbar.pined = false;
-					Settings.Set('TabBar', false, function () {});
-				} else {
-					OhHaiBrowser.ui.tabbar.panel.classList.add('LeftMenuShow');
-					OhHaiBrowser.ui.tabbar.panel.classList.remove('LeftMenuHidden');
-					OhHaiBrowser.ui.tabbar.pined = true;
-					Settings.Set('TabBar', true, function () {});
-				}
-			}
-		},
+		navbar: functions,
+		tabbar: require('./system_assets/modules/OhHaiBrowser.Tabbar.js'),
 		wcm: {
 			template: `
 				<div class='WMC_popup'>
@@ -1238,6 +1178,22 @@ var OhHaiBrowser = {
 					}, 800);
 				}, 5000);
 
+			}
+		},
+		toggleModel: () => {
+			let mainWin = document.getElementById('AppBound');
+			let bgWin = document.getElementById('BlurBg');
+			let modelPopup = document.getElementById('modelPopup');
+			if(bgWin.getAttribute('style') == 'display:none;'){
+				//Show window
+				mainWin.classList.add('blurBrowser');
+				bgWin.setAttribute('style','display:block;');
+				modelPopup.setAttribute('style','display:block;');
+			}else{
+				//Hide window
+				mainWin.classList.remove('blurBrowser');
+				bgWin.setAttribute('style','display:none;');
+				modelPopup.setAttribute('style','display:none;');
 			}
 		}
 	},
@@ -1286,21 +1242,3 @@ var OhHaiBrowser = {
 	validate: require('./system_assets/modules/OhHaiBrowser.Validation.js'),
 	core: require('./system_assets/modules/OhHaiBrowser.Core.js')
 };
-
-OhHaiBrowser.sessionStartTime = Date.now();
-
-Settings.Get('Homepage', (homeitem) => {
-	if (homeitem != undefined) {
-		OhHaiBrowser.settings.homepage = homeitem.value;
-	} else {
-		OhHaiBrowser.settings.homepage = 'default';
-	}
-});
-
-Settings.Get('search', (settingItem) => {
-	if (settingItem !== undefined) {
-		OhHaiBrowser.settings.search = settingItem.value;
-	} else {
-		OhHaiBrowser.settings.search = 'https://www.google.co.uk/search?q=';
-	}
-});

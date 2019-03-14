@@ -1,142 +1,157 @@
 <html>
-	<head>
-		<title>OhHai Browser</title>
-		<link rel="StyleSheet" href="system_assets/style.css"/>
-		<link id="ThemeStyle" rel="StyleSheet" href="themes/default.css"/>
-		<link rel="StyleSheet" href="system_assets/ohhai_ui.css"/>
-		<!--Window controls-->
-		<link rel="StyleSheet" href="../window/controls.css"/>	
-	</head>
-	<body>
-		<input type="hidden" id="CurWebWin" value="">
 
-		<div id="AppBound">
-			<header class="Navbar">
-				<!--== window controls start =============================================================================-->
-				<ul id="Win_Controls" class="Window_Controls">
-					<li><a id="Left_FrameBtn" class="Left_FrameBtn"></a></li>
-					<li><a id="Center_FrameBtn" class="Center_FrameBtn"></a></li>
-					<li><a id="Right_FrameBtn" class="Right_FrameBtn"></a></li>
-				</ul>
-				<!--== window controls end ===============================================================================-->
-				<!--== nav controls start ================================================================================-->
-				<div class="ControlsArea">
-					<div class="FlexControl">
-						<button id="HideShow" title="Open or close tab menu" onclick="OhHaiBrowser.ui.tabbar.toggle();" class="ControlButton TabMenu">
-							<span id="HideShowCount">1</span>
-						</button>
-					</div>
-					<div class="Center">
-						<div class="FlexControl"><button id="Back" title="Click to go back" onclick="OhHaiBrowser.tabs.activePage.goBack();" class="ControlButton Back"></button></div>
-						<div id="URLBackColour" class="CenterCenter">
-							<a id="SecureCheck" class="DoubleURLBtn"></a>
-							<input class="URLBar" type="text" id="URLBar"/>		
-							<button id="BtnQuicklink" class="URLButton"></button>				
-							<button id="Refresh" title="Refresh this page" onclick="OhHaiBrowser.tabs.activePage.reload();" class="URLButton Refresh"></button>
-							<div id="URLAutoComplete" class="URL_AutoComplete AutoComplete_hidden"></div>
-						</div>
-						<button id="Forward" title="Click to go forward" onclick="OhHaiBrowser.tabs.activePage.goForward();" class="ControlButton Forward"></button>
-					</div>
-					<div class="FlexControl">
-						<button id="Menu" title="Browser options menu" onclick="OhHaiBrowser.ui.overflowmenu.toggle();" class="ControlButton OverflowMenu"></button>
-					</div>
-				</div>  
-				<!--== nav controls end ==================================================================================-->
-			</header>
+<head>
+	<title>OhHai Browser</title>
+	<link rel="StyleSheet" href="system_assets/style.css" />
+	<link id="ThemeStyle" rel="StyleSheet" href="themes/default.css" />
+	<link rel="StyleSheet" href="system_assets/ohhai_ui.css" />
+	<!--Window controls-->
+	<link rel="StyleSheet" href="../window/controls.css" />
+</head>
 
-			<div id="DoodlePopUp" class="" style="display:none;">
-				<div class="speech-bubble-inner">
-					<img src="system_assets\icons\doodle.png"/>
-					<span id="DoodleMsg"></span>
-					<hr/>
-					<a href="#" id="DoodleYesFunc">Yeah ok</a>
-					<a href="#" onclick="Doodle.Notify(false);">No thanks</a>
+<body>
+	<input type="hidden" id="CurWebWin" value="">
+	<div id="AppBound">
+		<header class="Navbar">
+			<!--== nav controls start ================================================================================-->
+			<div class="ControlsArea">
+				<div class="FlexControl">
+					<button id="HideShow" title="Open or close tab menu" class="ControlButton TabMenu">
+						<span id="HideShowCount">1</span>
+					</button>
+				</div>
+				<div class="Center">
+					<div class="FlexControl">
+						<button id="Back" title="Click to go back" class="ControlButton Back"></button>
+					</div>
+					<div id="URLBackColour" class="CenterCenter">
+						<a id="SecureCheck" class="DoubleURLBtn"></a>
+						<input class="URLBar" type="text" id="URLBar" />
+						<button id="BtnQuicklink" class="URLButton"></button>
+						<button id="Refresh" title="Refresh this page" class="URLButton Refresh"></button>
+						<div id="URLAutoComplete" class="URL_AutoComplete AutoComplete_hidden"></div>
+					</div>
+					<button id="Forward" title="Click to go forward" class="ControlButton Forward"></button>
+				</div>
+				<div class="FlexControl">
+					<button id="Menu" title="Browser options menu" class="ControlButton OverflowMenu"></button>
+				</div>
+			</div>
+			<!--== nav controls end ==================================================================================-->
+		</header>
+
+		<div id="DoodlePopUp" class="" style="display:none;">
+			<div class="speech-bubble-inner">
+				<img src="system_assets\icons\doodle.png" />
+				<span id="DoodleMsg"></span>
+				<hr />
+				<a href="#" id="DoodleYesFunc">Yeah ok</a>
+				<a href="#" onclick="Doodle.Notify(false);">No thanks</a>
+			</div>
+		</div>
+
+		<div id="Content">
+			<div id="OverFlowMenu" class="OverflowHidden">
+				<div id="OverFlowOptions">
+					<div class="OverFlowContent">
+						<ul id="overflow_list">
+							<li><a onclick="" href="#">New
+									tab</a></li>
+							<li><a onclick=""
+								 href="#">New incognito tab</a></li>
+							<li>
+								<hr />
+							</li>
+							<li><a onclick="" href="#">Settings</a></li>
+							<li><a onclick="" href="#">About</a></li>
+						</ul>
+					</div>
+				</div>
+				<div id="OverFlowDeepMenu" style="display:none;">
+					<div class="OverFlowTopMenu">
+						<a class="CloseOverflow" href="javascript:menu.hide('mega');">
+							<</a> <span id="MenuTitle" class="MenuTitle"></span>
+					</div>
+					<div id="MegaMenuContent"></div>
 				</div>
 			</div>
 
-			<div id="Content">
-				<div id="OverFlowMenu" class="OverflowHidden">
-					<div id="OverFlowOptions">
-						<div class="OverFlowContent">
-							<ul id="overflow_list">
-								<li><a onclick="OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true});" href="#">New tab</a></li>
-								<li><a onclick="OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage(),undefined,{selected: true,mode:'incog'});" href="#">New incognito tab</a></li>
-								<li><hr/></li>
-								<!--<li><a onclick="OhHaiBrowser.tabs.add('history',undefined,{selected: true});" href="#">History</a></li>
-								<li><a onclick="menu.mega(HistoryMenu(),'History')" href="#">History</a></li>
-								<li><hr/></li>
-								<li><a onclick="menu.mega(BookmarkMenu(),'Bookmarks')" href="#">View bookmarks</a></li>					
-								<li><hr/></li>-->
-								<li><a onclick="menu.mega(SettingsMenu(),'Settings')" href="#">Settings</a></li>	
-								<li><a onclick="menu.mega(AboutMenu(),'OhHai Browser')" href="#">About</a></li>
-							</ul>
+			<div id="LeftMenu" class="OhHai-TabMenu LeftMenuShow">
+				<div id="leftAccordion">
+					<div class="acc_panel acc_active">
+						<div class="acc_header">
+							<span class="acc_title">Tabs</span>
 						</div>
-					</div>
-					<div id="OverFlowDeepMenu" style="display:none;">
-						<div class="OverFlowTopMenu">
-							<a class="CloseOverflow" href="javascript:menu.hide('mega');"><</a>
-							<span id="MenuTitle" class="MenuTitle"></span>
-						</div>
-						<div id="MegaMenuContent"></div>
-					</div>
-				</div>
-
-				<div id="LeftMenu" class="OhHai-TabMenu LeftMenuShow">
-					<div id="leftAccordion">
-						<div class="acc_panel acc_active">
-							<div class="acc_header">
-								<span class="acc_title">Tabs</span>
-							</div>
-							<div class="acc_content">
-								<div class="TabContainer">
-									<div id="Tabs">
-										<ul id="tabs-dock" class="ohhai-docktabs"></ul>
-										<ul id="tabs-menu" class="ohhai-maintabs"></ul>
-									</div>
-									<button id="AddTab" title="Add a new tab" onclick="AddTabButton();" class="CommandBtn AddTab"></button>
+						<div class="acc_content">
+							<div class="TabContainer">
+								<div id="Tabs">
+									<ul id="tabs-dock" class="ohhai-docktabs"></ul>
+									<ul id="tabs-menu" class="ohhai-maintabs"></ul>
 								</div>
-							</div>
-						</div>
-						<div class="acc_panel">
-							<div class="acc_header">
-								<span class="acc_title">Bookmarks</span>
-							</div>
-							<div class="acc_content">
-								<div id="BookmarkContainer"></div>
-							</div>
-						</div>
-						<div class="acc_panel">
-							<div class="acc_header">
-								<span class="acc_title">History</span>
-							</div>
-							<div class="acc_content">
-								<div id="HistoryContainer"></div>
+								<button id="AddTab" title="Add a new tab" onclick="AddTabButton();" class="CommandBtn AddTab"></button>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div id="BrowserWin"></div>
-
-				<div id="VideoPlayer" style="display:none;">
-					<div class="TogglePlayer" href="#" onmousedown='' onmouseup='' >][</div>
-					<a class="ClosePlayer" href="javascript:OhHaiBrowser.ui.closeFloatingVidPlayer();">x</a>
-					<div style="display:block;" id="VidInner" class="Player">
-						<iframe id="VidFrame" frameBorder="0" sandbox="allow-forms allow-scripts allow-same-origin"></iframe>
+					<div class="acc_panel">
+						<div class="acc_header">
+							<span class="acc_title">Bookmarks</span>
+						</div>
+						<div class="acc_content">
+							<div id="BookmarkContainer"></div>
+						</div>
 					</div>
-					<div style="clear:both;"></div>
+					<div class="acc_panel">
+						<div class="acc_header">
+							<span class="acc_title">History</span>
+						</div>
+						<div class="acc_content">
+							<div id="HistoryContainer"></div>
+						</div>
+					</div>
 				</div>
-
 			</div>
-        </div>
+			<div id="BrowserWin"></div>
 
-		<!-- Load 3rd party & browser window scripts -->
-		<script src="../window/functions.js"></script>
-		<script>window.$ = window.jQuery = require('./system_assets/scripts/jquery-2.1.4.min.js');</script>
-		<script src="system_assets/scripts/jquery-ui.min.js"></script>
-		<!-- Load main functionality scripts -->
-		<script src="system_assets/scripts/browser_framework.js"></script>
-		<script src="system_assets/components/tab_views/script.js"></script>
-		<script src="system_assets/components/nav_bar/controls.js"></script>
-		<script src="system_assets/doodle/functions.js"></script>
-	</body>
+			<div id="VideoPlayer" style="display:none;">
+				<div class="TogglePlayer" href="#" onmousedown='' onmouseup=''>][</div>
+				<a class="ClosePlayer" href="javascript:OhHaiBrowser.ui.closeFloatingVidPlayer();">x</a>
+				<div style="display:block;" id="VidInner" class="Player">
+					<iframe id="VidFrame" frameBorder="0" sandbox="allow-forms allow-scripts allow-same-origin"></iframe>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+
+		</div>
+	</div>
+
+	<div id='BlurBg' style='display:none;'>
+	</div>
+	<div id="modelPopup" style='display:none;'>
+		<div>
+			<span class="modeltitle">title</span>
+			<button class="modelClose">x</button>
+		</div>
+	</div>
+
+	<!--== window controls start =============================================================================-->
+	<ul id="Win_Controls" class="Window_Controls">
+		<li><a id="Left_FrameBtn" class="Left_FrameBtn"></a></li>
+		<li><a id="Center_FrameBtn" class="Center_FrameBtn"></a></li>
+		<li><a id="Right_FrameBtn" class="Right_FrameBtn"></a></li>
+	</ul>
+	<!--== window controls end ===============================================================================-->
+
+	<!-- Load 3rd party & browser window scripts -->
+	<script src="../window/functions.js"></script>
+	<script>
+		window.$ = window.jQuery = require('./system_assets/scripts/jquery-2.1.4.min.js');
+	</script>
+	<script src="system_assets/scripts/jquery-ui.min.js"></script>
+	<!-- Load main functionality scripts -->
+	<script src="system_assets/scripts/browser_framework.js"></script>
+	<script src="system_assets/services/startup.js"></script>
+	<script src="system_assets/components/nav_bar/functions.js"></script>
+	<script src="system_assets/doodle/functions.js"></script>
+</body>
+
 </html>

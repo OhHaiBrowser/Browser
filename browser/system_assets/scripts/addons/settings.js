@@ -1,6 +1,8 @@
+var {Settings} = require('./../../modules/OhHaiBrowser.Data');
+var core = require('./../../modules/OhHaiBrowser.Core');
 
 module.exports = function load(){
-	let settingsMenu = OhHaiBrowser.core.generateElement(`
+	let settingsMenu = core.generateElement(`
 		<div class='SettingsList'>
 			<p>When browser opens</p>
 			<form>
@@ -48,97 +50,97 @@ module.exports = function load(){
 		</div>
 		`);
 
-		// On Load functions
-		var IP_LoadDefault = settingsMenu.querySelector('#Rad_LoadDefault');
-		IP_LoadDefault.setAttribute('onclick','Settings.Set("Launch",this.value,function(){});');
-		var IP_LoadNew = settingsMenu.querySelector('#Rad_LoadNew');
-		IP_LoadNew.setAttribute('onclick','Settings.Set("Launch",this.value,function(){});');
+	// On Load functions
+	var IP_LoadDefault = settingsMenu.querySelector('#Rad_LoadDefault');
+	IP_LoadDefault.setAttribute('onclick','Settings.Set("Launch",this.value,function(){});');
+	var IP_LoadNew = settingsMenu.querySelector('#Rad_LoadNew');
+	IP_LoadNew.setAttribute('onclick','Settings.Set("Launch",this.value,function(){});');
 
-		Settings.Get("Launch",function(item){
-			if(item != undefined){
-				if(item.value == "fresh"){
-					IP_LoadNew.setAttribute("checked","checked");
-				}else{
-					IP_LoadDefault.setAttribute("checked","checked");
-				}
+	Settings.Get('Launch',function(item){
+		if(item != undefined){
+			if(item.value == 'fresh'){
+				IP_LoadNew.setAttribute('checked','checked');
 			}else{
-				IP_LoadDefault.setAttribute("checked","checked");
+				IP_LoadDefault.setAttribute('checked','checked');
 			}
-		});
-
-		// Home Page functions
-		var Input2_Text = settingsMenu.querySelector('#Txt_Homepage');
-		Input2_Text.setAttribute('onchange',"Settings.Set('Home',this.value,function(){});");
-		var SetHome_Default = settingsMenu.querySelector('#A_DefaultHome');
-		SetHome_Default.setAttribute('href',"javascript:Settings.Set('Home','default',function(){});");
-
-		Settings.Get("Home",function(item){
-			if(item != undefined){
-				Input2_Text.setAttribute('value',item.value);
-			}else{
-				Input2_Text.setAttribute('value','default');
-			}
-		});
-
-		// Search functions
-		var Search_Input1 = settingsMenu.querySelector('#Settings_Search');
-		Search_Input1.setAttribute('onchange',"Settings.Set('Search',this.value,function(){})");
-
-		var Searches =[{Name:'Google' ,URL:'https://www.google.co.uk/search?q='},{Name:'Yahoo',URL:'https://search.yahoo.com/search;?p='},{Name:'Bing',URL:'http://www.bing.com/search?go=Submit&q='},{Name:'Duck duck go',URL:'https://duckduckgo.com/?t=h_&q='}];
-		var i,len;
-		for (i = 0, len = Searches.length; i < len; i++) {
-			var SOption = Searches[i];
-			var Search_Option =document.createElement('option');
-			Search_Option.setAttribute('value',SOption.URL);
-			Search_Option.appendChild(document.createTextNode(SOption.Name));
-			Settings.Get("Search",function(item){
-				if(item != undefined){
-					if(SOption.URL == item.value){
-						Search_Option.setAttribute('selected','selected');
-					}
-				}
-			});
-			Search_Input1.appendChild(Search_Option);
+		}else{
+			IP_LoadDefault.setAttribute('checked','checked');
 		}
+	});
+
+	// Home Page functions
+	var Input2_Text = settingsMenu.querySelector('#Txt_Homepage');
+	Input2_Text.setAttribute('onchange','Settings.Set(\'Home\',this.value,function(){});');
+	var SetHome_Default = settingsMenu.querySelector('#A_DefaultHome');
+	SetHome_Default.setAttribute('href','javascript:Settings.Set(\'Home\',\'default\',function(){});');
+
+	Settings.Get('Home',function(item){
+		if(item != undefined){
+			Input2_Text.setAttribute('value',item.value);
+		}else{
+			Input2_Text.setAttribute('value','default');
+		}
+	});
+
+	// Search functions
+	var Search_Input1 = settingsMenu.querySelector('#Settings_Search');
+	Search_Input1.setAttribute('onchange','Settings.Set(\'Search\',this.value,function(){})');
+
+	var Searches =[{Name:'Google' ,URL:'https://www.google.co.uk/search?q='},{Name:'Yahoo',URL:'https://search.yahoo.com/search;?p='},{Name:'Bing',URL:'http://www.bing.com/search?go=Submit&q='},{Name:'Duck duck go',URL:'https://duckduckgo.com/?t=h_&q='}];
+	var i,len;
+	for (i = 0, len = Searches.length; i < len; i++) {
+		var SOption = Searches[i];
+		var Search_Option =document.createElement('option');
+		Search_Option.setAttribute('value',SOption.URL);
+		Search_Option.appendChild(document.createTextNode(SOption.Name));
+		Settings.Get('Search',function(item){
+			if(item != undefined){
+				if(SOption.URL == item.value){
+					Search_Option.setAttribute('selected','selected');
+				}
+			}
+		});
+		Search_Input1.appendChild(Search_Option);
+	}
 
 		
-		// Adblocker functions
-		var IP_AdBlockYes =	settingsMenu.querySelector('#Rad_AdBlockYes');
-		IP_AdBlockYes.setAttribute('onclick','Settings.Set("adBlock",this.value,function(){});');
+	// Adblocker functions
+	var IP_AdBlockYes =	settingsMenu.querySelector('#Rad_AdBlockYes');
+	IP_AdBlockYes.setAttribute('onclick','Settings.Set("adBlock",this.value,function(){});');
 
-		var IP_AdBlockNo = settingsMenu.querySelector('#Rad_AdBlockNo');
-		IP_AdBlockNo.setAttribute('onclick','Settings.Set("adBlock",this.value,function(){});');
+	var IP_AdBlockNo = settingsMenu.querySelector('#Rad_AdBlockNo');
+	IP_AdBlockNo.setAttribute('onclick','Settings.Set("adBlock",this.value,function(){});');
 
-		Settings.Get("adBlock",function(item){
-			if(item != undefined){
-				if(item.value == "true"){
-					IP_AdBlockYes.setAttribute("checked","checked");
-				}else{
-					IP_AdBlockNo.setAttribute("checked","checked");
-				}
+	Settings.Get('adBlock',function(item){
+		if(item != undefined){
+			if(item.value == 'true'){
+				IP_AdBlockYes.setAttribute('checked','checked');
 			}else{
-				IP_AdBlockNo.setAttribute("checked","checked");
+				IP_AdBlockNo.setAttribute('checked','checked');
 			}
-		});
+		}else{
+			IP_AdBlockNo.setAttribute('checked','checked');
+		}
+	});
 
 	
-		//var IP_TrackBlockYes = settingsMenu.querySelector('#Rad_TrackBlockYes');
-		//IP_TrackBlockYes.setAttribute('onclick','Settings.Set("trackBlock",this.value,function(){});');
+	//var IP_TrackBlockYes = settingsMenu.querySelector('#Rad_TrackBlockYes');
+	//IP_TrackBlockYes.setAttribute('onclick','Settings.Set("trackBlock",this.value,function(){});');
 		
-		//var IP_TrackBlockNo = settingsMenu.querySelector('#Rad_TrackBlockNo');
-		//IP_TrackBlockNo.setAttribute('onclick','Settings.Set("trackBlock",this.value,function(){});');
+	//var IP_TrackBlockNo = settingsMenu.querySelector('#Rad_TrackBlockNo');
+	//IP_TrackBlockNo.setAttribute('onclick','Settings.Set("trackBlock",this.value,function(){});');
 
-		//Settings.Get("trackBlock",function(item){
-		//	if(item != undefined){
-		//		if(item.value == "true"){
-		//			IP_TrackBlockYes.setAttribute("checked","checked");
-		//		}else{
-		//			IP_TrackBlockNo.setAttribute("checked","checked");
-		//		}
-		//	}else{
-		//		IP_TrackBlockNo.setAttribute("checked","checked");
-		//	}
-		//});
+	//Settings.Get("trackBlock",function(item){
+	//	if(item != undefined){
+	//		if(item.value == "true"){
+	//			IP_TrackBlockYes.setAttribute("checked","checked");
+	//		}else{
+	//			IP_TrackBlockNo.setAttribute("checked","checked");
+	//		}
+	//	}else{
+	//		IP_TrackBlockNo.setAttribute("checked","checked");
+	//	}
+	//});
 
-		return settingsMenu;
+	return settingsMenu;
 };

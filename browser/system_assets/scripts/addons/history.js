@@ -1,17 +1,17 @@
-module.exports = function load(){
-	var {History} = require('./../../modules/OhHaiBrowser.Data');
+var {History} = require('./../../modules/OhHaiBrowser.Data');
 
-    var HistDiv = document.createElement('div');
-    HistDiv.setAttribute("class","HistDiv");
+module.exports = function load(){
+	var HistDiv = document.createElement('div');
+	HistDiv.setAttribute('class','HistDiv');
     
-    History.List((HistItems) => {
-    	if (!Array.isArray(HistItems) || !HistItems.length) {
-				//no items
-				var NoItems = document.createElement('h3');
-				NoItems.appendChild(document.createTextNode("No History :("));
-				HistDiv.appendChild(NoItems);
+	History.List((HistItems) => {
+		if (!Array.isArray(HistItems) || !HistItems.length) {
+			//no items
+			var NoItems = document.createElement('h3');
+			NoItems.appendChild(document.createTextNode('No History :('));
+			HistDiv.appendChild(NoItems);
 		}else{			
-			var histListData = ``;
+			var histListData = '';
 			var dateList =	extract(HistItems);
 
 			dateList.forEach((dateItem) => {
@@ -29,19 +29,19 @@ module.exports = function load(){
 			});
 
 			var HistList = document.createElement('div');
-			HistList.setAttribute("id","HistList");
-			HistList.setAttribute("class","HistList");		
+			HistList.setAttribute('id','HistList');
+			HistList.setAttribute('class','HistList');		
 			HistList.innerHTML = histListData;			
 		
 			HistDiv.appendChild(HistList);
 		}
-    });
+	});
 
-    return HistDiv;
+	return HistDiv;
 };
 
 function Convert_DateTitle(dateStamp){
-	var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+	var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 	var months = ['January','Febuary','March','April','May','June','July','Augusts','September','October','November','December'];
 	var d = new Date(dateStamp);
 
@@ -50,7 +50,7 @@ function Convert_DateTitle(dateStamp){
 
 function Convert_TimeStamp(timestamp){	
 	var d = new Date(timestamp);			
-	return addZero(d.getHours()) + ":" + addZero(d.getMinutes())
+	return addZero(d.getHours()) + ':' + addZero(d.getMinutes())
 }
 
 function extract(inputArray) {
@@ -80,7 +80,7 @@ function extract(inputArray) {
 
 function addZero(i) {
 	if (i < 10) {
-	  i = "0" + i;
+		i = '0' + i;
 	}
 	return i;
 }
