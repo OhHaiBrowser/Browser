@@ -1,14 +1,17 @@
-module.exports = function load() {
-	var {Quicklinks} = require('./../../modules/OhHaiBrowser.Data');
+var {remote} = require('electron');
+var {Quicklinks} = require('./../../modules/OhHaiBrowser.Data');
+var core = require('./../../modules/OhHaiBrowser.Core');
 
-	let FavList = OhHaiBrowser.core.generateElement(`<ul></ul>`);
+module.exports = function load() {
+
+	let FavList = core.generateElement('<ul></ul>');
 
 	Quicklinks.List(function (FavItems) {
 		if (!Array.isArray(FavItems) || !FavItems.length) {
-			FavList.appendChild(OhHaiBrowser.core.generateElement(`<li class='NoData'>No bookmarks :(</li>`));
+			FavList.appendChild(core.generateElement('<li class=\'NoData\'>No bookmarks :(</li>'));
 		} else {
 			FavItems.forEach((ThisItem) => {
-				var QuickItem = OhHaiBrowser.core.generateElement(`
+				var QuickItem = core.generateElement(`
 					<li class='bookmark'>
 						<img src='${ThisItem.icon === '' ? 'system_assets/icons/favicon_default.png' : ThisItem.icon}'/>
 						<a href='javascript:OhHaiBrowser.tabs.activePage.navigate("${ThisItem.url}");'>${ThisItem.title}</a>

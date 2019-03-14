@@ -1,5 +1,5 @@
-let tabView = require('./system_assets/modules/TabView.js');
-let CoreFunctions = require('./system_assets/modules/OhHaiBrowser.Core.js');
+let tabView = require('./TabView');
+let CoreFunctions = require('./OhHaiBrowser.Core');
 
 module.exports = {
 	count: 0,

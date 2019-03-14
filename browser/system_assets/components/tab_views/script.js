@@ -1,17 +1,21 @@
-// Functions for webview events
-// -------------------------------------------------------------------
-function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
+var {remote} = require('electron');
+let validate = require('./../../modules/OhHaiBrowser.Validation');
+let {controls, functions} = require('./../nav_bar/controls');
+let {Sessions, History} = require('./../../modules/OhHaiBrowser.Data');
 
-	var sessionEventAdded = false;
-	var tabMediaBtn = fulltab.querySelector('.tabMediaBtn');
+module.exports = (webview, fulltab, ControlsId) => {
+	let tabimg = fulltab.querySelector('.ohhai-tab-fav'),
+		tabtext = fulltab.querySelector('.ohhai-tab-txt'),
+		tabMediaBtn = fulltab.querySelector('.tabMediaBtn'),
+		sessionEventAdded = false;
 
 	webview.addEventListener('did-start-loading', function() {
 		if(!tabMediaBtn.classList.contains('hidden')){
 			tabMediaBtn.classList.add('hidden');
 		}
-		
+	
 		if(OhHaiBrowser.tabs.isCurrent(fulltab)){
-			loadstart(tabtext,tabimg,webview);
+			loadstart(tabtext,tabimg);
 		}
 		if(!sessionEventAdded){
 			var thisWebContent =  webview.getWebContents();
@@ -19,7 +23,7 @@ function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
 			if(thisSession){
 				thisSession.webRequest.onBeforeRequest(['*://*./*'], function(details, callback) {
 					var test_url = details.url;
-					
+				
 					var areAdsBlocked = null;
 					OhHaiBrowser.settings.generic('adBlock',(val) => {
 						areAdsBlocked = val;
@@ -73,39 +77,39 @@ function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
 		UpdateTab(tabtext,null,webview);
 
 		var CurrentURL = decodeURI(webview.getURL());
-		if (!OhHaiBrowser.validate.internalpage(CurrentURL)){
-			//This is not an internal page.
-      		if(!fulltab.classList.contains('IncognitoTab')){
+		if (!validate.internalpage(CurrentURL)){
+		//This is not an internal page.
+			if(!fulltab.classList.contains('IncognitoTab')){
 				var TabIcon = tabimg.src;
 				if(TabIcon == 'system_assets/icons/loader.gif'){TabIcon = '';}
 
-        		History.GetLastItem(function(lastitem){
-          			if(lastitem == undefined){
-            			History.Add(webview.getURL(), webview.getTitle(), TabIcon, OhHaiBrowser.validate.hostname(webview.getURL()));
-          			}else{
-            			if(lastitem.url != webview.getURL()){
-              				History.Add(webview.getURL(), webview.getTitle(), TabIcon, OhHaiBrowser.validate.hostname(webview.getURL()));
-            			}
-          			}		
-        		});
-      		}
+				History.GetLastItem(function(lastitem){
+					if(lastitem == undefined){
+						History.Add(webview.getURL(), webview.getTitle(), TabIcon, validate.hostname(webview.getURL()));
+					}else{
+						if(lastitem.url != webview.getURL()){
+							History.Add(webview.getURL(), webview.getTitle(), TabIcon, validate.hostname(webview.getURL()));
+						}
+					}		
+				});
+			}
 		}
 	});
 
 	webview.addEventListener('load-commit', function(e) {
 		if(OhHaiBrowser.tabs.isCurrent(fulltab)){
-			//only kick event if the mainframe is loaded, no comments or async BS!
+		//only kick event if the mainframe is loaded, no comments or async BS!
 			if(e.isMainFrame){
-				//is doodle already open? - we dont want to bug the users so much. - Actully we shouldnt need to check...Doodle should know.
+			//is doodle already open? - we dont want to bug the users so much. - Actully we shouldnt need to check...Doodle should know.
 				Doodle.DEPLOY(webview);
 			}
 		}
 	});
 
-
 	webview.addEventListener('page-title-updated', function() {
 		UpdateTab(tabtext,null,webview);
 	});
+
 	webview.addEventListener('dom-ready', function() {
 		domloaded(fulltab,webview);
 		UpdateTab(tabtext,tabimg,webview);
@@ -120,11 +124,13 @@ function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
 			var WbMen = OhHaiBrowser.ui.contextmenus.webview(webview, webviewcontent, params);
 			WbMen.popup(remote.getCurrentWindow());
 		});
-	
+
 	});
+
 	webview.addEventListener('did-fail-load', function (e) {
 		if (e.errorCode != -3 && e.validatedURL == e.target.getURL()) {webview.loadURL(OhHaiBrowser.builtInPages.errorPage + '?code=' + e.errorCode + '&url=' + e.validatedURL);}
 	});
+
 	webview.addEventListener('close', function() {
 		OhHaiBrowser.tabs.remove(fulltab);
 	});
@@ -143,8 +149,6 @@ function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
 			OhHaiBrowser.tabs.add(e.url,undefined,{selected: true});
 		}
 	});
-	
-	
 
 	webview.addEventListener('media-started-playing', function (e) {
 		if(webview.isAudioMuted()){
@@ -155,6 +159,7 @@ function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
 			tabMediaBtn.classList.remove('hidden');
 		}
 	});
+
 	webview.addEventListener('media-paused', function (e) {
 		if(webview.isAudioMuted()){
 			tabMediaBtn.classList.add('tabMute');
@@ -164,8 +169,6 @@ function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
 			tabMediaBtn.classList.remove('hidden');
 		}
 	});
-
-
 
 	webview.addEventListener('page-favicon-updated',function(e){
 		tabimg.src= e.favicons[0];
@@ -188,7 +191,7 @@ function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
 			break;
 		default:
 			OhHaiBrowser.tabs.setCurrent(fulltab,webview);
-			OhHaiBrowser.ui.navbar.updateURLBar(webview);
+			functions.updateURLBar(webview);
 		}
 	});
 
@@ -197,10 +200,11 @@ function AddListeners(webview,fulltab,tabimg,tabtext,ControlsId){
 		var TbMen = OhHaiBrowser.ui.contextmenus.tab(fulltab, webview, tabtext, fulltab.querySelector('.TabClose'));
 		TbMen.popup(remote.getCurrentWindow());
 	}, false);
-}
+};
 
-function loadstart(tabtext,tabimg,webview){
-	$('#SecureCheck').addClass('Loading');
+
+function loadstart(tabtext,tabimg){
+	controls.lnk_cirtpip.classList.add('Loading');
 	tabtext.textContent = 'Loading...';
 	tabimg.src= 'system_assets/icons/loader.gif';
 }
@@ -208,8 +212,8 @@ function loadstart(tabtext,tabimg,webview){
 function domloaded(fulltab,webview){
 	if(OhHaiBrowser.tabs.isCurrent(fulltab)){
 		//tabs.updateURLBar(webview);
-		OhHaiBrowser.ui.navbar.updateURLBar(webview);
-		$('#SecureCheck').removeClass('Loading');
+		functions.updateURLBar(webview);
+		controls.lnk_cirtpip.classList.remove('Loading');
 		//check if this site is a qlink
 		OhHaiBrowser.bookmarks.check(webview.getURL(),function(returnval){
 			OhHaiBrowser.bookmarks.updateBtn(returnval);
@@ -227,5 +231,5 @@ function UpdateTab(tabtext,tabimg,webview){
 }
 
 function SetFavIcon(control) {
-	control.src = `file://${__dirname}/system_assets/icons/favicon_default.png`;
+	control.src = 'system_assets/icons/favicon_default.png';
 }
