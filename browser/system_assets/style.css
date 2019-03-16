@@ -811,11 +811,44 @@ button:focus {
 }
 
 #modelPopup{
-	
+	z-index: 501;
+	position: fixed;
+	width: 600px;
+	height: 400px;
+	background: #fff;
+	border-radius: 5px;
+	left: calc(50% - 300px);
+    top: calc(50% - 200px);
+    box-shadow: 0px 0px 15px #000;
 }
-.modeltitle{
+	.modeltitleBar{
+		height: 30px;
+		box-sizing: border-box;
+		padding: 5px;
+		background: var(--main);
+		border-top-right-radius: 5px;
+		border-top-left-radius: 5px;
+	}
+		.modeltitle{
+			color: #fff;
+		}
+		.modelClose{
+			float: right;
+			height: 20px;
+			width: 20px;
+			border: none;
+			border-radius: 20px;
+			text-align: center;
+			background: transparent;
+			color: #fff;
+		}
+		.modelClose:hover{
+			background-color:#f53355;
+		}
 
-}
-.modelClose{
-
-}
+	#modelContent{
+		overflow: auto;
+		height: calc(100% - 30px);
+		border-bottom-left-radius: 5px;
+		border-bottom-right-radius: 5px;
+	}

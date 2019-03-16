@@ -112,53 +112,21 @@ controls.btn_bookmarked.addEventListener('click', function (e) {
 //-------------------------------------------------------------------------------------------------------------------------
 controls.btn_overflow.addEventListener('click',() => {
 	new Contextuals.menu([
-		{title:'New tab', tip:'', icon:'/', onclick:() => {
+		{title:'New tab', tip:'', icon:'system_assets/icons/transparent.png', onclick:() => {
 			OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true});
 		}},
-		{title:'New incognito tab', tip:'', icon:'/', onclick:() => {
+		{title:'New incognito tab', tip:'', icon:'system_assets/icons/transparent.png', onclick:() => {
 			OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true,mode:'incog'});
 		}},
 		{seperator:true},
-		{title:'Settings', tip:'', icon:'/', onclick:() => {
-			menu.mega(SettingsMenu(),'Settings');
+		{title:'Settings', tip:'', icon:'system_assets/icons/transparent.png', onclick:() => {
+			OhHaiBrowser.ui.toggleModel(SettingsMenu(),'Settings');
 		}},
-		{title:'About', tip:'', icon:'/', onclick:() => {
-			menu.mega(AboutMenu(),'OhHai Browser');
+		{title:'About', tip:'', icon:'system_assets/icons/transparent.png', onclick:() => {
+			OhHaiBrowser.ui.toggleModel(AboutMenu(),'OhHai Browser');
 		}}
 	]);
 });
-
-
-OhHaiBrowser.ui.overflowmenu.panel.addEventListener('click', function (e) {
-	e.stopPropagation();
-});
-
-document.addEventListener('click',() => {
-	OhHaiBrowser.ui.overflowmenu.setvis(false);
-});
-
-var menu = {
-	mega: function (loadfunction, MenuTitle) {
-
-		if (MegaOverFlowContent.lastChild) {
-			MegaOverFlowContent.removeChild(MegaOverFlowContent.lastChild);
-		}
-
-		OhHaiBrowser.ui.overflowmenu.items.overflowDeepMenuTitle.textContent = MenuTitle;
-		//Load content into menu area
-		MegaOverFlowContent.appendChild(loadfunction);
-
-		//Show menu area
-		OhHaiBrowser.ui.overflowmenu.items.overflowOptionsMenu.style.display = 'none';
-		OhHaiBrowser.ui.overflowmenu.items.overflowDeepMenu.style.display = '';
-	},
-	hide: function () {
-		OhHaiBrowser.ui.overflowmenu.items.overflowDeepMenu.style.display = 'none';
-		OhHaiBrowser.ui.overflowmenu.items.overflowOptionsMenu.style.display = '';
-		MegaOverFlowContent.removeChild(MegaOverFlowContent.lastChild);
-	}
-};
-
 
 
 function initAccordion(accordionElem) {

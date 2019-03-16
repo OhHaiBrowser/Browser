@@ -51,31 +51,6 @@
 		</div>
 
 		<div id="Content">
-			<div id="OverFlowMenu" class="OverflowHidden">
-				<div id="OverFlowOptions">
-					<div class="OverFlowContent">
-						<ul id="overflow_list">
-							<li><a onclick="" href="#">New
-									tab</a></li>
-							<li><a onclick=""
-								 href="#">New incognito tab</a></li>
-							<li>
-								<hr />
-							</li>
-							<li><a onclick="" href="#">Settings</a></li>
-							<li><a onclick="" href="#">About</a></li>
-						</ul>
-					</div>
-				</div>
-				<div id="OverFlowDeepMenu" style="display:none;">
-					<div class="OverFlowTopMenu">
-						<a class="CloseOverflow" href="javascript:menu.hide('mega');">
-							<</a> <span id="MenuTitle" class="MenuTitle"></span>
-					</div>
-					<div id="MegaMenuContent"></div>
-				</div>
-			</div>
-
 			<div id="LeftMenu" class="OhHai-TabMenu LeftMenuShow">
 				<div id="leftAccordion">
 					<div class="acc_panel acc_active">
@@ -127,10 +102,15 @@
 	<div id='BlurBg' style='display:none;'>
 	</div>
 	<div id="modelPopup" style='display:none;'>
-		<div>
+		<div class="modeltitleBar">
 			<span class="modeltitle">title</span>
 			<button class="modelClose">x</button>
 		</div>
+		<div id="modelContent"></div>
+	</div>
+	<div id="lockedPopup" style='display:none;'>
+		<input type="password" placeholder="" id=""/>
+		<input type="button" value="Unlock" id=""/>
 	</div>
 
 	<!--== window controls start =============================================================================-->
@@ -151,7 +131,6 @@
 	<script src="system_assets/scripts/browser_framework.js"></script>
 	<script src="system_assets/services/startup.js"></script>
 	<script src="system_assets/components/nav_bar/functions.js"></script>
-	<script src="system_assets/doodle/functions.js"></script>
 </body>
 
 </html>

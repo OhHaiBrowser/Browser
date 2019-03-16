@@ -2,6 +2,7 @@ var {remote} = require('electron');
 let validate = require('./../../modules/OhHaiBrowser.Validation');
 let {controls, functions} = require('./../nav_bar/controls');
 let {Sessions, History} = require('./../../modules/OhHaiBrowser.Data');
+let Doodle = require('./../../modules/Doodle');
 
 module.exports = (webview, fulltab, ControlsId) => {
 	let tabimg = fulltab.querySelector('.ohhai-tab-fav'),
@@ -173,8 +174,11 @@ module.exports = (webview, fulltab, ControlsId) => {
 	webview.addEventListener('page-favicon-updated',function(e){
 		tabimg.src= e.favicons[0];
 	});
-	webview.addEventListener('focus',function(e){
-		OhHaiBrowser.ui.overflowmenu.setvis(false);
+	webview.addEventListener('focus',function(){
+		let openMenuItem = document.querySelector('.contextualMenu:not(.contextualMenuHidden)');
+		if(openMenuItem != null){
+			document.body.removeChild(openMenuItem);
+		}
 	});
 
 	//Tab Listeners
