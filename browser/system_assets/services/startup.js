@@ -84,14 +84,15 @@ Settings.Get('Launch', function (item) {
 	}
 });
 if (IsLaunchParam) {
-	console.log('Launch param: ' + launchparams[1]);
-	OhHaiBrowser.validate.url(launchparams[1], function (valresult) {
-		if (valresult == true) {
-			//tabs.add(launchparams[1],"default");
-			OhHaiBrowser.tabs.add(launchparams[1], undefined, {
-				selected: true
-			});
-		}
+	launchparams.forEach(param => {
+		console.log('param' + param);
+		OhHaiBrowser.validate.url(param, function (valresult) {
+			if (valresult == true) {
+				OhHaiBrowser.tabs.add(param, undefined, {
+					selected: true
+				});
+			}
+		});
 	});
 }
 
