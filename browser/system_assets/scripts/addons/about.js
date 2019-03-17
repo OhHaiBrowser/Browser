@@ -4,7 +4,7 @@ module.exports = function load(){
 	let aboutPage = core.generateElement(`
 	<div class='SettingsList'>
 		<p>Browser Version</p>
-		<span>3.1.0</span>
+		<span>3.2.0</span>
 	</div>`);
 
 	var Update_header = document.createElement('p');

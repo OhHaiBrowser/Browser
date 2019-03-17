@@ -3,7 +3,6 @@ var {clipboard,	remote} = require('electron'),
 	{Quicklinks, Settings, Sessions, Groups, History} = require('./system_assets/modules/OhHaiBrowser.Data.js'),
 	HistoryList = require('./system_assets/scripts/addons/history.js'),
 	BookmarksList = require('./system_assets/scripts/addons/bookmarks.js'),
-	AddListeners = require('./system_assets/components/tab_views/script.js'),
 	{functions} = require('./system_assets/components/nav_bar/controls.js');
 
 var OhHaiBrowser = {
@@ -15,92 +14,6 @@ var OhHaiBrowser = {
 		home: `file://${__dirname}/system_assets/components/home_page/index.html`,
 		settings: `file://${__dirname}/system_assets/builtin-pages/settings.html`,
 		errorPage: `file://${__dirname}/system_assets/components/error_page/index.html`
-	},
-	templates: {
-		websession: function (_ID, _URL, callback) {
-			var tabelement = `
-				<li class='tab' title=''>
-					<a class='tabMediaBtn hidden'></a>
-					<img class='ohhai-tab-fav' src='system_assets/icons/logo.png'/>
-					<span class='ohhai-tab-txt'>New Tab</span>
-					<a class='TabClose'></a>
-				</li>`;
-			var div = document.createElement('div');
-			div.innerHTML = tabelement;
-			div.firstElementChild.setAttribute('id', 't_' + _ID);
-			div.firstElementChild.setAttribute('data-container', 'wv_' + _ID);
-
-			var ThisView = document.createElement('webview');
-			ThisView.id = 'wv_' + _ID;
-			ThisView.classList.add('Hidden');
-
-			var PagetoOpen = '';
-			switch (_URL) {
-			case 'settings':
-				PagetoOpen = OhHaiBrowser.builtInPages.settings;
-				break;
-			case 'history':
-				PagetoOpen = OhHaiBrowser.builtInPages.history;
-				break;
-			case 'quicklinks':
-				PagetoOpen = OhHaiBrowser.builtInPages.bookmarks;
-				break;
-			case 'default':
-			case undefined:
-			case '':
-				PagetoOpen = OhHaiBrowser.builtInPages.home;
-				break;
-			default:
-				PagetoOpen = _URL;
-			}
-			ThisView.src = PagetoOpen;
-
-			callback({
-				tab: div.firstElementChild,
-				webview: ThisView
-			});
-		},
-		group: function (_ID, _Title, callback) {
-			var grouptemplate = `
-				<li class='group' title=''>
-					<div class='ohhai-group-header'>
-						<input type='text' class='ohhai-group-txt' value='New Group'/>
-						<a class='ohhai-togglegroup'></a>
-					</div>
-					<ul class='ohhai-group-children'>
-					</ul>
-				</li>`;
-			var div = document.createElement('div');
-			div.innerHTML = grouptemplate;
-
-			div.firstElementChild.setAttribute('id', _ID);
-
-			var Group = div.firstElementChild;
-			var GroupHead = Group.querySelector('.ohhai-group-header');
-			var GroupName = Group.querySelector('.ohhai-group-txt');
-			var ToggleGroup = Group.querySelector('.ohhai-togglegroup');
-			var GroupChildren = Group.querySelector('.ohhai-group-children');
-
-			if (_Title != null) {
-				Group.querySelector('.ohhai-group-txt').value = _Title;
-			}
-
-			ToggleGroup.addEventListener('click', function (e) {
-				$(GroupChildren).toggle();
-			});
-			GroupName.addEventListener('change', function () {
-				Groups.Upsert(Group.id, GroupName.value, function (id) {});
-			});
-			GroupHead.addEventListener('contextmenu', (e) => {
-				e.preventDefault();
-				var GroupMenu = OhHaiBrowser.ui.contextmenus.group(Group, GroupChildren);
-				GroupMenu.popup(remote.getCurrentWindow());
-			}, false);
-
-			if (typeof callback == 'function') {
-				callback(div.firstElementChild);
-			}
-		}
 	},
 	tabs: require('./system_assets/modules/OhHaiBrowser.Tabs.js'),
 	session: {
