@@ -2,7 +2,8 @@ let CoreFunctions = require('./OhHaiBrowser.Core'),
 	{Sessions, Groups} = require('./OhHaiBrowser.Data'),
 	AddListeners = require('./../components/tab_views/script'),
 	Tabbar = require('./OhHaiBrowser.Tabbar'),
-	{remote} = require('electron');
+	{remote} = require('electron'),
+	{functions} = require('./../components/nav_bar/controls.js');
 
 const Templates = {
 	websession: function (_ID, _URL, callback) {
@@ -168,7 +169,7 @@ const Tabs = {
 			}
 
 			Tabs.count++;
-			OhHaiBrowser.ui.navbar.updateTabCounter();
+			functions.updateTabCounter();
 
 			if (typeof callback === 'function') {
 				callback(NewWS);
@@ -201,7 +202,7 @@ const Tabs = {
 				//need to update the URL now
 				Tabs.getCurrent(function (NewTab) {
 					var newWebview = document.getElementById(NewTab.getAttribute('data-container'));
-					OhHaiBrowser.ui.navbar.updateURLBar(newWebview);
+					functions.updateURLBar(newWebview);
 				});
 			}
 
@@ -217,7 +218,7 @@ const Tabs = {
 			}
 		}
 		Tabs.count--;
-		OhHaiBrowser.ui.navbar.updateTabCounter();
+		functions.updateTabCounter();
 
 		if (Tabs.count == 0) {
 			Tabs.add(OhHaiBrowser.settings.homepage, undefined, {
@@ -313,7 +314,7 @@ const Tabs = {
 		default:
 			Tab_Text.style.display = 'block';
 			Tab_CloseBtn.style.display = 'block';
-			tabbar.tabcontainer.appendChild(_tab);
+			Tabbar.tabcontainer.appendChild(_tab);
 			Sessions.UpdateMode(TabSessionId, 'Default', function () {});
 			Sessions.UpdateParent(TabSessionId, Tabbar.tabcontainer.id, function () {});
 		}

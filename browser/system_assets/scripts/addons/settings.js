@@ -52,9 +52,13 @@ module.exports = function load(){
 
 	// On Load functions
 	var IP_LoadDefault = settingsMenu.querySelector('#Rad_LoadDefault');
-	IP_LoadDefault.setAttribute('onclick','Settings.Set("Launch",this.value,function(){});');
+	IP_LoadDefault.addEventListener('click',()=>{
+		Settings.Set('Launch',IP_LoadDefault.value,function(){});
+	});
 	var IP_LoadNew = settingsMenu.querySelector('#Rad_LoadNew');
-	IP_LoadNew.setAttribute('onclick','Settings.Set("Launch",this.value,function(){});');
+	IP_LoadNew.addEventListener('click',()=>{
+		Settings.Set('Launch',IP_LoadNew.value,function(){});
+	});
 
 	Settings.Get('Launch',function(item){
 		if(item != undefined){
@@ -84,25 +88,24 @@ module.exports = function load(){
 
 	// Search functions
 	var Search_Input1 = settingsMenu.querySelector('#Settings_Search');
-	Search_Input1.setAttribute('onchange','Settings.Set(\'Search\',this.value,function(){})');
+	Search_Input1.addEventListener('change',()=>{
+		Settings.Set('Search',Search_Input1.value,function(){});
+	});
 
 	var Searches =[{Name:'Google' ,URL:'https://www.google.co.uk/search?q='},{Name:'Yahoo',URL:'https://search.yahoo.com/search;?p='},{Name:'Bing',URL:'http://www.bing.com/search?go=Submit&q='},{Name:'Duck duck go',URL:'https://duckduckgo.com/?t=h_&q='}];
-	var i,len;
-	for (i = 0, len = Searches.length; i < len; i++) {
-		var SOption = Searches[i];
-		var Search_Option =document.createElement('option');
-		Search_Option.setAttribute('value',SOption.URL);
-		Search_Option.appendChild(document.createTextNode(SOption.Name));
-		Settings.Get('Search',function(item){
+	Searches.forEach((item) => {
+		let Search_Option = core.generateElement(`
+			<option value='${item.URL}'>${item.Name}</option>
+		`);
+		Settings.Get('Search',function(sitem){
 			if(item != undefined){
-				if(SOption.URL == item.value){
+				if(item.URL == sitem.value){
 					Search_Option.setAttribute('selected','selected');
 				}
 			}
 		});
 		Search_Input1.appendChild(Search_Option);
-	}
-
+	});
 		
 	// Adblocker functions
 	var IP_AdBlockYes =	settingsMenu.querySelector('#Rad_AdBlockYes');
