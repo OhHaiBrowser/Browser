@@ -10,22 +10,22 @@ global.sharedObject = {prop1: process.argv}
 
 // First instantiate the class
 const store = new Store({
-  // We'll call our data file 'user-preferences'
-  configName: 'window-state',
-  defaults: {
-    // 900x600 is the default size of our window
-    windowBounds: { width: 900, height: 600 },
-    isMaximised: false
-  }
+	// We'll call our data file 'user-preferences'
+	configName: 'window-state',
+	defaults: {
+		// 900x600 is the default size of our window
+		windowBounds: { width: 900, height: 600 },
+		isMaximised: false
+	}
 });
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform != 'darwin') {
-    app.quit();
-  }
+	// On OS X it is common for applications and their menu bar
+	// to stay active until the user quits explicitly with Cmd + Q
+	if (process.platform != 'darwin') {
+		app.quit();
+	}
 });
 
 // This method will be called when Electron has finished
@@ -34,57 +34,53 @@ app.on('ready', function() {
 
 	let { width, height } = store.get('windowBounds');
 
-  // Create the browser window.
-  mainWindow = new BrowserWindow({
+	// Create the browser window.
+	mainWindow = new BrowserWindow({
 		width: width,
 		height: height,
 		frame: false,
 		icon: `${__dirname}/window/assets/icon.ico`,
 		show: false,
-    minHeight: 350,
-    minWidth: 485
+		minHeight: 350,
+		minWidth: 485
 	});
 
-  if(store.get('isMaximised')){
-    mainWindow.maximize();
-  }
+	if(store.get('isMaximised')){
+		mainWindow.maximize();
+	}
 
 	mainWindow.on('ready-to-show', function() {
-      mainWindow.show();
-      mainWindow.focus();
+		mainWindow.show();
+		mainWindow.focus();
 	});
   
-  globalShortcut.register('CommandOrControl+Shift+D', () => {
-    if(mainWindow.isFocused() == true){
-      mainWindow.webContents.openDevTools();
-    }
-  });
+	globalShortcut.register('CommandOrControl+Shift+D', () => {
+		if(mainWindow.isFocused() == true){
+			mainWindow.webContents.openDevTools();
+		}
+	});
 
-  mainWindow.setMenu(null);
+	mainWindow.setMenu(null);
 	
 	mainWindow.loadURL(`${__dirname}/browser/index.html`);
 		
-  mainWindow.on('resize', () => {
-    let { width, height } = mainWindow.getBounds();
-    if(!mainWindow.isMaximized()){
-      store.set('windowBounds', { width, height });
-    }
-    store.set('isMaximised',mainWindow.isMaximized());
-  });
+	mainWindow.on('resize', () => {
+		let { width, height } = mainWindow.getBounds();
+		if(!mainWindow.isMaximized()){
+			store.set('windowBounds', { width, height });
+		}
+		store.set('isMaximised',mainWindow.isMaximized());
+	});
 
-  // Emitted when the window is closed.
-  mainWindow.on('closed', function() {
-    mainWindow = null;
-  });
+	// Emitted when the window is closed.
+	mainWindow.on('closed', function() {
+		mainWindow = null;
+	});
 
 
-  protocol.registerStringProtocol('mailto', function (req, cb) {
-    electron.shell.openExternal(req.url)
-    return null
-  }, function (error) {
-    if (error) {
-      console.log('Could not register mailto protocol.')
-    }
-  });
+	protocol.registerStringProtocol('mailto', function (req, cb) {
+		electron.shell.openExternal(req.url);
+		return null;
+	}, function (error) {});
 
 });

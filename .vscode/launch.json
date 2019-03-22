@@ -7,9 +7,18 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Electron Main",
-            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
-            "program": "${workspaceFolder}/main.js"
+            "name": "OhHai Browser - Dev",
+            "program": "${workspaceFolder}/main.js",
+            "windows": {
+                "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron"
+            },
+            "linux": {
+
+            },
+            "osx": {
+
+            },
+            "outputCapture": "std"
         }
     ]
 }
