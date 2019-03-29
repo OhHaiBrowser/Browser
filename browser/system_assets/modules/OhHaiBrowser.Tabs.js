@@ -5,44 +5,91 @@ let CoreFunctions = require('./OhHaiBrowser.Core'),
 	{remote} = require('electron'),
 	{functions} = require('./../components/nav_bar/controls.js');
 
-const Templates = {
-	websession: function (_ID, _URL, callback) {
 
-		var tabelement = CoreFunctions.generateElement(`
-			<li class='tab' id='t_${_ID}' data-container='wv_${_ID}'>
+class OhHaiWebSession {
+	constructor(id,url,opts){
+		this.tab =CoreFunctions.generateElement(`
+			<li class='tab' id='t_${id}' data-container='wv_${id}'>
 				<a class='tabMediaBtn hidden'></a>
 				<img class='ohhai-tab-fav' src='system_assets/icons/logo.png'/>
 				<span class='ohhai-tab-txt'>New Tab</span>
 				<a class='TabClose'></a>
 			</li>`);
-
-		var PagetoOpen = '';
-		switch (_URL) {
-		case 'settings':
-			PagetoOpen = OhHaiBrowser.builtInPages.settings;
+		this.webview =  CoreFunctions.generateElement(`<webview id='wv_${id}' src='${parseOpenPage(url)}' class='Hidden'></webview>`);
+		AddListeners(this.webview, this.tab, id);
+		if (opts) {
+			if (opts.mode) {
+				this.mode = String(opts.mode);
+			}
+			if (opts.title) {
+				var tabTxt = this.tab.querySelector('.ohhai-tab-txt');
+				tabTxt.textContent = String(opts.title);
+			}
+			if (opts.favicon) {
+				var tabFav = this.tab.querySelector('.ohhai-tab-fav');
+				tabFav.src = String(opts.favicon);
+			}
+		}
+	}
+	/**
+	 * @param {string} value
+	 */
+	set mode(value){
+		switch(value){
+		case 'incog':
+			this.tab.classList.add('IncognitoTab');
 			break;
-		case 'history':
-			PagetoOpen = OhHaiBrowser.builtInPages.history;
-			break;
-		case 'quicklinks':
-			PagetoOpen = OhHaiBrowser.builtInPages.bookmarks;
+		case 'dock':
+			this.tab.querySelector('.ohhai-tab-txt').style.display = 'none';
+			this.tab.querySelector('.TabClose').style.display = 'none';
 			break;
 		case 'default':
-		case undefined:
-		case '':
-			PagetoOpen = OhHaiBrowser.builtInPages.home;
-			break;
 		default:
-			PagetoOpen = _URL;
+			this.tab.querySelector('.ohhai-tab-txt').style.display = 'block';
+			this.tab.querySelector('.TabClose').style.display = 'block';
 		}
+		this.mode = value;
+	}
+	get mode(){
+		return this.mode;
+	}
 
-		var viewelement = CoreFunctions.generateElement(`<webview id='wv_${_ID}' src='${PagetoOpen}' class='Hidden'></webview>`);
+	/**
+	 * @param {boolean} value
+	 */
+	set selected(value){
+		if(value){
+			this.tab.classList.add('current');
+			this.webview.classList.remove('Hidden');
+		}else{
+			this.tab.classList.remove('current');
+			this.webview.classList.add('Hidden');
+		}
+		this.selected = value;
+	}
+	get selected(){
+		return this.selected;
+	}
 
-		callback({
-			tab: tabelement,
-			webview: viewelement
-		});
-	},
+}
+function parseOpenPage(url){
+	switch (url) {
+	case 'settings':
+		return OhHaiBrowser.builtInPages.settings;
+	case 'history':
+		return OhHaiBrowser.builtInPages.history;
+	case 'quicklinks':
+		return OhHaiBrowser.builtInPages.bookmarks;
+	case 'default':
+	case undefined:
+	case '':
+		return OhHaiBrowser.builtInPages.home;
+	default:
+		return url;
+	}
+}
+
+const Templates = {
 	group: function (_ID, _Title, callback) {
 		var Group = CoreFunctions.generateElement(`
 			<li class='group' id='${_ID}'>
@@ -79,6 +126,7 @@ const Templates = {
 
 const Tabs = {
 	count: 0,
+	tabMap: new Map,
 	add: function (_URL, _ID, _OPTIONS, callback) {
 		let IsNew = false;
 		if (_ID == undefined) {
@@ -86,95 +134,84 @@ const Tabs = {
 			IsNew = true;
 		}
 
-		Templates.websession(_ID, _URL, function (NewWS) {
-			//Add fuctionality
-			AddListeners(NewWS.webview, NewWS.tab, _ID);
+		let NewWS = new OhHaiWebSession(_ID, _URL, _OPTIONS);
 
-			//Are there options?
-			if (_OPTIONS) {
-				if (_OPTIONS.selected == true) {
-					Tabs.setCurrent(NewWS.tab, NewWS.webview);
-				}
-				if (_OPTIONS.mode) {
-					switch (_OPTIONS.mode.toString().toLowerCase()) {
-					case 'dock':
-						Tabbar.pinnedtabcontainer.appendChild(NewWS.tab);
-						break;
-					case 'incog':
-						NewWS.tab.classList.add('IncognitoTab');
-						Tabbar.tabcontainer.appendChild(NewWS.tab);
-						break;
-					case 'grouped':
-						if (_OPTIONS.parent) {
-							if (typeof _OPTIONS.parent == 'string') {
-								_OPTIONS.parent = document.getElementById(_OPTIONS.parent);
-							}
-							if (_OPTIONS.parent != null) {
-								if (_OPTIONS.parent.classList.contains('ohhai-group-children')) {
-									_OPTIONS.parent.appendChild(NewWS.tab);
-								} else {
-									var GroupedTabs = _OPTIONS.parent.querySelector('.ohhai-group-children');
-									GroupedTabs.appendChild(NewWS.tab);
-								}
+		//Are there options?
+		if (_OPTIONS) {
+			if (_OPTIONS.selected == true) {
+				Tabs.setCurrent(NewWS.tab, NewWS.webview);
+			}
+			if (_OPTIONS.mode) {
+				switch (_OPTIONS.mode.toString().toLowerCase()) {
+				case 'dock':
+					Tabbar.pinnedtabcontainer.appendChild(NewWS.tab);
+					break;
+				case 'incog':
+					Tabbar.tabcontainer.appendChild(NewWS.tab);
+					break;
+				case 'grouped':
+					if (_OPTIONS.parent) {
+						if (typeof _OPTIONS.parent == 'string') {
+							_OPTIONS.parent = document.getElementById(_OPTIONS.parent);
+						}
+						if (_OPTIONS.parent != null) {
+							if (_OPTIONS.parent.classList.contains('ohhai-group-children')) {
+								_OPTIONS.parent.appendChild(NewWS.tab);
 							} else {
-								Tabbar.tabcontainer.appendChild(NewWS.tab);
+								var GroupedTabs = _OPTIONS.parent.querySelector('.ohhai-group-children');
+								GroupedTabs.appendChild(NewWS.tab);
 							}
 						} else {
-							_OPTIONS.parent.appendChild(NewWS.tab);
+							Tabbar.tabcontainer.appendChild(NewWS.tab);
 						}
-						break;
-					case 'default':
-					default:
-						Tabbar.tabcontainer.appendChild(NewWS.tab);
+					} else {
+						_OPTIONS.parent.appendChild(NewWS.tab);
 					}
-				} else {
-					_OPTIONS.mode = 'default';
+					break;
+				case 'default':
+				default:
 					Tabbar.tabcontainer.appendChild(NewWS.tab);
 				}
-				if (_OPTIONS.title) {
-					var tabTxt = NewWS.tab.querySelector('.ohhai-tab-txt');
-					tabTxt.textContent = _OPTIONS.title;
-				}
-				if (_OPTIONS.favicon) {
-					var tabFav = NewWS.tab.querySelector('.ohhai-tab-fav');
-					tabFav.src = _OPTIONS.favicon;
-				}
 			} else {
-				//load basic defaults
+				_OPTIONS.mode = 'default';
 				Tabbar.tabcontainer.appendChild(NewWS.tab);
 			}
-			Tabbar.webviewcontainer.appendChild(NewWS.webview);
+		} else {
+			//load basic defaults
+			Tabbar.tabcontainer.appendChild(NewWS.tab);
+		}
+		Tabbar.webviewcontainer.appendChild(NewWS.webview);
 
-			if (!NewWS.tab.classList.contains('IncognitoTab')) {
-				if (IsNew) {
-					var TabParent = null;
-					switch (NewWS.tab.parentElement.className) {
-					case 'ohhai-group-children':
-						var FirstTabParent = NewWS.tab.parentElement;
-						TabParent = FirstTabParent.parentElement.id;
-						break;
-					default:
-						TabParent = NewWS.tab.parentElement.id;
-					}
-
-					Sessions.Set(_ID, 'default', 'TempTitle', _OPTIONS.mode, 'system_assets/icons/logo.png', function (id) {
-						if (id != null) {
-							NewWS.tab.setAttribute('data-session', _ID);
-							Sessions.UpdateParent(_ID, TabParent, function (id) {});
-						}
-					});
-				} else {
-					NewWS.tab.setAttribute('data-session', _ID);
+		if (!NewWS.tab.classList.contains('IncognitoTab')) {
+			if (IsNew) {
+				var TabParent = null;
+				switch (NewWS.tab.parentElement.className) {
+				case 'ohhai-group-children':
+					var FirstTabParent = NewWS.tab.parentElement;
+					TabParent = FirstTabParent.parentElement.id;
+					break;
+				default:
+					TabParent = NewWS.tab.parentElement.id;
 				}
-			}
 
-			Tabs.count++;
-			functions.updateTabCounter();
-
-			if (typeof callback === 'function') {
-				callback(NewWS);
+				Sessions.Set(_ID, 'default', 'TempTitle', _OPTIONS.mode, 'system_assets/icons/logo.png', function (id) {
+					if (id != null) {
+						NewWS.tab.setAttribute('data-session', _ID);
+						Sessions.UpdateParent(_ID, TabParent, function (id) {});
+					}
+				});
+			} else {
+				NewWS.tab.setAttribute('data-session', _ID);
 			}
-		});
+		}
+
+		Tabs.tabMap.set(_ID, NewWS);
+		Tabs.count++;
+		functions.updateTabCounter();
+
+		if (typeof callback === 'function') {
+			callback(NewWS);
+		}
 	},
 	remove: function (_TAB, callback) {
 		var ThisWebView = document.getElementById(_TAB.getAttribute('data-container'));
