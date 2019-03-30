@@ -30,70 +30,14 @@ Settings.Get('Launch', function (item) {
 			break;
 		default:
 			//Old session
-			Groups.Get(function (Glist) {
-				if (Glist.length != 0) {
-					for (g in Glist) {
-						OhHaiBrowser.tabs.groups.add(Glist[g].groupid, Glist[g].name, 'session');
-					}
-				}
-				Sessions.Get(function (Slist) {
-					if (Slist.length != 0) {
-						for (s in Slist) {
-							OhHaiBrowser.tabs.add(Slist[s].url, Slist[s].sessionid, {
-								selected: true,
-								mode: Slist[s].mode,
-								parent: Slist[s].parent,
-								title: Slist[s].title
-							});
-						}
-					} else {
-						//No session
-						if (!IsLaunchParam) {
-							OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
-								selected: true
-							});
-						}
-					}
-				});
-			});
+			LoadPreviousSession();
 		}
 	} else {
-		Groups.Get(function (Glist) {
-			if (Glist.length != 0) {
-				for (g in Glist) {
-					OhHaiBrowser.tabs.groups.add(Glist[g].groupid, Glist[g].name, 'session');
-				}
-			}
-			Sessions.Get(function (Slist) {
-				if (Slist.length != 0) {
-					for (s in Slist) {
-						OhHaiBrowser.tabs.add(Slist[s].url, Slist[s].sessionid, {
-							selected: true,
-							mode: Slist[s].mode,
-							parent: Slist[s].parent,
-							title: Slist[s].title
-						});
-					}
-				} else {
-					OhHaiBrowser.tabs.add('default', undefined, {
-						selected: true
-					});
-				}
-			});
-		});
+		LoadPreviousSession();
 	}
 });
 if (IsLaunchParam) {
-	launchparams.forEach(param => {
-		console.log('param' + param);
-		OhHaiBrowser.validate.url(param, function (valresult) {
-			if (valresult == true) {
-				OhHaiBrowser.tabs.add(param, undefined, {
-					selected: true
-				});
-			}
-		});
-	});
+	LoadParam();
 }
 
 OhHaiBrowser.bookmarks.load();
@@ -126,3 +70,46 @@ Settings.Get('search', (settingItem) => {
 		OhHaiBrowser.settings.search = 'https://www.google.co.uk/search?q=';
 	}
 });
+
+
+function LoadPreviousSession(){
+	Groups.Get(function (Glist) {
+		if (Glist.length != 0) {
+			for (g in Glist) {
+				OhHaiBrowser.tabs.groups.add(Glist[g].groupid, Glist[g].name, 'session');
+			}
+		}
+		Sessions.Get(function (Slist) {
+			if (Slist.length != 0) {
+				for (s in Slist) {
+					OhHaiBrowser.tabs.add(Slist[s].url, Slist[s].sessionid, {
+						selected: true,
+						mode: Slist[s].mode,
+						parent: Slist[s].parent,
+						title: Slist[s].title
+					});
+				}
+			} else {
+				//No session
+				if (!IsLaunchParam) {
+					OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
+						selected: true
+					});
+				}
+			}
+		});
+	});	
+}
+
+function LoadParam(){
+	launchparams.forEach(param => {
+		console.log('param' + param);
+		OhHaiBrowser.validate.url(param, function (valresult) {
+			if (valresult == true) {
+				OhHaiBrowser.tabs.add(param, undefined, {
+					selected: true
+				});
+			}
+		});
+	});	
+}

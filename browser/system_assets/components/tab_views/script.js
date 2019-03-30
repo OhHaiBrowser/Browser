@@ -1,25 +1,26 @@
-var {remote} = require('electron');
-let validate = require('./../../modules/OhHaiBrowser.Validation');
-let {controls, functions} = require('./../nav_bar/controls');
-let {Sessions, History} = require('./../../modules/OhHaiBrowser.Data');
-let Doodle = require('./../../modules/Doodle');
+let {remote} = require('electron'),
+	{controls, functions} = require('./../nav_bar/controls'),
+	{Sessions, History} = require('./../../modules/OhHaiBrowser.Data');
 
-module.exports = (webview, fulltab, ControlsId) => {
-	let tabimg = fulltab.querySelector('.ohhai-tab-fav'),
-		tabtext = fulltab.querySelector('.ohhai-tab-txt'),
-		tabMediaBtn = fulltab.querySelector('.tabMediaBtn'),
+module.exports = (webSession) => {
+	let validate = require('./../../modules/OhHaiBrowser.Validation'),
+		Doodle = require('./../../modules/Doodle');
+
+	let tabimg = webSession.tab.querySelector('.ohhai-tab-fav'),
+		tabtext = webSession.tab.querySelector('.ohhai-tab-txt'),
+		tabMediaBtn = webSession.tab.querySelector('.tabMediaBtn'),
 		sessionEventAdded = false;
 
-	webview.addEventListener('did-start-loading', function() {
+	webSession.webview.addEventListener('did-start-loading', function() {
 		if(!tabMediaBtn.classList.contains('hidden')){
 			tabMediaBtn.classList.add('hidden');
 		}
 	
-		if(OhHaiBrowser.tabs.isCurrent(fulltab)){
+		if(OhHaiBrowser.tabs.isCurrent(webSession.tab)){
 			loadstart(tabtext,tabimg);
 		}
 		if(!sessionEventAdded){
-			var thisWebContent =  webview.getWebContents();
+			var thisWebContent =  webSession.webview.getWebContents();
 			var thisSession = thisWebContent.session;
 			if(thisSession){
 				thisSession.webRequest.onBeforeRequest(['*://*./*'], function(details, callback) {
@@ -73,23 +74,23 @@ module.exports = (webview, fulltab, ControlsId) => {
 		}
 	});
 
-	webview.addEventListener('did-stop-loading', function() {
-		domloaded(fulltab,webview);
-		UpdateTab(tabtext,null,webview);
+	webSession.webview.addEventListener('did-stop-loading', function() {
+		domloaded(webSession.tab, webSession.webview);
+		UpdateTab(tabtext,null, webSession.webview);
 
-		var CurrentURL = decodeURI(webview.getURL());
+		var CurrentURL = decodeURI(webSession.webview.getURL());
 		if (!validate.internalpage(CurrentURL)){
 		//This is not an internal page.
-			if(!fulltab.classList.contains('IncognitoTab')){
+			if(!webSession.tab.classList.contains('IncognitoTab')){
 				var TabIcon = tabimg.src;
 				if(TabIcon == 'system_assets/icons/loader.gif'){TabIcon = '';}
 
 				History.GetLastItem(function(lastitem){
 					if(lastitem == undefined){
-						History.Add(webview.getURL(), webview.getTitle(), TabIcon, validate.hostname(webview.getURL()));
+						History.Add(webSession.tab.getURL(), webSession.webview.getTitle(), TabIcon, OhHaiBrowser.validate.hostname(webSession.webview.getURL()));
 					}else{
-						if(lastitem.url != webview.getURL()){
-							History.Add(webview.getURL(), webview.getTitle(), TabIcon, validate.hostname(webview.getURL()));
+						if(lastitem.url != webSession.webview.getURL()){
+							History.Add(webSession.webview.getURL(), webSession.webview.getTitle(), TabIcon, OhHaiBrowser.validate.hostname(webSession.webview.getURL()));
 						}
 					}		
 				});
@@ -97,46 +98,46 @@ module.exports = (webview, fulltab, ControlsId) => {
 		}
 	});
 
-	webview.addEventListener('load-commit', function(e) {
-		if(OhHaiBrowser.tabs.isCurrent(fulltab)){
+	webSession.webview.addEventListener('load-commit', function(e) {
+		if(OhHaiBrowser.tabs.isCurrent(webSession.tab)){
 		//only kick event if the mainframe is loaded, no comments or async BS!
 			if(e.isMainFrame){
 			//is doodle already open? - we dont want to bug the users so much. - Actully we shouldnt need to check...Doodle should know.
-				Doodle.DEPLOY(webview);
+				Doodle.DEPLOY(webSession.webview);
 			}
 		}
 	});
 
-	webview.addEventListener('page-title-updated', function() {
-		UpdateTab(tabtext,null,webview);
+	webSession.webview.addEventListener('page-title-updated', function() {
+		UpdateTab(tabtext,null, webSession.webview);
 	});
 
-	webview.addEventListener('dom-ready', function() {
-		domloaded(fulltab,webview);
-		UpdateTab(tabtext,tabimg,webview);
+	webSession.webview.addEventListener('dom-ready', function() {
+		domloaded(webSession.tab, webSession.webview);
+		UpdateTab(tabtext, tabimg, webSession.webview);
 
-		if(!fulltab.classList.contains('IncognitoTab')){
-			Sessions.UpdateWebPage(ControlsId,webview.getURL(), webview.getTitle(), tabimg.src , function(id){});
+		if(!webSession.tab.classList.contains('IncognitoTab')){
+			Sessions.UpdateWebPage(webSession.id, webSession.webview.getURL(), webSession.webview.getTitle(), tabimg.src , function(id){});
 		}
 
-		var webviewcontent = webview.getWebContents();	
+		var webviewcontent = webSession.webview.getWebContents();	
 		webviewcontent.on('context-menu', (e, params) => {
 			e.preventDefault();
-			var WbMen = OhHaiBrowser.ui.contextmenus.webview(webview, webviewcontent, params);
+			var WbMen = OhHaiBrowser.ui.contextmenus.webview(webSession.webview, webviewcontent, params);
 			WbMen.popup(remote.getCurrentWindow());
 		});
 
 	});
 
-	webview.addEventListener('did-fail-load', function (e) {
-		if (e.errorCode != -3 && e.validatedURL == e.target.getURL()) {webview.loadURL(OhHaiBrowser.builtInPages.errorPage + '?code=' + e.errorCode + '&url=' + e.validatedURL);}
+	webSession.webview.addEventListener('did-fail-load', function (e) {
+		if (e.errorCode != -3 && e.validatedURL == e.target.getURL()) {webSession.webview.loadURL(OhHaiBrowser.builtInPages.errorPage + '?code=' + e.errorCode + '&url=' + e.validatedURL);}
 	});
 
-	webview.addEventListener('close', function() {
-		OhHaiBrowser.tabs.remove(fulltab);
+	webSession.webview.addEventListener('close', function() {
+		OhHaiBrowser.tabs.remove(webSession.tab);
 	});
 
-	webview.addEventListener('new-window', function(e) {
+	webSession.webview.addEventListener('new-window', function(e) {
 		switch(e.disposition){
 		case 'new-window':
 			OhHaiBrowser.tabs.popupwindow(e,function(window){
@@ -151,8 +152,8 @@ module.exports = (webview, fulltab, ControlsId) => {
 		}
 	});
 
-	webview.addEventListener('media-started-playing', function (e) {
-		if(webview.isAudioMuted()){
+	webSession.webview.addEventListener('media-started-playing', function (e) {
+		if(webSession.webview.isAudioMuted()){
 			tabMediaBtn.classList.add('tabMute');
 			tabMediaBtn.classList.remove('hidden');
 		}else{
@@ -161,8 +162,8 @@ module.exports = (webview, fulltab, ControlsId) => {
 		}
 	});
 
-	webview.addEventListener('media-paused', function (e) {
-		if(webview.isAudioMuted()){
+	webSession.webview.addEventListener('media-paused', function (e) {
+		if(webSession.webview.isAudioMuted()){
 			tabMediaBtn.classList.add('tabMute');
 			tabMediaBtn.classList.remove('hidden');
 		}else{
@@ -171,10 +172,10 @@ module.exports = (webview, fulltab, ControlsId) => {
 		}
 	});
 
-	webview.addEventListener('page-favicon-updated',function(e){
+	webSession.webview.addEventListener('page-favicon-updated',function(e){
 		tabimg.src= e.favicons[0];
 	});
-	webview.addEventListener('focus',function(){
+	webSession.webview.addEventListener('focus',function(){
 		let openMenuItem = document.querySelector('.contextualMenu:not(.contextualMenuHidden)');
 		if(openMenuItem != null){
 			document.body.removeChild(openMenuItem);
@@ -182,26 +183,26 @@ module.exports = (webview, fulltab, ControlsId) => {
 	});
 
 	//Tab Listeners
-	fulltab.addEventListener('click', function(e) {
+	webSession.tab.addEventListener('click', function(e) {
 		switch(e.target.className){
 		case 'TabClose':
-			OhHaiBrowser.tabs.remove(fulltab);
+			OhHaiBrowser.tabs.remove(webSession.tab);
 			break;
 		case 'tabPlaying':
-			webview.setAudioMuted(true);
+			webSession.webview.setAudioMuted(true);
 			break;
 		case 'tabMute':
-			webview.setAudioMuted(false);
+			webSession.webview.setAudioMuted(false);
 			break;
 		default:
-			OhHaiBrowser.tabs.setCurrent(fulltab,webview);
-			functions.updateURLBar(webview);
+			OhHaiBrowser.tabs.setCurrent(webSession.tab, webSession.webview);
+			functions.updateURLBar(webSession.webview);
 		}
 	});
 
-	fulltab.addEventListener('contextmenu', (e) => {
+	webSession.tab.addEventListener('contextmenu', (e) => {
 		e.preventDefault();
-		var TbMen = OhHaiBrowser.ui.contextmenus.tab(fulltab, webview, tabtext, fulltab.querySelector('.TabClose'));
+		var TbMen = OhHaiBrowser.ui.contextmenus.tab(webSession.tab, webSession.webview, tabtext, webSession.tab.querySelector('.TabClose'));
 		TbMen.popup(remote.getCurrentWindow());
 	}, false);
 };
@@ -215,7 +216,6 @@ function loadstart(tabtext,tabimg){
 
 function domloaded(fulltab,webview){
 	if(OhHaiBrowser.tabs.isCurrent(fulltab)){
-		//tabs.updateURLBar(webview);
 		functions.updateURLBar(webview);
 		controls.lnk_cirtpip.classList.remove('Loading');
 		//check if this site is a qlink

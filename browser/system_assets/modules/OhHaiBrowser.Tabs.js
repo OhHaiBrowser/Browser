@@ -8,6 +8,7 @@ let CoreFunctions = require('./OhHaiBrowser.Core'),
 
 class OhHaiWebSession {
 	constructor(id,url,opts){
+		this.id = id;
 		this.tab =CoreFunctions.generateElement(`
 			<li class='tab' id='t_${id}' data-container='wv_${id}'>
 				<a class='tabMediaBtn hidden'></a>
@@ -16,7 +17,6 @@ class OhHaiWebSession {
 				<a class='TabClose'></a>
 			</li>`);
 		this.webview =  CoreFunctions.generateElement(`<webview id='wv_${id}' src='${parseOpenPage(url)}' class='Hidden'></webview>`);
-		AddListeners(this.webview, this.tab, id);
 		if (opts) {
 			if (opts.mode) {
 				this.mode = String(opts.mode);
@@ -30,6 +30,7 @@ class OhHaiWebSession {
 				tabFav.src = String(opts.favicon);
 			}
 		}
+		AddListeners(this);
 	}
 	/**
 	 * @param {string} value
@@ -48,10 +49,15 @@ class OhHaiWebSession {
 			this.tab.querySelector('.ohhai-tab-txt').style.display = 'block';
 			this.tab.querySelector('.TabClose').style.display = 'block';
 		}
-		this.mode = value;
 	}
 	get mode(){
-		return this.mode;
+		if(this.tab.classList.contains('IncognitoTab')){
+			return 'incog';
+		}
+		if(this.tab.querySelector('.ohhai-tab-txt').style.display == 'none'){
+			return 'dock';
+		}
+		return 'default';
 	}
 
 	/**
@@ -65,64 +71,66 @@ class OhHaiWebSession {
 			this.tab.classList.remove('current');
 			this.webview.classList.add('Hidden');
 		}
-		this.selected = value;
 	}
 	get selected(){
-		return this.selected;
+		return this.tab.classList.contains('current');
 	}
 
 }
 function parseOpenPage(url){
 	switch (url) {
-	case 'settings':
-		return OhHaiBrowser.builtInPages.settings;
-	case 'history':
-		return OhHaiBrowser.builtInPages.history;
-	case 'quicklinks':
-		return OhHaiBrowser.builtInPages.bookmarks;
 	case 'default':
 	case undefined:
 	case '':
-		return OhHaiBrowser.builtInPages.home;
+		return `system_assets/components/home_page/index.html`;
 	default:
 		return url;
 	}
 }
 
-const Templates = {
-	group: function (_ID, _Title, callback) {
-		var Group = CoreFunctions.generateElement(`
-			<li class='group' id='${_ID}'>
+class OhHaiGroup {
+	constructor(id,title){
+		this.id = id;
+		this.Group = CoreFunctions.generateElement(`
+			<li class='group' id='${id}'>
 				<div class='ohhai-group-header'>
-					<input type='text' class='ohhai-group-txt' value='${_Title != null ? _Title : 'New Group'}'/>
+					<input type='text' class='ohhai-group-txt' value='${title != null ? title : 'New Group'}'/>
 					<a class='ohhai-togglegroup'></a>
 				</div>
 				<ul class='ohhai-group-children'>
 				</ul>
 			</li>`);
 
-		var GroupHead = Group.querySelector('.ohhai-group-header');
-		var GroupName = Group.querySelector('.ohhai-group-txt');
-		var ToggleGroup = Group.querySelector('.ohhai-togglegroup');
-		var GroupChildren = Group.querySelector('.ohhai-group-children');
+		var GroupHead = this.Group.querySelector('.ohhai-group-header');
+		var GroupName = this.Group.querySelector('.ohhai-group-txt');
+		var ToggleGroup = this.Group.querySelector('.ohhai-togglegroup');
+		var GroupChildren = this.Group.querySelector('.ohhai-group-children');
 
 		ToggleGroup.addEventListener('click', function (e) {
 			$(GroupChildren).toggle();
 		});
 		GroupName.addEventListener('change', function () {
-			Groups.Upsert(Group.id, GroupName.value, function (id) {});
+			Groups.Upsert(this.id, GroupName.value, function (id) {});
 		});
 		GroupHead.addEventListener('contextmenu', (e) => {
 			e.preventDefault();
-			var GroupMenu = OhHaiBrowser.ui.contextmenus.group(Group, GroupChildren);
+			var GroupMenu = OhHaiBrowser.ui.contextmenus.group(this.Group, GroupChildren);
 			GroupMenu.popup(remote.getCurrentWindow());
 		}, false);
-
-		if (typeof callback == 'function') {
-			callback(Group);
-		}
 	}
-};
+	set title(value){
+		var GroupName = this.Group.querySelector('.ohhai-group-txt');
+		GroupName.value = value;
+	}
+	get title(){
+		var GroupName = this.Group.querySelector('.ohhai-group-txt');
+		return GroupName.value;
+	}
+
+	get children(){
+		return this.Group.querySelector('.ohhai-group-children');
+	}
+}
 
 const Tabs = {
 	count: 0,
@@ -182,7 +190,7 @@ const Tabs = {
 		}
 		Tabbar.webviewcontainer.appendChild(NewWS.webview);
 
-		if (!NewWS.tab.classList.contains('IncognitoTab')) {
+		if (NewWS.mode != 'incog') {
 			if (IsNew) {
 				var TabParent = null;
 				switch (NewWS.tab.parentElement.className) {
@@ -379,40 +387,35 @@ const Tabs = {
 	},
 	groups: {
 		add: function (_id, _title, _tab, callback) {
-			var this_group;
 			if (_id == null) {
 				_id = 'group-' + CoreFunctions.generateId();
 			}
-			Templates.group(_id, _title, function (newGroup) {
-				this_group = newGroup;
-				var this_groupChildren = this_group.querySelector('.ohhai-group-children');
-				var this_groupName = this_group.querySelector('.ohhai-group-txt');
 
-				switch (_tab) {
-				case null:
-					//tabs.add('default','default',null,GroupChildren);
-					Tabs.add(OhHaiBrowser.settings.homepage, undefined, {
-						selected: true,
-						mode: 'grouped',
-						parent: this_groupChildren
-					});
-					break;
-				case 'session':
-					break;
-				default:
-					var TabSessionId = _tab.getAttribute('data-session');
-					this_groupChildren.appendChild(_tab);
-					Sessions.UpdateParent(TabSessionId, this_group.id, function (_id) {
+			let NewG = new OhHaiGroup(_id, _title);
 
-					});
-				}
-				Tabbar.tabcontainer.appendChild(this_group);
+			switch (_tab) {
+			case null:
+				Tabs.add('default', undefined, {
+					selected: true,
+					mode: 'grouped',
+					parent: NewG.children
+				});
+				break;
+			case 'session':
+				break;
+			default:
+				var TabSessionId = _tab.getAttribute('data-session');
+				NewG.children.appendChild(_tab);
+				Sessions.UpdateParent(TabSessionId, NewG.id, function (_id) {
 
-				Groups.Upsert(this_group.id, this_groupName.value, function (_id) {});
-			});
+				});
+			}
+			Tabbar.tabcontainer.appendChild(NewG.Group);
+
+			Groups.Upsert(NewG.id, NewG.title, function (_id) {});
 
 			if (typeof callback == 'function') {
-				callback(this_group);
+				callback(NewG.group);
 			}
 
 		},
