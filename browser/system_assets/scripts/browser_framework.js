@@ -11,8 +11,6 @@ var OhHaiBrowser = {
 		return Date.now() - OhHaiBrowser.sessionStartTime;
 	},
 	builtInPages: {
-		home: `file://${__dirname}/system_assets/components/home_page/index.html`,
-		settings: `file://${__dirname}/system_assets/builtin-pages/settings.html`,
 		errorPage: `file://${__dirname}/system_assets/components/error_page/index.html`
 	},
 	tabs: require('./system_assets/modules/OhHaiBrowser.Tabs.js'),

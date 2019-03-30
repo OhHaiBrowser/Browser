@@ -3,7 +3,6 @@ let {controls} = require('./system_assets/components/nav_bar/controls.js'),
 	AboutMenu = require('./system_assets/scripts/addons/about.js'),
 	SettingsMenu = require('./system_assets/scripts/addons/settings.js'),
 	UrlService = require('./system_assets/services/navbar.js'),
-	MegaOverFlowContent = document.getElementById('MegaMenuContent'),
 	Contextuals = require('./system_assets/modules/Contextuals/Contextuals.js');
 
 $(function () {
