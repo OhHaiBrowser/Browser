@@ -75,7 +75,7 @@ module.exports = (webSession) => {
 	});
 
 	webSession.webview.addEventListener('did-stop-loading', function() {
-		domloaded(webSession.tab, webSession.webview);
+		domloaded(webSession);
 		UpdateTab(tabtext,null, webSession.webview);
 
 		var CurrentURL = decodeURI(webSession.webview.getURL());
@@ -113,7 +113,7 @@ module.exports = (webSession) => {
 	});
 
 	webSession.webview.addEventListener('dom-ready', function() {
-		domloaded(webSession.tab, webSession.webview);
+		domloaded(webSession);
 		UpdateTab(tabtext, tabimg, webSession.webview);
 
 		if(!webSession.tab.classList.contains('IncognitoTab')){
@@ -134,7 +134,7 @@ module.exports = (webSession) => {
 	});
 
 	webSession.webview.addEventListener('close', function() {
-		OhHaiBrowser.tabs.remove(webSession.tab);
+		OhHaiBrowser.tabs.remove(webSession);
 	});
 
 	webSession.webview.addEventListener('new-window', function(e) {
@@ -186,7 +186,7 @@ module.exports = (webSession) => {
 	webSession.tab.addEventListener('click', function(e) {
 		switch(e.target.className){
 		case 'TabClose':
-			OhHaiBrowser.tabs.remove(webSession.tab);
+			OhHaiBrowser.tabs.remove(webSession);
 			break;
 		case 'tabPlaying':
 			webSession.webview.setAudioMuted(true);
@@ -195,14 +195,14 @@ module.exports = (webSession) => {
 			webSession.webview.setAudioMuted(false);
 			break;
 		default:
-			OhHaiBrowser.tabs.setCurrent(webSession.tab, webSession.webview);
+			OhHaiBrowser.tabs.setCurrent(webSession);
 			functions.updateURLBar(webSession.webview);
 		}
 	});
 
 	webSession.tab.addEventListener('contextmenu', (e) => {
 		e.preventDefault();
-		var TbMen = OhHaiBrowser.ui.contextmenus.tab(webSession.tab, webSession.webview, tabtext, webSession.tab.querySelector('.TabClose'));
+		var TbMen = OhHaiBrowser.ui.contextmenus.tab(webSession);
 		TbMen.popup(remote.getCurrentWindow());
 	}, false);
 };
@@ -214,12 +214,12 @@ function loadstart(tabtext,tabimg){
 	tabimg.src= 'system_assets/icons/loader.gif';
 }
 
-function domloaded(fulltab,webview){
-	if(OhHaiBrowser.tabs.isCurrent(fulltab)){
-		functions.updateURLBar(webview);
+function domloaded(thisSession){
+	if(thisSession.selected){
+		functions.updateURLBar(thisSession.webview);
 		controls.lnk_cirtpip.classList.remove('Loading');
 		//check if this site is a qlink
-		OhHaiBrowser.bookmarks.check(webview.getURL(),function(returnval){
+		OhHaiBrowser.bookmarks.check(thisSession.webview.getURL(),function(returnval){
 			OhHaiBrowser.bookmarks.updateBtn(returnval);
 		});
 	}
