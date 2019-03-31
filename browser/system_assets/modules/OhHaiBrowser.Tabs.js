@@ -51,13 +51,9 @@ class OhHaiWebSession {
 		}
 	}
 	get mode(){
-		if(this.tab.classList.contains('IncognitoTab')){
-			return 'incog';
-		}
-		if(this.tab.querySelector('.ohhai-tab-txt').style.display == 'none'){
-			return 'dock';
-		}
-		return 'default';
+		return this.tab.classList.contains('IncognitoTab') ? 'incog' :
+			this.tab.querySelector('.ohhai-tab-txt').style.display == 'none' ? 'dock' :
+				'default';
 	}
 
 	/**
@@ -134,7 +130,7 @@ class OhHaiGroup {
 
 const Tabs = {
 	count: 0,
-	tabMap: new Map,
+	tabMap: new Array(),
 	add: function (_URL, _ID, _OPTIONS, callback) {
 		let IsNew = false;
 		if (_ID == undefined) {
@@ -147,7 +143,7 @@ const Tabs = {
 		//Are there options?
 		if (_OPTIONS) {
 			if (_OPTIONS.selected == true) {
-				Tabs.setCurrent(NewWS.tab, NewWS.webview);
+				Tabs.setCurrent(NewWS);
 			}
 			if (_OPTIONS.mode) {
 				switch (_OPTIONS.mode.toString().toLowerCase()) {
@@ -213,7 +209,7 @@ const Tabs = {
 			}
 		}
 
-		Tabs.tabMap.set(_ID, NewWS);
+		Tabs.tabMap.push(NewWS);
 		Tabs.count++;
 		functions.updateTabCounter();
 
@@ -221,40 +217,40 @@ const Tabs = {
 			callback(NewWS);
 		}
 	},
-	remove: function (_TAB, callback) {
-		var ThisWebView = document.getElementById(_TAB.getAttribute('data-container'));
-		var Parent = _TAB.parentElement;
+	remove: function (_webSession, callback) {
+
+		var Parent = _webSession.tab.parentElement;
 		var webviewParent = document.getElementById('BrowserWin');
 
 		if (Tabs.count > 1) {
-			if (Tabs.isCurrent(_TAB)) {
+			if (_webSession.selected) {
 				var Open_Tabs = document.querySelectorAll('li.tab');
 				var This_TabIndex;
 				Open_Tabs.forEach(function (ArrayElement, index) {
-					if (ArrayElement == _TAB) {
+					if (ArrayElement == _webSession.tab) {
 						This_TabIndex = index;
 					}
 				});
 
 				if ((Open_Tabs.length - 1) == This_TabIndex) {
 					//Go in a tab
-					Tabs.setCurrent(Open_Tabs[This_TabIndex - 1], null, null);
+					let thisSession = Tabs.tabMap.find(i => i.tab == Open_Tabs[This_TabIndex - 1]);
+					Tabs.setCurrent(thisSession, null, null);
 				} else {
 					//Select next tab
-					Tabs.setCurrent(Open_Tabs[This_TabIndex + 1], null, null);
+					let thisSession = Tabs.tabMap.find(i => i.tab == Open_Tabs[This_TabIndex + 1]);
+					Tabs.setCurrent(thisSession, null, null);
 				}
 
 				//need to update the URL now
-				Tabs.getCurrent(function (NewTab) {
-					var newWebview = document.getElementById(NewTab.getAttribute('data-container'));
-					functions.updateURLBar(newWebview);
+				Tabs.getCurrent(function (session) {
+					functions.updateURLBar(session.webview);
 				});
 			}
-
 		}
 
-		Parent.removeChild(_TAB);
-		webviewParent.removeChild(ThisWebView);
+		Parent.removeChild(_webSession.tab);
+		webviewParent.removeChild(_webSession.webview);
 
 		if (Parent.classList.contains('ohhai-group-children')) {
 			var ThisGroup = Parent.parentElement;
@@ -262,17 +258,20 @@ const Tabs = {
 				Tabs.groups.remove(ThisGroup, null, null);
 			}
 		}
+		
 		Tabs.count--;
+		Tabs.tabMap.splice(Tabs.tabMap.findIndex(i => i.id == _webSession.id) ,1);
+
 		functions.updateTabCounter();
 
 		if (Tabs.count == 0) {
-			Tabs.add(OhHaiBrowser.settings.homepage, undefined, {
+			Tabs.add('default', undefined, {
 				selected: true
 			});
 		}
 
-		if (!_TAB.classList.contains('IncognitoTab')) {
-			Sessions.Remove(_TAB.getAttribute('data-session'), function (result) {});
+		if (_webSession.mode != 'incog') {
+			Sessions.Remove(_webSession.id, function (result) {});
 		}
 
 		if (typeof callback == 'function') {
@@ -291,26 +290,18 @@ const Tabs = {
 		}
 	},
 	getCurrent: function (callback) {
-		var x = document.getElementsByClassName('current');
-		if (typeof callback === 'function') {
-			callback(x[0]);
-		}
+		let currentWebSession = Tabs.tabMap.find(i => i.selected === true);
+		callback(currentWebSession);
 	},
-	setCurrent: function (tab, webview, callback) {
+	setCurrent: function (_WebSession, callback) {
+
 		Tabs.getCurrent(function (ctab) {
-			if (ctab) {
-				ctab.classList.remove('current');
-				var oldtabwv = document.getElementById(ctab.getAttribute('data-container'));
-				oldtabwv.classList.add('Hidden');
+			if(ctab){
+				ctab.selected = false;
 			}
 		});
-		var tabwv = document.getElementById(tab.getAttribute('data-container'));
-		tab.classList.add('current');
-		if (webview != null) {
-			webview.classList.remove('Hidden');
-		} else {
-			tabwv.classList.remove('Hidden');
-		}
+
+		_WebSession.selected = true;
 
 		if (typeof callback === 'function') {
 			callback(true);
@@ -480,74 +471,66 @@ const Tabs = {
 	},
 	activePage: {
 		getURL: function (callback) {
-			Tabs.getCurrent(function (cTab) {
-				var CurrentWebView = document.getElementById(cTab.getAttribute('data-container'));
+			Tabs.getCurrent(function (cSession) {
 				if (typeof callback == 'function') {
-					callback(CurrentWebView.getURL());
+					callback(cSession.webview.getURL());
 				} else {
-					return CurrentWebView.getURL();
+					return cSession.webview.getURL();
 				}
 			});
 		},
 		getTitle: function (callback) {
-			Tabs.getCurrent(function (cTab) {
-				var CurrentWebView = document.getElementById(cTab.getAttribute('data-container'));
+			Tabs.getCurrent(function (cSession) {
 				if (typeof callback == 'function') {
-					callback(CurrentWebView.getTitle());
+					callback(cSession.webview.getTitle());
 				} else {
-					return CurrentWebView.getTitle();
+					return cSession.webview.getTitle();
 				}
 			});
 		},
 		goBack: function (callback) {
-			Tabs.getCurrent(function (cTab) {
-				var CurrentWebView = document.getElementById(cTab.getAttribute('data-container'));
-				CurrentWebView.goBack();
+			Tabs.getCurrent(function (cSession) {
+				cSession.webview.goBack();
 			});
 			if (typeof callback == 'function') {
 				callback('request sent');
 			}
 		},
 		goForward: function (callback) {
-			Tabs.getCurrent(function (cTab) {
-				var CurrentWebView = document.getElementById(cTab.getAttribute('data-container'));
-				CurrentWebView.goForward();
+			Tabs.getCurrent(function (cSession) {
+				cSession.webview.goForward();
 			});
 			if (typeof callback == 'function') {
 				callback('request sent');
 			}
 		},
 		reload: function (callback) {
-			Tabs.getCurrent(function (cTab) {
-				var CurrentWebView = document.getElementById(cTab.getAttribute('data-container'));
-				CurrentWebView.reload();
+			Tabs.getCurrent(function (cSession) {
+				cSession.webview.reload();
 			});
 			if (typeof callback == 'function') {
 				callback('request sent');
 			}
 		},
 		navigate: function (url, callback) {
-			Tabs.getCurrent(function (cTab) {
-				var CurrentWebView = document.getElementById(cTab.getAttribute('data-container'));
-				CurrentWebView.loadURL(url);
+			Tabs.getCurrent(function (cSession) {
+				cSession.webview.loadURL(url);
 			});
 			if (typeof callback == 'function') {
 				callback('request sent');
 			}
 		},
 		insertCSS: function (code, callback) {
-			Tabs.getCurrent(function (cTab) {
-				var CurrentWebView = document.getElementById(cTab.getAttribute('data-container'));
-				CurrentWebView.insertCSS(code);
+			Tabs.getCurrent(function (cSession) {
+				cSession.webview.insertCSS(code);
 			});
 			if (typeof callback == 'function') {
 				callback('request sent');
 			}
 		},
 		executeJavaScript: function (code, callback) {
-			Tabs.getCurrent(function (cTab) {
-				var CurrentWebView = document.getElementById(cTab.getAttribute('data-container'));
-				CurrentWebView.executeJavaScript(code);
+			Tabs.getCurrent(function (cSession) {
+				cSession.webview.executeJavaScript(code);
 			});
 			if (typeof callback == 'function') {
 				callback('request sent');
@@ -555,15 +538,15 @@ const Tabs = {
 		},
 		hasSibling: function () {
 			var Sibling = null;
-			Tabs.getCurrent(function (cTab) {
-				if (cTab.nextSibling) {
+			Tabs.getCurrent(function (cSession) {
+				if (cSession.tab.nextSibling) {
 					Sibling = {
-						'sibling': cTab.nextSibling,
+						'sibling': cSession.tab.nextSibling,
 						'location': 'next'
 					};
-				} else if (cTab.previousSibling) {
+				} else if (cSession.tab.previousSibling) {
 					Sibling = {
-						'sibling': cTab.previousSibling,
+						'sibling': cSession.tab.previousSibling,
 						'location': 'last'
 					};
 				}

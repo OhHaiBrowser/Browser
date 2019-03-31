@@ -338,7 +338,7 @@ var OhHaiBrowser = {
 
 				return Web_menu;
 			},
-			tab: function (ThisTab, ThisWebview, TabLbl, TabEx) {
+			tab: function (webSession) {
 
 				var NewMenu = new Menu();
 				NewMenu.append(new MenuItem({
@@ -361,12 +361,12 @@ var OhHaiBrowser = {
 				NewMenu.append(new MenuItem({
 					type: 'separator'
 				}));
-				if (ThisTab.parentElement.classList.contains('ohhai-group-children')) {
+				if (webSession.tab.parentElement.classList.contains('ohhai-group-children')) {
 					//This tabs is in a group
 					NewMenu.append(new MenuItem({
 						label: 'Remove tab from group',
 						click() {
-							OhHaiBrowser.tabs.groups.removeTab(ThisTab);
+							OhHaiBrowser.tabs.groups.removeTab(webSession.tab);
 						}
 					}));
 				} else {
@@ -374,7 +374,7 @@ var OhHaiBrowser = {
 					var GroupMenu = [new MenuItem({
 						label: 'New group',
 						click() {
-							OhHaiBrowser.tabs.groups.addTab(ThisTab, null);
+							OhHaiBrowser.tabs.groups.addTab(webSession.tab, null);
 						}
 					})];
 					var CurrentGroups = document.getElementsByClassName('group');
@@ -388,7 +388,7 @@ var OhHaiBrowser = {
 							GroupMenu.push(new MenuItem({
 								label: GroupTitle,
 								click() {
-									OhHaiBrowser.tabs.groups.addTab(ThisTab, ThisGroup);
+									OhHaiBrowser.tabs.groups.addTab(webSession.tab, ThisGroup);
 								}
 							}));
 						}
@@ -400,34 +400,34 @@ var OhHaiBrowser = {
 						submenu: GroupMenu
 					}));
 				}
-				if (ThisWebview.isAudioMuted() == true) {
+				if (webSession.webview.isAudioMuted() == true) {
 					NewMenu.append(new MenuItem({
 						label: 'Unmute Tab',
 						click() {
-							ThisWebview.setAudioMuted(false);
+							webSession.webview.setAudioMuted(false);
 						}
 					}));
 				} else {
 					NewMenu.append(new MenuItem({
 						label: 'Mute Tab',
 						click() {
-							ThisWebview.setAudioMuted(true);
+							webSession.webview.setAudioMuted(true);
 						}
 					}));
 				}
-				OhHaiBrowser.tabs.ismode(ThisTab, 'docked', function (returnval) {
+				OhHaiBrowser.tabs.ismode(webSession.tab, 'docked', function (returnval) {
 					if (returnval == true) {
 						NewMenu.append(new MenuItem({
 							label: 'Undock Tab',
 							click() {
-								OhHaiBrowser.tabs.setMode(ThisTab, 'default', function () {});
+								OhHaiBrowser.tabs.setMode(webSession.tab, 'default', function () {});
 							}
 						}));
 					} else {
 						NewMenu.append(new MenuItem({
 							label: 'Dock Tab',
 							click() {
-								OhHaiBrowser.tabs.setMode(ThisTab, 'docked', function () {});
+								OhHaiBrowser.tabs.setMode(webSession.tab, 'docked', function () {});
 							}
 						}));
 					}
@@ -438,7 +438,7 @@ var OhHaiBrowser = {
 				NewMenu.append(new MenuItem({
 					label: 'Close Tab',
 					click() {
-						OhHaiBrowser.tabs.remove(ThisTab);
+						OhHaiBrowser.tabs.remove(webSession);
 					}
 				}));
 
