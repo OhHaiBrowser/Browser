@@ -78,7 +78,7 @@ function parseOpenPage(url){
 	case 'default':
 	case undefined:
 	case '':
-		return `system_assets/components/home_page/index.html`;
+		return 'system_assets/components/home_page/index.html';
 	default:
 		return url;
 	}
@@ -122,7 +122,6 @@ class OhHaiGroup {
 		var GroupName = this.Group.querySelector('.ohhai-group-txt');
 		return GroupName.value;
 	}
-
 	get children(){
 		return this.Group.querySelector('.ohhai-group-children');
 	}
@@ -279,15 +278,8 @@ const Tabs = {
 		}
 	},
 	get: function (tabid, callback) {
-		callback(tabEl.querySelector('#' + tabid));
-	},
-	isCurrent: function (_Tab) {
-		var x = document.getElementsByClassName('current')[0];
-		if (_Tab == x) {
-			return true;
-		} else {
-			return false;
-		}
+		let wSession = Tabs.tabMap.find(ws => ws.tab.id == tabid);
+		callback(wSession);
 	},
 	getCurrent: function (callback) {
 		let currentWebSession = Tabs.tabMap.find(i => i.selected === true);
@@ -307,72 +299,43 @@ const Tabs = {
 			callback(true);
 		}
 	},
-	ismode: function (_tab, _mode, callback) {
-		var returnval = false;
-		switch (_mode) {
-		case 'docked':
-			if (_tab.parentNode.id == 'tabs-dock') {
-				returnval = true;
-			}
-			break;
-		case 'grouped':
-			if (_tab.parentNode.className == 'ohhai-group-children') {
-				returnval = true;
-			}
-			break;
-		case 'default':
-		default:
-			if (_tab.parentNode.id == 'tabs-menu') {
-				returnval = true;
-			}
-		}
-		if (typeof callback == 'function') {
-			callback(returnval);
-		}
-	},
-	setMode: function (_tab, _mode, callback) {
-		var TabSessionId = _tab.getAttribute('data-session');
-		var Tab_Text = _tab.querySelector('.ohhai-tab-txt');
-		var Tab_CloseBtn = _tab.querySelector('.TabClose');
+	setMode: function (_WebSession, _mode, callback) {
+
+		_WebSession.mode = _mode;
 
 		switch (_mode) {
-		case 'docked':
-			Tab_Text.style.display = 'none';
-			Tab_CloseBtn.style.display = 'none';
-			Tabbar.pinnedtabcontainer.appendChild(_tab);
-			Sessions.UpdateMode(TabSessionId, 'DOCK', function () {});
-			Sessions.UpdateParent(TabSessionId, Tabbar.pinnedtabcontainer.id, function () {});
+		case 'dock':
+			Tabbar.pinnedtabcontainer.appendChild(_WebSession.tab);
+			Sessions.UpdateMode(_WebSession.id, 'DOCK', function () {});
+			Sessions.UpdateParent(_WebSession.id, Tabbar.pinnedtabcontainer.id, function () {});
 			break;
 		case 'grouped':
 
 			break;
 		case 'default':
 		default:
-			Tab_Text.style.display = 'block';
-			Tab_CloseBtn.style.display = 'block';
-			Tabbar.tabcontainer.appendChild(_tab);
-			Sessions.UpdateMode(TabSessionId, 'Default', function () {});
-			Sessions.UpdateParent(TabSessionId, Tabbar.tabcontainer.id, function () {});
+			Tabbar.tabcontainer.appendChild(_WebSession.tab);
+			Sessions.UpdateMode(_WebSession.id, 'Default', function () {});
+			Sessions.UpdateParent(_WebSession.id, Tabbar.tabcontainer.id, function () {});
 		}
+
+		callback;
 	},
 	executeScript: function (tabid, code, callback) {
-		Tabs.get(tabid, function (cTab) {
-			var CurrentWebView = document.getElementById(cTab.getAttribute('data-container'));
-			CurrentWebView.executeJavaScript(code);
+		Tabs.get(tabid, wS => {
+			wS.webview.executeJavaScript(code);
 		});
 		callback('request sent');
 	},
 	insertCSS: function (tabid, code, callback) {
-		Tabs.get(tabid, function (cTab) {
-			var CurrentWebView = document.getElementById(cTab.getAttribute('data-container'));
-			CurrentWebView.insertCSS(code);
+		Tabs.get(tabid, wS => {
+			wS.webview.insertCSS(code);
 		});
 		callback('request sent');
 	},
 	reload: function (tabid, callback) {
-		Tabs.get(tabid, function (cTab) {
-			var CurrentWebView = document.getElementById(cTab.getAttribute('data-container'));
-			CurrentWebView.reload();
+		Tabs.get(tabid, wS => {
+			wS.webview.reload();
 		});
 		callback('request sent');
 	},

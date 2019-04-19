@@ -415,23 +415,21 @@ var OhHaiBrowser = {
 						}
 					}));
 				}
-				OhHaiBrowser.tabs.ismode(webSession.tab, 'docked', function (returnval) {
-					if (returnval == true) {
-						NewMenu.append(new MenuItem({
-							label: 'Undock Tab',
-							click() {
-								OhHaiBrowser.tabs.setMode(webSession.tab, 'default', function () {});
-							}
-						}));
-					} else {
-						NewMenu.append(new MenuItem({
-							label: 'Dock Tab',
-							click() {
-								OhHaiBrowser.tabs.setMode(webSession.tab, 'docked', function () {});
-							}
-						}));
-					}
-				});
+				if(webSession.mode == 'dock'){
+					NewMenu.append(new MenuItem({
+						label: 'Undock Tab',
+						click() {
+							OhHaiBrowser.tabs.setMode(webSession, 'default', function () {});
+						}
+					}));
+				}else{
+					NewMenu.append(new MenuItem({
+						label: 'Dock Tab',
+						click() {
+							OhHaiBrowser.tabs.setMode(webSession, 'dock', function () {});
+						}
+					}));
+				}
 				NewMenu.append(new MenuItem({
 					type: 'separator'
 				}));

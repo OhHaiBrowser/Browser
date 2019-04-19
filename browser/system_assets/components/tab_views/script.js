@@ -15,8 +15,7 @@ module.exports = (webSession) => {
 		if(!tabMediaBtn.classList.contains('hidden')){
 			tabMediaBtn.classList.add('hidden');
 		}
-	
-		if(OhHaiBrowser.tabs.isCurrent(webSession.tab)){
+		if(webSession.selected){
 			loadstart(tabtext,tabimg);
 		}
 		if(!sessionEventAdded){
@@ -99,10 +98,10 @@ module.exports = (webSession) => {
 	});
 
 	webSession.webview.addEventListener('load-commit', function(e) {
-		if(OhHaiBrowser.tabs.isCurrent(webSession.tab)){
-		//only kick event if the mainframe is loaded, no comments or async BS!
+		if(webSession.selected){
+			//only kick event if the mainframe is loaded, no comments or async BS!
 			if(e.isMainFrame){
-			//is doodle already open? - we dont want to bug the users so much. - Actully we shouldnt need to check...Doodle should know.
+				//is doodle already open? - we dont want to bug the users so much. - Actully we shouldnt need to check...Doodle should know.
 				Doodle.DEPLOY(webSession.webview);
 			}
 		}
