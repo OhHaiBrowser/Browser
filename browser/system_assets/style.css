@@ -96,7 +96,6 @@ body {
 }
 
 .acc_panel {
-	flex: 0 1 auto;
 	transition: flex 0.3s;
 	display: flex;
 	flex-flow: column;
@@ -108,23 +107,48 @@ body {
 	display: inline-block;
 	margin-right: 3px;
 	transition: all 0.3s;
+	font-weight: bold;
 }
 
 .acc_header {
-	font-size: 14px;
-	padding: 0 5px;
-	background: #c4c4c4;
+	box-sizing: border-box;
 	line-height: 40px;
-	cursor: pointer;
-	flex: 0 1 40px;
+    font-size: 14px;
+    background: #c4c4c4;
+    padding: 0 5px;
+    cursor: pointer;
+    height: 40px;
+    transition: background 0.2s;
 }
+	.acc_header .acc_title{
+		text-transform: uppercase;
+        font-weight: bold;
+        font-size: 12px;
+	}
+	.acc_header .acc_controls{
+		float: right;
+		display: block;
+		opacity: 0;
+		transition: opacity 0.3s;
+	}
+		.acc_header .acc_controls input[type=button]{
+			height: 20px;
+			width: 20px;
+			background-color: transparent;
+			border: none;
+			outline: none;
+			margin: 10px 2px;
+			float: right;
+		}
 
 .acc_content {
-	display: none;
-	opacity: 0;
-	transition: all 0.3s;
-    flex: 1 1 auto;
-    overflow: auto;
+	height: 0px;
+    overflow: hidden;
+    transition: all 0.2s;
+
+	box-sizing: border-box;
+    opacity: 0;
+	flex: 1;
 }
 
 .acc_active {
@@ -135,14 +159,29 @@ body {
 	transform: rotate(90deg);
 }
 
-.acc_active .acc_header {
-	background-color: #a2a7c2;
+.acc_active .acc_content {
+    opacity: 1;
+	overflow: hidden; 
+	overflow-y: auto;
 }
 
-.acc_active .acc_content {
-	display: block;
-	opacity: 1;
+.acc_active .acc_content::-webkit-scrollbar {
+	width: 10px;
 }
+
+.acc_active .acc_content::-webkit-scrollbar-thumb {
+	opacity: 0.5;
+	background: rgba(110, 110, 110, 0.5);   
+}
+	.acc_active .acc_content::-webkit-scrollbar-thumb:hover {
+		background: rgba(85, 85, 85, 0.5);
+	}
+
+	.acc_active:hover .acc_header .acc_controls{
+		opacity: 1;
+	}
+
+
 
 #BookmarkContainer ul {
 	margin: 5px;
