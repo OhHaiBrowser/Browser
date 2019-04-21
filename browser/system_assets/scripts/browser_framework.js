@@ -203,17 +203,13 @@ var OhHaiBrowser = {
 				URlMenu.append(new MenuItem({
 					label: 'Copy title',
 					click() {
-						OhHaiBrowser.tabs.activePage.getTitle(function (pagetitle) {
-							clipboard.writeText(pagetitle);
-						});
+						OhHaiBrowser.tabs.activePage.getTitle(Pt => clipboard.writeText(Pt));
 					}
 				}));
 				URlMenu.append(new MenuItem({
 					label: 'Copy URL',
 					click() {
-						OhHaiBrowser.tabs.activePage.getURL(function (pageurl) {
-							clipboard.writeText(pageurl);
-						});
+						OhHaiBrowser.tabs.activePage.getURL(Purl => clipboard.writeText(Purl));
 					}
 				}));
 				URlMenu.append(new MenuItem({
@@ -415,20 +411,22 @@ var OhHaiBrowser = {
 						}
 					}));
 				}
-				if(webSession.mode == 'dock'){
-					NewMenu.append(new MenuItem({
-						label: 'Undock Tab',
-						click() {
-							OhHaiBrowser.tabs.setMode(webSession, 'default', function () {});
-						}
-					}));
-				}else{
-					NewMenu.append(new MenuItem({
-						label: 'Dock Tab',
-						click() {
-							OhHaiBrowser.tabs.setMode(webSession, 'dock', function () {});
-						}
-					}));
+				if(webSession.mode != 'incog'){
+					if(webSession.mode == 'dock'){
+						NewMenu.append(new MenuItem({
+							label: 'Undock Tab',
+							click() {
+								OhHaiBrowser.tabs.setMode(webSession, 'default', function () {});
+							}
+						}));
+					}else{
+						NewMenu.append(new MenuItem({
+							label: 'Dock Tab',
+							click() {
+								OhHaiBrowser.tabs.setMode(webSession, 'dock', function () {});
+							}
+						}));
+					}
 				}
 				NewMenu.append(new MenuItem({
 					type: 'separator'
