@@ -1,32 +1,38 @@
 
-#Tabs{max-height:-webkit-calc(100% - 38px);;overflow-y: auto;overflow-x:hidden;width:200px;outline:none;}
+#Tabs{max-height:-webkit-calc(100% - 38px);overflow:hidden;width:200px;outline:none;}
     #Tabs ul{margin:0;padding:0;list-style:none;}
-        #Tabs ul .current{background-color:#a2a7c2;box-shadow: 0px 1px 5px #999;}
-        #Tabs ul .current:hover{background-color:#a2a7c2;}
-            #Tabs ul .current .TabClose{opacity: 1;}
-        #Tabs ul .tab{cursor: pointer;outline:none;}
-            #Tabs ul .tab .ohhai-tab-fav{float:left;width:16px;height:16px;margin:9px;-webkit-user-select: none;}
 
-        .tabs .tabMediaBtn{width: 16px; height: 16px; display: inline-block; position: absolute; margin: 9px;}
+        /* Global tab styles */
+        .tab{cursor: pointer;outline:none;box-sizing: border-box;background-color:#e9e9e9;min-width:38px;height:34px;transition:background-color 0.5s;margin: 5px; border-radius: 3px;}
+        .tab:hover{background-color: #dcdcdc;}
+        .tab:hover .TabClose{opacity: 1;}
+        .tab .ohhai-tab-txt{cursor:default;float:left;margin:7px 4px 7px 4px;font-size:13px;width:120px;height:20px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; line-height: 20px;-webkit-user-select: none;cursor: pointer;}
+        .tab .TabClose{float:right;height:16px;width:16px;display:block;border-radius:10px;margin:9px 4px;transition:background-color 0.5s, opacity 0.5s;color:#708090;opacity: 0;}
+        .tab .TabClose:hover{background-color:#f53355;}
+        .tab .ohhai-tab-fav{float:left;width:16px;height:16px;margin:9px;-webkit-user-select: none;}
+        .tab .tabMediaBtn{width: 16px; height: 16px; display: inline-block; position: absolute; margin: 9px;}
         .tab .tabMute{background: url('../../icons/audio-mute.png') no-repeat center center;}
         .tab .tabPlaying{background: url('../../icons/audio-playing.png') no-repeat center center;}
+
+        .tab.current{background-color:#a2a7c2;box-shadow: 0px 1px 5px #999;}
+        .tab.current:hover{background-color:#a2a7c2;}
+        .tab.current .TabClose{opacity: 1;}
+
+        /* Default tab styles */
+
+
+        /* Incog tab styles */
+        .tab.IncognitoTab{background-color:#708090 !important;}
+        .tab.IncognitoTab .ohhai-tab-txt{color:#fff !important;}
+        .tab.IncognitoTab.current{background-color: #2F4F4F !important;}
+
+        /* Dock tab styles */
+        .tab.DockTab{background-color:#e9e9e9;width:34px;height:34px;display:inline-block;transition:background-color 0.5s;margin: 5px; border-radius: 3px;}
+        .tab.DockTab .ohhai-tab-txt{display:none;}
+        .tab.DockTab .TabClose{display: none;}
+
         .hidden{display:none;}        
 
-        #tabs-dock .tab{background-color:#e9e9e9;width:34px;height:34px;display:inline-block;transition:background-color 0.5s;margin: 5px; border-radius: 3px;}
-            #tabs-dock .tab .ohhai-tab-txt{display:none;}
-            #tabs-dock .tab .TabClose{display: none;}
-
-        #tabs-menu .tab{box-sizing: border-box;background-color:#e9e9e9;min-width:38px;height:34px;transition:background-color 0.5s;margin: 5px; border-radius: 3px;}
-            #tabs-menu .tab:hover{background-color: #dcdcdc;}
-            #tabs-menu .tab:hover .TabClose{opacity: 1;}
-            #tabs-menu .tab .ohhai-tab-txt{cursor:default;float:left;margin:7px 4px 7px 4px;font-size:13px;width:120px;height:20px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; line-height: 20px;-webkit-user-select: none;cursor: pointer;}
-            #tabs-menu .tab .TabClose{float:right;height:16px;width:16px;display:block;border-radius:10px;margin:9px 4px;transition:background-color 0.5s, opacity 0.5s;color:#708090;opacity: 0;}
-                #tabs-menu .tab .TabClose:hover{background-color:#f53355;}
-
-  #tabs-menu .IncognitoTab{background-color:#708090;}
-    #tabs-menu .IncognitoTab .ohhai-tab-txt{color:#fff;}
-    #tabs-menu .IncognitoTab.current{background-color: #2F4F4F;}
-    
 #tabs-menu .group{border:none;border-bottom:1px solid #999;height: inherit;margin: 5px;border-bottom-left-radius: 3px;border-bottom-right-radius: 3px;}
     #tabs-menu .group .ohhai-group-header{padding: 5px;font-size: 14px;background-color: #c4c4c4;border-radius: 3px;}
 
@@ -36,6 +42,9 @@
 
         #tabs-menu .group .ohhai-togglegroup::before{content:"\21F3";display: block;text-align: center;line-height: 14px;}
         #tabs-menu .group .ohhai-togglegroup{margin: 1px;background-color: #e4e4e4;float:right;height:16px;width:16px;display:block;border-radius:10px;transition:background-color 0.5s;color:#708090;}
+        #tabs-menu .group .ohhai-group-children.ClosedGroup{
+            display: none;
+        }
         #tabs-menu .group .ohhai-group-children .tab{margin: 5px 0px;}    
             #tabs-menu .group .ohhai-group-children .tab .ohhai-tab-txt{width:114px;}
 

@@ -25,7 +25,7 @@ module.exports = function load(){
 				<select id='Settings_Search' class='ddl'>
 				</select>
 			</form>
-			<p>Block Adverts? (Beta)</p>
+			<!--<p>Block Adverts? (Beta)</p>
 			<form>
 				<div class='RadioBtnDiv'>
 					<input type='radio' id='Rad_AdBlockYes' name='AdBlock' value='true'/>
@@ -36,7 +36,7 @@ module.exports = function load(){
 					<label for='Rad_AdBlockNo'>No</label>
 				</div>
 			</form>
-			<!--<p>Block Trackers? (Beta)</p>
+			<p>Block Trackers? (Beta)</p>
 			<form>
 				<div class='RadioBtnDiv'>
 					<input type='radio' id='Rad_TrackBlockYes' name='TrackBlock' value='true'/>
@@ -108,23 +108,23 @@ module.exports = function load(){
 	});
 		
 	// Adblocker functions
-	var IP_AdBlockYes =	settingsMenu.querySelector('#Rad_AdBlockYes');
-	IP_AdBlockYes.setAttribute('onclick','Settings.Set("adBlock",this.value,function(){});');
+	//var IP_AdBlockYes =	settingsMenu.querySelector('#Rad_AdBlockYes');
+	//IP_AdBlockYes.setAttribute('onclick','Settings.Set("adBlock",this.value,function(){});');
 
-	var IP_AdBlockNo = settingsMenu.querySelector('#Rad_AdBlockNo');
-	IP_AdBlockNo.setAttribute('onclick','Settings.Set("adBlock",this.value,function(){});');
+	//var IP_AdBlockNo = settingsMenu.querySelector('#Rad_AdBlockNo');
+	//IP_AdBlockNo.setAttribute('onclick','Settings.Set("adBlock",this.value,function(){});');
 
-	Settings.Get('adBlock',function(item){
-		if(item != undefined){
-			if(item.value == 'true'){
-				IP_AdBlockYes.setAttribute('checked','checked');
-			}else{
-				IP_AdBlockNo.setAttribute('checked','checked');
-			}
-		}else{
-			IP_AdBlockNo.setAttribute('checked','checked');
-		}
-	});
+	//Settings.Get('adBlock',function(item){
+	//	if(item != undefined){
+	//		if(item.value == 'true'){
+	//			IP_AdBlockYes.setAttribute('checked','checked');
+	//		}else{
+	//			IP_AdBlockNo.setAttribute('checked','checked');
+	//		}
+	//	}else{
+	//		IP_AdBlockNo.setAttribute('checked','checked');
+	//	}
+	//});
 
 	
 	//var IP_TrackBlockYes = settingsMenu.querySelector('#Rad_TrackBlockYes');

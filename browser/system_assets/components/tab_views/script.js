@@ -26,14 +26,14 @@ module.exports = (webSession) => {
 					var test_url = details.url;
 				
 					var areAdsBlocked = null;
-					OhHaiBrowser.settings.generic('adBlock',(val) => {
-						areAdsBlocked = val;
-					});
+					//OhHaiBrowser.settings.generic('adBlock',(val) => {
+					//	areAdsBlocked = val;
+					//});
 
 					var areTrackersBlocked = null;
-					OhHaiBrowser.settings.generic('trackBlock',(val) => {
-						areTrackersBlocked = val;
-					});
+					//OhHaiBrowser.settings.generic('trackBlock',(val) => {
+					//	areTrackersBlocked = val;
+					//});
 
 					if(areAdsBlocked == 'true' || areTrackersBlocked == 'true'){
 
