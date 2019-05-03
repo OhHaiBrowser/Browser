@@ -123,28 +123,6 @@ var OhHaiBrowser = {
 		}
 	},
 	ui: {
-		floatingVidPlayer: function (url, callback) {
-			var callbackval = '';
-			OhHaiBrowser.validate.url(url, function (isurl) {
-				if (isurl == true) {
-					OhHaiBrowser.tabs.activePage.executeJavaScript('document.getElementsByTagName(\'video\')[0].pause();');
-
-					$('#VideoPlayer').show();
-					$('#VidInner').animate({
-						width: 'show'
-					}, 150);
-					$('#VidFrame').attr('src', url);
-
-					callbackval = 'Done';
-				} else {
-					//not a valid URL
-					callbackval = 'Invalid URL string';
-				}
-				if (typeof callback === 'function') {
-					callback(callbackval);
-				}
-			});
-		},
 		videoPlayer: function (params, callback) {
 			//This is a pop up window - Does the user want this pop up, does it have a parent control? 
 			const remote = require('electron').remote;
@@ -169,10 +147,6 @@ var OhHaiBrowser = {
 			if (typeof callback === 'function') {
 				callback(win);
 			}
-		},
-		closeFloatingVidPlayer: function () {
-			$('#VideoPlayer').fadeOut();
-			$('#VidFrame').attr('src', '');
 		},
 		notifications: {
 			post: function (notificationText, callback) {

@@ -5,12 +5,6 @@ let {controls} = require('./system_assets/components/nav_bar/controls.js'),
 	UrlService = require('./system_assets/services/navbar.js'),
 	Contextuals = require('./system_assets/modules/Contextuals/Contextuals.js');
 
-$(function () {
-	$('#VideoPlayer').draggable({
-		containment: 'parent'
-	});
-});
-
 controls.btn_ToggleTabBar.addEventListener('click', tabbar.toggle );
 controls.btn_back.addEventListener('click', OhHaiBrowser.tabs.activePage.goBack );
 controls.btn_refresh.addEventListener('click', OhHaiBrowser.tabs.activePage.reload );

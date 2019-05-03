@@ -40,6 +40,18 @@ module.exports = {
 		}
 	},
 	Notify: function(toggle,message,okfunc){
+
+		let template = `
+		<div id="DoodlePopUp" class="" style="display:none;">
+			<div class="speech-bubble-inner">
+				<img src="system_assets/icons/doodle.png" />
+				<span id="DoodleMsg">${message}</span>
+				<hr />
+				<a href="#" id="DoodleYesFunc">Yeah ok</a>
+				<a href="#" onclick="Doodle.Notify(false);">No thanks</a>
+			</div>
+		</div>
+		`;
 		//if(toggle == true){
 		//	$('#DoodleYesFunc').attr('onclick',okfunc);
 		//	$('#DoodleMsg').text(message);
