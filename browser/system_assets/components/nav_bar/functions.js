@@ -11,18 +11,10 @@ $(function () {
 	});
 });
 
-controls.btn_ToggleTabBar.addEventListener('click', () => {
-	tabbar.toggle();
-});
-controls.btn_back.addEventListener('click', () => {
-	OhHaiBrowser.tabs.activePage.goBack();
-});
-controls.btn_refresh.addEventListener('click', () => {
-	OhHaiBrowser.tabs.activePage.reload();
-});
-controls.btn_forward.addEventListener('click', () => {
-	OhHaiBrowser.tabs.activePage.goForward();
-});
+controls.btn_ToggleTabBar.addEventListener('click', tabbar.toggle );
+controls.btn_back.addEventListener('click', OhHaiBrowser.tabs.activePage.goBack );
+controls.btn_refresh.addEventListener('click', OhHaiBrowser.tabs.activePage.reload );
+controls.btn_forward.addEventListener('click', OhHaiBrowser.tabs.activePage.goForward );
 //=========================================================================================================================
 //Left Controls
 //-------------------------------------------------------------------------------------------------------------------------

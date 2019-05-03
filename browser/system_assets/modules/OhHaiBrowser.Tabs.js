@@ -532,7 +532,7 @@ const Tabs = {
 			width: 800,
 			height: 600,
 			frame: false,
-			icon: `${__dirname}/window/assets/OhHaiIcon.ico`,
+			icon: `file://${__dirname}/window/assets/OhHaiIcon.ico`,
 			show: false
 		});
 		win.webContents.on('did-finish-load', () => {

@@ -1,22 +1,24 @@
 var {Settings} = require('./OhHaiBrowser.Data');
 
-module.exports = {
+var TabBar = {
 	panel: document.getElementById('LeftMenu'),
 	tabcontainer: document.getElementById('tabs-menu'),
 	pinnedtabcontainer: document.getElementById('tabs-dock'),
 	webviewcontainer: document.getElementById('BrowserWin'),
 	pined: true,
 	toggle: function () {
-		if (this.pined == true) {
-			this.panel.classList.add('LeftMenuHidden');
-			this.panel.classList.remove('LeftMenuShow');
-			this.pined = false;
+		if (TabBar.pined == true) {
+			TabBar.panel.classList.add('LeftMenuHidden');
+			TabBar.panel.classList.remove('LeftMenuShow');
+			TabBar.pined = false;
 			Settings.Set('TabBar', false, function () {});
 		} else {
-			this.panel.classList.add('LeftMenuShow');
-			this.panel.classList.remove('LeftMenuHidden');
-			this.pined = true;
+			TabBar.panel.classList.add('LeftMenuShow');
+			TabBar.panel.classList.remove('LeftMenuHidden');
+			TabBar.pined = true;
 			Settings.Set('TabBar', true, function () {});
 		}
 	}
-};
+}
+
+module.exports = TabBar;
