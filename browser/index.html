@@ -1,4 +1,5 @@
 <html>
+
 <head>
 	<title>OhHai Browser</title>
 	<link rel="StyleSheet" href="system_assets/style.css" />
@@ -7,6 +8,7 @@
 	<!--Window controls-->
 	<link rel="StyleSheet" href="../window/controls.css" />
 </head>
+
 <body>
 	<input type="hidden" id="CurWebWin" value="">
 	<div id="AppBound">
@@ -55,8 +57,6 @@
 						<div class="acc_header">
 							<span class="acc_title">Tabs</span>
 							<span class="acc_controls">
-								<input type="button" value=""/>
-								<input type="button" value=""/>
 							</span>
 						</div>
 						<div class="acc_content">
@@ -65,7 +65,8 @@
 									<ul id="tabs-dock" class="ohhai-docktabs"></ul>
 									<ul id="tabs-menu" class="ohhai-maintabs"></ul>
 								</div>
-								<button id="AddTab" title="Add a new tab" onclick="AddTabButton();" class="CommandBtn AddTab"></button>
+								<button id="AddTab" title="Add a new tab" onclick="AddTabButton();"
+									class="CommandBtn AddTab"></button>
 							</div>
 						</div>
 					</div>
@@ -73,8 +74,6 @@
 						<div class="acc_header">
 							<span class="acc_title">Bookmarks</span>
 							<span class="acc_controls">
-								<input type="button" value=""/>
-								<input type="button" value=""/>
 							</span>
 						</div>
 						<div class="acc_content">
@@ -85,8 +84,6 @@
 						<div class="acc_header">
 							<span class="acc_title">History</span>
 							<span class="acc_controls">
-								<input type="button" value=""/>
-								<input type="button" value=""/>
 							</span>
 						</div>
 						<div class="acc_content">
@@ -101,7 +98,8 @@
 				<div class="TogglePlayer" href="#" onmousedown='' onmouseup=''>][</div>
 				<a class="ClosePlayer" href="javascript:OhHaiBrowser.ui.closeFloatingVidPlayer();">x</a>
 				<div style="display:block;" id="VidInner" class="Player">
-					<iframe id="VidFrame" frameBorder="0" sandbox="allow-forms allow-scripts allow-same-origin"></iframe>
+					<iframe id="VidFrame" frameBorder="0"
+						sandbox="allow-forms allow-scripts allow-same-origin"></iframe>
 				</div>
 				<div style="clear:both;"></div>
 			</div>
@@ -119,8 +117,8 @@
 		<div id="modelContent"></div>
 	</div>
 	<div id="lockedPopup" style='display:none;'>
-		<input type="password" placeholder="" id=""/>
-		<input type="button" value="Unlock" id=""/>
+		<input type="password" placeholder="" id="" />
+		<input type="button" value="Unlock" id="" />
 	</div>
 
 	<!--== window controls start =============================================================================-->

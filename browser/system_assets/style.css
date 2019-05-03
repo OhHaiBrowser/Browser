@@ -107,6 +107,7 @@ body {
 	content: '>';
 	display: inline-block;
 	margin-right: 3px;
+	margin-left: 5px;
 	transition: all 0.3s;
 	font-weight: bold;
 }
@@ -119,7 +120,8 @@ body {
     padding: 0 5px;
     cursor: pointer;
     height: 40px;
-    transition: background 0.2s;
+	transition: background 0.2s;
+	color: #4d4d4d;
 }
 	.acc_header .acc_title{
 		text-transform: uppercase;
@@ -196,22 +198,30 @@ body {
 }
 
 #BookmarkContainer .bookmark {
-	margin: 10px 0px;
+	margin: 5px 0px;
 }
 
-#BookmarkContainer .bookmark img {
-	height: 16px;
-	width: 16px;
-	float: left;
-	margin-right: 10px;
-}
+	#BookmarkContainer .bookmark a {
+		display: block;
+		font-size: 13px;
+		padding: 5px 0px;
+		text-decoration: none;
+		border-radius: 3px;
+		color: #000;
+	}
+	#BookmarkContainer .bookmark a:hover {
+		background: rgba(255, 255, 255, 0.7);
+	}
 
-#BookmarkContainer .bookmark a {
-	display: block;
-	font-size: 13px;
-}
+		#BookmarkContainer .bookmark a img {
+			height: 16px;
+			width: 16px;
+			float: left;
+			margin: 0px 5px;
+		}
+		#BookmarkContainer .bookmark a span {
 
-
+		}
 
 
 

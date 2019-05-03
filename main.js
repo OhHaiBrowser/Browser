@@ -23,7 +23,7 @@ function CreateWindow(){
 		width: width,
 		height: height,
 		frame: false,
-		icon: `${__dirname}/window/assets/icon.ico`,
+		icon: `file://${__dirname}/window/assets/icon.ico`,
 		show: false,
 		minHeight: 350,
 		minWidth: 485,
@@ -37,7 +37,7 @@ function CreateWindow(){
 	}
 
 	mainWindow.setMenu(null);	
-	mainWindow.loadURL(`${__dirname}/browser/index.html`);
+	mainWindow.loadURL(`file://${__dirname}/browser/index.html`);
 
 	mainWindow.on('closed', function () {
 		// Dereference the window object, usually you would store windows

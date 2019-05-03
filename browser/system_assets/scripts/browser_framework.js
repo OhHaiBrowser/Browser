@@ -157,7 +157,7 @@ var OhHaiBrowser = {
 				maximizable: false,
 				fullscreenable: false,
 				alwaysOnTop: true,
-				icon: `${__dirname}/window/assets/OhHaiIcon.ico`,
+				icon: `file://${__dirname}/window/assets/OhHaiIcon.ico`,
 				show: false
 			});
 			win.webContents.on('did-finish-load', () => {
