@@ -9,15 +9,7 @@
             "request": "launch",
             "name": "OhHai Browser - Dev",
             "program": "${workspaceFolder}/main.js",
-            "windows": {
-                "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron"
-            },
-            "linux": {
-
-            },
-            "osx": {
-
-            },
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
             "outputCapture": "std"
         }
     ]
