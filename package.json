@@ -29,7 +29,6 @@
     "linux": {
       "icon": "window/assets/icon.png",
       "target": [
-        "AppImage",
         "deb"
       ]
     },
