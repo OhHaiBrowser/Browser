@@ -3,7 +3,11 @@
   "version": "3.2.0",
   "license": "ISC",
   "description": "Browser the internet",
-  "author": "Lucas Reade",
+  "homepage":"https://ohhaibrowser.com",
+  "author": {
+    "name":"Lucas Reade",
+    "email": "lucas.reade@gmail.com"
+  },
   "main": "main.js",
   "scripts": {
     "start": "electron .",
