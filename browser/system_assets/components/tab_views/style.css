@@ -49,8 +49,8 @@
             #tabs-menu .group .ohhai-group-children .tab .ohhai-tab-txt{width:114px;}
 
 /*Browser Window*/
-#BrowserWin{background-color:#fff;height: -webkit-calc(100% - 38px);overflow: auto;position:relative;}
-#BrowserWin webview{position:absolute;height:100%;width:100%;outline: none;}
+#BrowserWin{background-color:#fff;overflow: auto;flex: 1 1 auto; display: flex; flex-flow: row;}
+#BrowserWin webview{outline: none; flex: 1 1 auto;}
 #BrowserWin webview[hidden]{display:flex !important;visibility: hidden;}
 #BrowserWin webview.hidden {visibility: hidden;}
 
