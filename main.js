@@ -23,7 +23,7 @@ function CreateWindow(){
 		width: width,
 		height: height,
 		frame: false,
-		icon: `file://${__dirname}/window/assets/icon.ico`,
+		icon: `${__dirname}/window/assets/icon.ico`,
 		show: false,
 		minHeight: 350,
 		minWidth: 485,
