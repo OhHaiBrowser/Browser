@@ -41,24 +41,27 @@ module.exports = {
 	},
 	Notify: function(toggle,message,okfunc){
 
-		let template = `
-		<div id="DoodlePopUp" class="" style="display:none;">
-			<div class="speech-bubble-inner">
-				<img src="system_assets/icons/doodle.png" />
-				<span id="DoodleMsg">${message}</span>
+		let template = OhHaiBrowser.core.generateElement(`
+		<div id='DoodlePopUp' class='' style='display:none;'>
+			<div class='speech-bubble-inner'>
+				<img src='system_assets/icons/doodle.png' />
+				<span id='DoodleMsg'>${message}</span>
 				<hr />
-				<a href="#" id="DoodleYesFunc">Yeah ok</a>
-				<a href="#" onclick="Doodle.Notify(false);">No thanks</a>
+				<a href='#' id='DoodleYesFunc'>Yeah ok</a>
+				<a href='#' onclick='Doodle.Notify(false);'>No thanks</a>
 			</div>
 		</div>
-		`;
-		//if(toggle == true){
-		//	$('#DoodleYesFunc').attr('onclick',okfunc);
-		//	$('#DoodleMsg').text(message);
+		`);
+
+		template.querySelector('#DoodleYesFunc').addEventListener('click',() => {
+			okfunc;
+		});	
+
+		if(toggle == true){
 		//	$('#DoodlePopUp').fadeIn(300);
-		//}else{
+		}else{
 		//	$('#DoodlePopUp').fadeOut(300);
-		//}
+		}
 	},
 	DropDown: function(){
 		
