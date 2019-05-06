@@ -30,14 +30,17 @@
         "default"
       ]
     },
+    "mac":{
+      "icon":"window/assets/mac_icon.icns"
+    },
     "linux": {
-      "icon": "window/assets/icon.png",
+      "icon": "window/assets/linux_icon.png",
       "target": [
         "deb"
       ]
     },
     "win": {
-      "icon": "window/assets/icon.ico",
+      "icon": "window/assets/win_icon.ico",
       "target": [
         {
           "target": "nsis",
