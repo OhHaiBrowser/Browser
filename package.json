@@ -24,14 +24,11 @@
     "icon": "window/assets/icon.png",
     "appId": "OhHai.Browser",
     "mac": {
-      "icon": "window/assets/icon.png",
+      "icon":"window/assets/mac_icon.icns",
       "category": "public.app-category.utilities",
       "target": [
         "default"
       ]
-    },
-    "mac":{
-      "icon":"window/assets/mac_icon.icns"
     },
     "linux": {
       "icon": "window/assets/linux_icon.png",
