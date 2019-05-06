@@ -3,9 +3,9 @@
   "version": "3.3.0",
   "license": "ISC",
   "description": "Browser the internet",
-  "homepage":"https://ohhaibrowser.com",
+  "homepage": "https://ohhaibrowser.com",
   "author": {
-    "name":"Lucas Reade",
+    "name": "Lucas Reade",
     "email": "lucas.reade@gmail.com"
   },
   "main": "main.js",
@@ -24,7 +24,7 @@
     "icon": "window/assets/icon.png",
     "appId": "OhHai.Browser",
     "mac": {
-      "icon":"window/assets/mac_icon.icns",
+      "icon": "window/assets/mac_icon.icns",
       "category": "public.app-category.utilities",
       "target": [
         "default"
