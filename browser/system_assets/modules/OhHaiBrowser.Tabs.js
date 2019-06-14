@@ -72,6 +72,10 @@ class OhHaiWebSession {
 		return this.tab.classList.contains('current');
 	}
 
+	toggleVisible(){
+		this.webview.classList.toggle('groupShow');
+	}
+
 	toJson(){
 		return JSON.stringify({
 			id: this.id,
@@ -436,6 +440,17 @@ const Tabs = {
 			}
 			if (typeof callback == 'function') {
 				callback(true);
+			}
+		},
+		ToggleViews: (_group) => {
+			let GroupChildren = _group.querySelector('.ohhai-group-children').children;
+			if(GroupChildren.length > 0){
+				let idArr = Array.from(GroupChildren).map(l => l.id);
+				idArr.forEach(t => {
+					Tabs.get(t, (ws) => {				
+						ws.toggleVisible();
+					});
+				});
 			}
 		}
 	},

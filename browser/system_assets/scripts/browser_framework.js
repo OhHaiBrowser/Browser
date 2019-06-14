@@ -507,6 +507,15 @@ var OhHaiBrowser = {
 						});
 					}
 				}));
+				GroupMenu.append(new MenuItem({
+					type: 'separator'
+				}));
+				GroupMenu.append(new MenuItem({
+					label: 'View all pages',
+					click() {
+						OhHaiBrowser.tabs.groups.ToggleViews(Group);
+					}
+				}));
 
 				return GroupMenu;
 			}
