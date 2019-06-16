@@ -69,7 +69,8 @@
     }
   },
   "dependencies": {
-    "dexie": "^2.0.4"
+    "dexie": "^2.0.4",
+    "electron-store": "^3.3.0"
   },
   "devDependencies": {
     "electron": "^4.0.4",

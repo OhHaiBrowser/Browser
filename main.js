@@ -1,6 +1,6 @@
 'use strict';
 const {electron,app, protocol,BrowserWindow,globalShortcut} = require('electron'),
-	Store = require('./browser/system_assets/scripts/store.js');
+	Store = require('electron-store');
 
 let mainWindow = null;
 global.sharedObject = {prop1: process.argv};
@@ -8,12 +8,19 @@ global.sharedObject = {prop1: process.argv};
 // First instantiate the class
 const store = new Store({
 	// We'll call our data file 'user-preferences'
-	configName: 'window-state',
-	defaults: {
-		windowBounds: { width: 900, height: 600 },
-		isMaximised: false
+	name: 'window-state',
+	schema: {
+		windowBounds: {
+			type: 'object',
+			default: {width: 900, height: 600}
+		},
+		isMaximised: {
+			type: 'boolean',
+			default: false
+		}
 	}
 });
+
 let { width, height } = store.get('windowBounds');
 
 function CreateWindow(){
