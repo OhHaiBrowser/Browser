@@ -2,6 +2,8 @@
 @import url("components/tab_views/style.css");
 @import url("components/nav_bar/style.css");
 @import	url("modules/Contextuals/Contextuals.css");
+@import url("ohhai_ui.css");
+@import url("../../window/controls.css");
 
 html,
 body {

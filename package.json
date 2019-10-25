@@ -10,6 +10,7 @@
   },
   "main": "main.js",
   "scripts": {
+    "build": "electron .",
     "start": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",

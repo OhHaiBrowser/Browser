@@ -22,6 +22,7 @@ function CreateWindow(){
 	mainWindow = new BrowserWindow({
 		width: width,
 		height: height,
+		titleBarStyle: 'hiddenInset',
 		frame: false,
 		icon: `${__dirname}/window/assets/icon.png`,
 		show: false,
