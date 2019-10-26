@@ -533,7 +533,10 @@ const Tabs = {
 			height: 600,
 			frame: false,
 			icon: `file://${__dirname}/window/assets/OhHaiIcon.ico`,
-			show: false
+			show: false,
+			webPreferences: {
+				preload: `file://${__dirname}/browser/preload.js`,
+			}
 		});
 		win.webContents.on('did-finish-load', () => {
 			win.show();

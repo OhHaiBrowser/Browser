@@ -24,11 +24,12 @@ function CreateWindow(){
 		height: height,
 		titleBarStyle: 'hiddenInset',
 		frame: false,
-		icon: `${__dirname}/window/assets/icon.png`,
+		icon: `${__dirname}/browser/assets/imgs/frame/icon.png`,
 		show: false,
 		minHeight: 350,
 		minWidth: 485,
 		webPreferences: {
+			preload: `${__dirname}/browser/preload.js`,
 			nodeIntegration: true
 		}
 	});

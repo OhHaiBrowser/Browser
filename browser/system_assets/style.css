@@ -3,7 +3,7 @@
 @import url("components/nav_bar/style.css");
 @import	url("modules/Contextuals/Contextuals.css");
 @import url("ohhai_ui.css");
-@import url("../../window/controls.css");
+@import url("../assets/css/frame.css");
 
 html,
 body {

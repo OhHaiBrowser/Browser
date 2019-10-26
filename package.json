@@ -22,23 +22,23 @@
     "node_modules"
   ],
   "build": {
-    "icon": "window/assets/icon.png",
+    "icon": "browser/assets/imgs/frame/icon.png",
     "appId": "OhHai.Browser",
     "mac": {
-      "icon": "window/assets/mac_icon.icns",
+      "icon": "browser/assets/imgs/frame/mac_icon.icns",
       "category": "public.app-category.utilities",
       "target": [
         "default"
       ]
     },
     "linux": {
-      "icon": "window/assets/linux_icon.png",
+      "icon": "browser/assets/imgs/frame/linux_icon.png",
       "target": [
         "deb"
       ]
     },
     "win": {
-      "icon": "window/assets/win_icon.ico",
+      "icon": "browser/assets/imgs/frame/win_icon.ico",
       "target": [
         {
           "target": "nsis",
