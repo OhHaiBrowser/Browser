@@ -11,8 +11,8 @@
         .tab .TabClose:hover{background-color:#f53355;}
         .tab .ohhai-tab-fav{float:left;width:16px;height:16px;margin:9px;-webkit-user-select: none;}
         .tab .tabMediaBtn{width: 16px; height: 16px; display: inline-block; position: absolute; margin: 9px;}
-        .tab .tabMute{background: url('../../icons/audio-mute.png') no-repeat center center;}
-        .tab .tabPlaying{background: url('../../icons/audio-playing.png') no-repeat center center;}
+        .tab .tabMute{background: url('../../../assets/imgs/audio-mute.png') no-repeat center center;}
+        .tab .tabPlaying{background: url('../../../assets/imgs/audio-playing.png') no-repeat center center;}
 
         .tab.current{background-color:#a2a7c2;box-shadow: 0px 1px 5px #999;}
         .tab.current:hover{background-color:#a2a7c2;}

@@ -97,17 +97,17 @@ controls.btn_bookmarked.addEventListener('click', function (e) {
 //-------------------------------------------------------------------------------------------------------------------------
 controls.btn_overflow.addEventListener('click',() => {
 	new Contextuals.menu([
-		{title:'New tab', tip:'', icon:'system_assets/icons/transparent.png', onclick:() => {
+		{title:'New tab', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
 			OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true});
 		}},
-		{title:'New incognito tab', tip:'', icon:'system_assets/icons/transparent.png', onclick:() => {
+		{title:'New incognito tab', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
 			OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true,mode:'incog'});
 		}},
 		{seperator:true},
-		{title:'Settings', tip:'', icon:'system_assets/icons/transparent.png', onclick:() => {
+		{title:'Settings', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
 			OhHaiBrowser.ui.toggleModel(SettingsMenu(),'Settings');
 		}},
-		{title:'About', tip:'', icon:'system_assets/icons/transparent.png', onclick:() => {
+		{title:'About', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
 			OhHaiBrowser.ui.toggleModel(AboutMenu(),'OhHai Browser');
 		}}
 	]);

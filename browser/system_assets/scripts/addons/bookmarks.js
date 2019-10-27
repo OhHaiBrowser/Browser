@@ -14,7 +14,7 @@ module.exports = function load() {
 				var QuickItem = core.generateElement(`
 					<li class='bookmark'>
 						<a href='javascript:OhHaiBrowser.tabs.activePage.navigate("${ThisItem.url}");'>
-							<img src='${ThisItem.icon === '' ? 'system_assets/icons/favicon_default.png' : ThisItem.icon}'/>
+							<img src='${ThisItem.icon === '' ? 'assets/imgs/favicon_default.png' : ThisItem.icon}'/>
 							<span>${ThisItem.title}</span>
 						</a>
 					</li>

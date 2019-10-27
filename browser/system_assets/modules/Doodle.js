@@ -44,7 +44,7 @@ module.exports = {
 		let template = OhHaiBrowser.core.generateElement(`
 		<div id='DoodlePopUp' class='' style='display:none;'>
 			<div class='speech-bubble-inner'>
-				<img src='system_assets/icons/doodle.png' />
+				<img src='assets/imgs/doodle.png' />
 				<span id='DoodleMsg'>${message}</span>
 				<hr />
 				<a href='#' id='DoodleYesFunc'>Yeah ok</a>

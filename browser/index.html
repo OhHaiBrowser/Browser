@@ -2,7 +2,7 @@
 
 <head>
 	<title>OhHai Browser</title>
-	<link rel="StyleSheet" href="system_assets/style.css" />
+	<link rel="StyleSheet" href="assets/css/style.css" />
 	<link id="ThemeStyle" rel="StyleSheet" href="themes/default.css" />
 </head>
 
@@ -39,45 +39,23 @@
 
 		<div id="Content">
 			<div id="LeftMenu" class="OhHai-TabMenu LeftMenuShow">
-				<div id="leftAccordion">
-					<div class="acc_panel acc_active">
-						<div class="acc_header">
-							<span class="acc_title">Tabs</span>
-							<span class="acc_controls">
-							</span>
-						</div>
-						<div class="acc_content">
-							<div class="TabContainer">
-								<div id="Tabs">
-									<ul id="tabs-dock" class="ohhai-docktabs"></ul>
-									<ul id="tabs-menu" class="ohhai-maintabs"></ul>
-								</div>
-								<button id="AddTab" title="Add a new tab" onclick="AddTabButton();"
-									class="CommandBtn AddTab"></button>
+				<acc-panel id="Sid">
+					<acc-item title='Tabs' active='true'>
+						<div class="TabContainer">
+							<div id="Tabs">
+								<ul id="tabs-dock" class="ohhai-docktabs"></ul>
+								<ul id="tabs-menu" class="ohhai-maintabs"></ul>
 							</div>
+							<button id="AddTab" title="Add a new tab" onclick="AddTabButton();" class="CommandBtn AddTab"></button>
 						</div>
-					</div>
-					<div class="acc_panel">
-						<div class="acc_header">
-							<span class="acc_title">Bookmarks</span>
-							<span class="acc_controls">
-							</span>
-						</div>
-						<div class="acc_content">
-							<div id="BookmarkContainer"></div>
-						</div>
-					</div>
-					<div class="acc_panel">
-						<div class="acc_header">
-							<span class="acc_title">History</span>
-							<span class="acc_controls">
-							</span>
-						</div>
-						<div class="acc_content">
-							<div id="HistoryContainer"></div>
-						</div>
-					</div>
-				</div>
+					</acc-item>
+					<acc-item title='Bookmarks'>
+						<div id="BookmarkContainer"></div>
+					</acc-item>
+					<acc-item title='History'>
+						<div id="HistoryContainer"></div>
+					</acc-item>
+				</acc-panel>
 			</div>
 			<div id="BrowserWin"></div>
 		</div>

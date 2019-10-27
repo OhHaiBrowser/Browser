@@ -12,7 +12,7 @@ class OhHaiWebSession {
 		this.tab =CoreFunctions.generateElement(`
 			<li class='tab' id='t_${id}' data-container='wv_${id}'>
 				<a class='tabMediaBtn hidden'></a>
-				<img class='ohhai-tab-fav' src='system_assets/icons/logo.png'/>
+				<img class='ohhai-tab-fav' src='assets/imgs/logo.png'/>
 				<span class='ohhai-tab-txt'>New Tab</span>
 				<a class='TabClose'></a>
 			</li>`);
@@ -87,7 +87,7 @@ function parseOpenPage(url){
 	case 'default':
 	case undefined:
 	case '':
-		return 'system_assets/components/home_page/index.html';
+		return 'components/home_page/index.html';
 	default:
 		return url;
 	}
@@ -203,7 +203,7 @@ const Tabs = {
 					TabParent = NewWS.tab.parentElement.id;
 				}
 
-				Sessions.Set(_ID, 'default', 'TempTitle', _OPTIONS.mode, 'system_assets/icons/logo.png', function (id) {
+				Sessions.Set(_ID, 'default', 'TempTitle', _OPTIONS.mode, '\assets/imgs/logo.png', function (id) {
 					if (id != null) {
 						NewWS.tab.setAttribute('data-session', _ID);
 						Sessions.UpdateParent(_ID, TabParent, function (id) {});
@@ -532,7 +532,7 @@ const Tabs = {
 			width: 800,
 			height: 600,
 			frame: false,
-			icon: `file://${__dirname}/window/assets/OhHaiIcon.ico`,
+			icon: `file://${__dirname}/browser/assets/imgs/frame/icon.png`,
 			show: false,
 			webPreferences: {
 				preload: `file://${__dirname}/browser/preload.js`,

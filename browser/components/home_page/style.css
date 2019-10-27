@@ -1,0 +1,6 @@
+body{margin:0;font-family:arial;background-color:#f2f5f9;}
+
+header{margin:5px 20px;border-bottom:1px solid #c4c4c4;}
+	header h1{margin:5px 0px 5px 9px;display:inline-block;color:#000;}	
+	header a{float:right;display:inline-block;margin:9px;background-color:#50b977;padding:5px 20px 5px 20px;border-radius:2px;color:#000;text-decoration:none;}
+		header a:hover{background-color:#eedb00;}

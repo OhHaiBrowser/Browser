@@ -11,7 +11,7 @@ var OhHaiBrowser = {
 		return Date.now() - OhHaiBrowser.sessionStartTime;
 	},
 	builtInPages: {
-		errorPage: `file://${__dirname}/system_assets/components/error_page/index.html`
+		errorPage: `file://${__dirname}/components/error_page/index.html`
 	},
 	tabs: require('./system_assets/modules/OhHaiBrowser.Tabs.js'),
 	session: {
@@ -135,7 +135,7 @@ var OhHaiBrowser = {
 				maximizable: false,
 				fullscreenable: false,
 				alwaysOnTop: true,
-				icon: `file://${__dirname}/window/assets/OhHaiIcon.ico`,
+				icon: `file://${__dirname}/browser/assets/imgs/frame/icon.png`,
 				show: false
 			});
 			win.webContents.on('did-finish-load', () => {

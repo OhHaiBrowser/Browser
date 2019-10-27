@@ -1,8 +1,18 @@
 const { remote } = require('electron'),
-	thisWindow = remote.getCurrentWindow();
+	thisWindow = remote.getCurrentWindow(),
+	{ accordionPanel, accordionItem } = require('./components/accordion/accordion.component');
 
+//Define custom controls
+customElements.define('acc-panel', accordionPanel);
+customElements.define('acc-item', accordionItem);
+	
 document.addEventListener('DOMContentLoaded', function(){
 	//Load frame controls
+	createFrameControls();
+});
+
+
+function createFrameControls(){
 	const Window_Controls = document.getElementById('Win_Controls'),
 		Window_Left_Control = document.getElementById('Left_FrameBtn'),
 		Window_Center_Control = document.getElementById('Center_FrameBtn'),
@@ -36,4 +46,4 @@ document.addEventListener('DOMContentLoaded', function(){
 	default:
 		Window_Controls.classList.add('win');
 	}
-});
+}

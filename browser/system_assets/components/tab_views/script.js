@@ -82,7 +82,7 @@ module.exports = (webSession) => {
 		//This is not an internal page.
 			if(!webSession.tab.classList.contains('IncognitoTab')){
 				var TabIcon = tabimg.src;
-				if(TabIcon == 'system_assets/icons/loader.gif'){TabIcon = '';}
+				if(TabIcon == 'assets/imgs/loader.gif'){TabIcon = '';}
 
 				History.GetLastItem(function(lastitem){
 					if(lastitem == undefined){
@@ -210,7 +210,7 @@ module.exports = (webSession) => {
 function loadstart(tabtext,tabimg){
 	controls.lnk_cirtpip.classList.add('Loading');
 	tabtext.textContent = 'Loading...';
-	tabimg.src= 'system_assets/icons/loader.gif';
+	tabimg.src= 'assets/imgs/loader.gif';
 }
 
 function domloaded(thisSession){
@@ -234,5 +234,5 @@ function UpdateTab(tabtext,tabimg,webview){
 }
 
 function SetFavIcon(control) {
-	control.src = 'system_assets/icons/favicon_default.png';
+	control.src = 'assets/imgs/favicon_default.png';
 }

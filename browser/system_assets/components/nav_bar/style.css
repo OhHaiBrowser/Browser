@@ -26,7 +26,7 @@
 
                                     .CirtError::before{content:"Error";}
                                     .CirtError{background-color:rgb(255, 0, 0);color: #fff;}
-                                    .Loading{background: transparent url("../../icons/loader.gif") no-repeat center;}
+                                    .Loading{background: transparent url("../../../assets/imgs/loader.gif") no-repeat center;}
 
 @media (max-width:920px){
 
