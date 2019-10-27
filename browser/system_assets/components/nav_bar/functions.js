@@ -112,28 +112,3 @@ controls.btn_overflow.addEventListener('click',() => {
 		}}
 	]);
 });
-
-
-function initAccordion(accordionElem) {
-//when panel is clicked, handlePanelClick is called.          
-	function handlePanelClick(event) {
-		showPanel(event.currentTarget);
-	}
-	//Hide currentPanel and show new panel.  
-	function showPanel(panel) {
-		//Hide current one. First time it will be null. 
-		var expandedPanel = accordionElem.querySelector('.acc_active');
-		if (expandedPanel) {
-			expandedPanel.classList.remove('acc_active');
-		}
-		//Show new one
-		panel.classList.add('acc_active');
-	}
-	var allPanelElems = accordionElem.querySelectorAll('.acc_panel');
-	for (var i = 0, len = allPanelElems.length; i < len; i++) {
-		allPanelElems[i].addEventListener('click', handlePanelClick);
-	}
-	//By Default Show first panel
-	showPanel(allPanelElems[0]);
-}
-initAccordion(document.getElementById('leftAccordion'));
