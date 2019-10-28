@@ -3,20 +3,17 @@ let {remote} = require('electron'),
 	{Sessions, History} = require('./../../modules/OhHaiBrowser.Data');
 
 module.exports = (webSession) => {
+	
 	let validate = require('./../../modules/OhHaiBrowser.Validation'),
-		Doodle = require('./../../modules/Doodle');
-
-	let tabimg = webSession.tab.querySelector('.ohhai-tab-fav'),
-		tabtext = webSession.tab.querySelector('.ohhai-tab-txt'),
-		tabMediaBtn = webSession.tab.querySelector('.tabMediaBtn'),
+		Doodle = require('./../../modules/Doodle'),
 		sessionEventAdded = false;
 
-	webSession.webview.addEventListener('did-start-loading', function() {
-		if(!tabMediaBtn.classList.contains('hidden')){
-			tabMediaBtn.classList.add('hidden');
+	webSession.webview.addEventListener('did-start-loading', () => {
+		if(webSession.mediaControl != 'hide'){
+			webSession.mediaControl = 'hide';
 		}
 		if(webSession.selected){
-			loadstart(tabtext,tabimg);
+			loadstart(webSession);
 		}
 		if(!sessionEventAdded){
 			var thisWebContent =  webSession.webview.getWebContents();
@@ -73,18 +70,18 @@ module.exports = (webSession) => {
 		}
 	});
 
-	webSession.webview.addEventListener('did-stop-loading', function() {
+	webSession.webview.addEventListener('did-stop-loading', () => {
 		domloaded(webSession);
-		UpdateTab(tabtext,null, webSession.webview);
+		UpdateTab(webSession);
 
 		var CurrentURL = decodeURI(webSession.webview.getURL());
 		if (!validate.internalpage(CurrentURL)){
 		//This is not an internal page.
 			if(!webSession.tab.classList.contains('IncognitoTab')){
-				var TabIcon = tabimg.src;
+				var TabIcon = websession.icon;
 				if(TabIcon == 'assets/imgs/loader.gif'){TabIcon = '';}
 
-				History.GetLastItem(function(lastitem){
+				History.GetLastItem((lastitem) => {
 					if(lastitem == undefined){
 						History.Add(webSession.tab.getURL(), webSession.webview.getTitle(), TabIcon, OhHaiBrowser.validate.hostname(webSession.webview.getURL()));
 					}else{
@@ -97,7 +94,7 @@ module.exports = (webSession) => {
 		}
 	});
 
-	webSession.webview.addEventListener('load-commit', function(e) {
+	webSession.webview.addEventListener('load-commit', (e) => {
 		if(webSession.selected){
 			//only kick event if the mainframe is loaded, no comments or async BS!
 			if(e.isMainFrame){
@@ -107,16 +104,16 @@ module.exports = (webSession) => {
 		}
 	});
 
-	webSession.webview.addEventListener('page-title-updated', function() {
-		UpdateTab(tabtext,null, webSession.webview);
+	webSession.webview.addEventListener('page-title-updated', () => {
+		UpdateTab(webSession);
 	});
 
-	webSession.webview.addEventListener('dom-ready', function() {
+	webSession.webview.addEventListener('dom-ready', () => {
 		domloaded(webSession);
-		UpdateTab(tabtext, tabimg, webSession.webview);
+		UpdateTab(webSession);
 
 		if(!webSession.tab.classList.contains('IncognitoTab')){
-			Sessions.UpdateWebPage(webSession.id, webSession.webview.getURL(), webSession.webview.getTitle(), tabimg.src , function(id){});
+			Sessions.UpdateWebPage(webSession.id, webSession.webview.getURL(), webSession.webview.getTitle(), websession.icon , function(id){});
 		}
 
 		var webviewcontent = webSession.webview.getWebContents();	
@@ -128,18 +125,18 @@ module.exports = (webSession) => {
 
 	});
 
-	webSession.webview.addEventListener('did-fail-load', function (e) {
+	webSession.webview.addEventListener('did-fail-load', (e) => {
 		if (e.errorCode != -3 && e.validatedURL == e.target.getURL()) {webSession.webview.loadURL(OhHaiBrowser.builtInPages.errorPage + '?code=' + e.errorCode + '&url=' + e.validatedURL);}
 	});
 
-	webSession.webview.addEventListener('close', function() {
+	webSession.webview.addEventListener('close', () => {
 		OhHaiBrowser.tabs.remove(webSession);
 	});
 
-	webSession.webview.addEventListener('new-window', function(e) {
+	webSession.webview.addEventListener('new-window', (e) => {
 		switch(e.disposition){
 		case 'new-window':
-			OhHaiBrowser.tabs.popupwindow(e,function(window){
+			OhHaiBrowser.tabs.popupwindow(e, (window) => {
 
 			});
 			break;
@@ -151,30 +148,26 @@ module.exports = (webSession) => {
 		}
 	});
 
-	webSession.webview.addEventListener('media-started-playing', function (e) {
+	webSession.webview.addEventListener('media-started-playing', (e) => {
 		if(webSession.webview.isAudioMuted()){
-			tabMediaBtn.classList.add('tabMute');
-			tabMediaBtn.classList.remove('hidden');
+			webSession.mediaControl = 'mute';
 		}else{
-			tabMediaBtn.classList.add('tabPlaying');
-			tabMediaBtn.classList.remove('hidden');
+			webSession.mediaControl = 'play';
 		}
 	});
 
-	webSession.webview.addEventListener('media-paused', function (e) {
+	webSession.webview.addEventListener('media-paused', (e) => {
 		if(webSession.webview.isAudioMuted()){
-			tabMediaBtn.classList.add('tabMute');
-			tabMediaBtn.classList.remove('hidden');
+			webSession.mediaControl = 'mute';
 		}else{
-			tabMediaBtn.classList.add('tabPlaying');
-			tabMediaBtn.classList.remove('hidden');
+			webSession.mediaControl = 'play';
 		}
 	});
 
-	webSession.webview.addEventListener('page-favicon-updated',function(e){
-		tabimg.src= e.favicons[0];
+	webSession.webview.addEventListener('page-favicon-updated', (e) => {
+		websession.icon = e.favicons[0];
 	});
-	webSession.webview.addEventListener('focus',function(){
+	webSession.webview.addEventListener('focus', () => {
 		let openMenuItem = document.querySelector('.contextualMenu:not(.contextualMenuHidden)');
 		if(openMenuItem != null){
 			document.body.removeChild(openMenuItem);
@@ -182,7 +175,7 @@ module.exports = (webSession) => {
 	});
 
 	//Tab Listeners
-	webSession.tab.addEventListener('click', function(e) {
+	webSession.tab.addEventListener('click', (e) => {
 		switch(e.target.className){
 		case 'TabClose':
 			OhHaiBrowser.tabs.remove(webSession);
@@ -207,10 +200,10 @@ module.exports = (webSession) => {
 };
 
 
-function loadstart(tabtext,tabimg){
+function loadstart(websession){
 	controls.lnk_cirtpip.classList.add('Loading');
-	tabtext.textContent = 'Loading...';
-	tabimg.src= 'assets/imgs/loader.gif';
+	websession.title = 'Loading...';
+	websession.icon = 'assets/imgs/loader.gif';
 }
 
 function domloaded(thisSession){
@@ -224,15 +217,15 @@ function domloaded(thisSession){
 	}
 }
 
-function UpdateTab(tabtext,tabimg,webview){
-	if(tabtext != null){
-		tabtext.textContent = webview.getTitle(); 
+function UpdateTab(websession){
+	if(websession.title != null){
+		websession.title = websession.webview.getTitle(); 
 	}
-	if(tabimg != null){
-		SetFavIcon(tabimg);	
+	if(websession.icon != null){
+		SetFavIcon(websession);	
 	}
 }
 
-function SetFavIcon(control) {
-	control.src = 'assets/imgs/favicon_default.png';
+function SetFavIcon(websession) {
+	websession.icon = 'assets/imgs/favicon_default.png';
 }

@@ -1,0 +1,37 @@
+<html>
+
+<head>
+	<title>OhHai Browser</title>
+	<link rel="StyleSheet" href="../../assets/css/style.css" />
+	<link id="ThemeStyle" rel="StyleSheet" href="../../themes/default.css" />
+</head>
+
+<body>
+	<div id="AppBound">
+		<header class="Navbar">
+			<ul class="Window_Controls">
+				<li><a id="Left_FrameBtn" class="Left_FrameBtn"></a></li>
+				<li><a id="Center_FrameBtn" class="Center_FrameBtn"></a></li>
+				<li><a id="Right_FrameBtn" class="Right_FrameBtn"></a></li>
+			</ul>
+
+			<div class="ControlsArea">
+				<div class="Center">
+					<div class="CenterCenter">
+						<a id="SecureCheck" class="DoubleURLBtn"></a>
+						<input class="URLBar" type="text" id="URLBar" />
+						<button id="BtnQuicklink" class="URLButton"></button>
+						<button id="Refresh" title="Refresh this page" class="URLButton Refresh"></button>
+					</div>
+				</div>
+			</div>
+		</header>
+		<div id="BrowserWin">
+			<webview id="popupwebview"></webview>
+		</div>
+	</div>
+
+	<script src="script.js"></script>
+</body>
+
+</html>

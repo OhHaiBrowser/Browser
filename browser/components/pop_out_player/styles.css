@@ -1,0 +1,8 @@
+#Appbound{-webkit-app-region:drag;-webkit-user-select: none;box-sizing: border-box;}
+
+.Inner{width:100%;height:100%;}
+    .header{-webkit-app-region:drag;-webkit-user-select: none;width:100%;height:30px;background-color: var(--main);}
+        .CloseBtn{float: right; padding: 5px 10px; text-decoration: none; color: #fff;-webkit-app-region: no-drag;}
+
+
+#embededvid{-webkit-app-region: no-drag;width: 100%;height: 100%;border: none;}

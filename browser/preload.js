@@ -11,6 +11,7 @@ customElements.define('tab-item', tabItem);
 document.addEventListener('DOMContentLoaded', function(){
 	//Load frame controls
 	createFrameControls();
+	updateMaxRestoreBtn();
 });
 
 
@@ -25,12 +26,11 @@ function createFrameControls(){
 	});
 	Window_Center_Control.addEventListener('click',() => {
 		if (!thisWindow.isMaximized()) { 
-			Window_Center_Control.className = 'Center_FrameBtn2';	
 			thisWindow.maximize(); 
 		} else { 
-			Window_Center_Control.className = 'Center_FrameBtn';
 			thisWindow.restore(); 
 		} 
+		updateMaxRestoreBtn();
 	});
 	Window_Right_Control.addEventListener('click',() => {
 		thisWindow.close(); 
@@ -48,4 +48,12 @@ function createFrameControls(){
 	default:
 		Window_Controls.classList.add('win');
 	}
+}
+
+function updateMaxRestoreBtn(){
+	if (!thisWindow.isMaximized()) { 
+		Window_Center_Control.className = 'Center_FrameBtn2';	
+	} else { 
+		Window_Center_Control.className = 'Center_FrameBtn';
+	} 
 }

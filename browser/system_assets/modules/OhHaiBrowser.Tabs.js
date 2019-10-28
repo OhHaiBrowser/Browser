@@ -1,103 +1,219 @@
 let CoreFunctions = require('./OhHaiBrowser.Core'),
-	{Sessions, Groups} = require('./OhHaiBrowser.Data'),
+	{ Sessions, Groups } = require('./OhHaiBrowser.Data'),
 	AddListeners = require('./../components/tab_views/script'),
 	Tabbar = require('./OhHaiBrowser.Tabbar'),
-	{remote} = require('electron'),
-	{functions} = require('./../components/nav_bar/controls.js');
-
+	{ remote } = require('electron'),
+	{ functions } = require('./../components/nav_bar/controls.js');
 
 class OhHaiWebSession {
-	constructor(id,url,opts){
+	constructor(id, url, opts) {
 		this.id = id;
-		this.tab =CoreFunctions.generateElement(`
+		this.tab = CoreFunctions.generateElement(`
 			<li class='tab' id='t_${id}' data-container='wv_${id}'>
 				<a class='tabMediaBtn hidden'></a>
 				<img class='ohhai-tab-fav' src='assets/imgs/logo.png'/>
 				<span class='ohhai-tab-txt'>New Tab</span>
 				<a class='TabClose'></a>
 			</li>`);
-		this.webview =  CoreFunctions.generateElement(`<webview id='wv_${id}' src='${parseOpenPage(url)}' class='Hidden'></webview>`);
+		this.webview = CoreFunctions.generateElement(`<webview id='wv_${id}' src='${parseOpenPage(url)}' class='Hidden'></webview>`);
 		if (opts) {
 			if (opts.mode) {
 				this.mode = String(opts.mode);
 			}
 			if (opts.title) {
-				var tabTxt = this.tab.querySelector('.ohhai-tab-txt');
-				tabTxt.textContent = String(opts.title);
+				this.title = String(opts.title);
 			}
 			if (opts.favicon) {
-				var tabFav = this.tab.querySelector('.ohhai-tab-fav');
-				tabFav.src = String(opts.favicon);
+				this.icon = String(opts.favicon);
+			}
+			if (opts.selected) {
+
 			}
 		}
 		AddListeners(this);
 	}
+
 	/**
 	 * @param {string} value
 	 */
-	set mode(value){
-		switch(value){
-		case 'incog':
-			this.tab.classList.add('IncognitoTab');
-			break;
-		case 'dock':
-			this.tab.classList.remove('DefaultTab');
-			this.tab.classList.add('DockTab');
-			break;
-		case 'default':
-		default:
-			this.tab.classList.remove('DockTab');
-			this.tab.classList.add('DefaultTab');
+	set mode(value) {
+		switch (value) {
+			case 'incog':
+				this.tab.classList.add('IncognitoTab');
+				break;
+			case 'dock':
+				this.tab.classList.remove('DefaultTab');
+				this.tab.classList.add('DockTab');
+				break;
+			case 'default':
+			default:
+				this.tab.classList.remove('DockTab');
+				this.tab.classList.add('DefaultTab');
 		}
 	}
-	get mode(){
+	get mode() {
 		return this.tab.classList.contains('IncognitoTab') ? 'incog' :
 			this.tab.classList.contains('DockTab') ? 'dock' :
-				'default';
+			'default';
 	}
 
 	/**
 	 * @param {boolean} value
 	 */
-	set selected(value){
-		if(value){
+	set selected(value) {
+		if (value) {
 			this.tab.classList.add('current');
 			this.webview.classList.remove('Hidden');
-		}else{
+		} else {
 			this.tab.classList.remove('current');
 			this.webview.classList.add('Hidden');
 		}
 	}
-	get selected(){
+	get selected() {
 		return this.tab.classList.contains('current');
 	}
 
-	toJson(){
+	/**
+	 * @param {string} value
+	 */
+	set title(value) {
+		var tabTxt = this.tab.querySelector('.ohhai-tab-txt');
+		tabTxt.textContent = value;
+	}
+	get title() {
+		return this.tab.querySelector('.ohhai-tab-txt').textContent;
+	}
+
+	set icon(value) {
+		var tabFav = this.tab.querySelector('.ohhai-tab-fav');
+		tabFav.src = value;
+	}
+	get icon() {
+		return this.tab.querySelector('.ohhai-tab-fav').src;
+	}
+
+	set mediaControl(value) {
+		var tabMediaBtn = this.tab.querySelector('.tabMediaBtn');
+		tabMediaBtn.classList.remove('hidden', 'tabMute', 'tabPlaying');
+		switch (value) {
+			case 'play': 
+				tabMediaBtn.classList.add('hidden');
+			break;
+			case 'mute':
+				tabMediaBtn.classList.add('tabMute');
+			break
+			case 'hide' :
+			default :
+				tabMediaBtn.classList.add('tabPlaying');
+			break;
+		}
+	}
+	get mediaControl() {
+		var tabMediaBtn = this.tab.querySelector('.tabMediaBtn');
+		return tabMediaBtn.classList.contains('hidden') ? 'hide' : tabMediaBtn.classList.contains('tabMute') ? 'mute' : 'play';
+	}
+
+	toJson() {
 		return JSON.stringify({
 			id: this.id,
 			url: this.webview.getURL(),
-			title: this.tab.querySelector('.ohhai-tab-txt').textContent,
+			title: this.title,
 			mode: this.mode
-		});	
+		});
 	}
 
 }
-function parseOpenPage(url){
+
+function parseOpenPage(url) {
 	switch (url) {
-	case 'default':
-	case undefined:
-	case '':
-		return 'components/home_page/index.html';
-	default:
-		return url;
+		case 'default':
+		case undefined:
+		case '':
+			return 'components/home_page/index.html';
+		default:
+			return url;
 	}
 }
+
+class NewGroup extends HTMLLIElement {
+	/**
+	 * 
+	 * @param {Object} opts
+	 * @param {String} opts.id
+	 * @param {String} opts.title
+	 */
+	constructor(opts){
+		super();
+		this.id = opts.id;
+		this.classList.add('group');
+		const shadowEl = this.attachShadow({mode: 'open'});
+		shadowEl.innerHTML = `
+			<div class='ohhai-group-header'>
+				<input type='text' class='ohhai-group-txt' value='${opts.title != null ? opts.title : 'New Group'}'/>
+				<a class='ohhai-togglegroup'></a>
+			</div>
+			<ul class='ohhai-group-children'>
+			</ul>
+		`;
+
+		var GroupHead = shadowEl.querySelector('.ohhai-group-header');
+		var GroupName = shadowEl.querySelector('.ohhai-group-txt');
+		var ToggleGroup = shadowEl.querySelector('.ohhai-togglegroup');
+		var GroupChildren = shadowEl.querySelector('.ohhai-group-children');
+		ToggleGroup.addEventListener('click', function (e) {
+			GroupChildren.classList.toggle('ClosedGroup');
+		});
+		GroupName.addEventListener('change', () => Groups.Upsert(opts.id, GroupName.value, (Retid) => {}));
+		GroupHead.addEventListener('contextmenu', (e) => {
+			e.preventDefault();
+			var GroupMenu = OhHaiBrowser.ui.contextmenus.group(this, GroupChildren);
+			GroupMenu.popup(remote.getCurrentWindow());
+		}, false);
+	}
+
+	set title(value) {
+		var GroupName = this.querySelector('.ohhai-group-txt');
+		GroupName.value = value;
+	}	
+	get title() {
+		var GroupName = this.querySelector('.ohhai-group-txt');
+		return GroupName.value;
+	}
+	
+	get children() {
+		return Array.from(this.querySelectorAll('.ohhai-group-children'));
+	}
+
+	addTab(_tab) {
+		var GroupChildren = this.querySelector('.ohhai-group-children');
+		GroupChildren.appendChild(_tab);
+
+		var TabSessionId = _tab.getAttribute('data-session');
+		Sessions.UpdateParent(TabSessionId, this.id, function (id) {});
+		Sessions.UpdateMode(TabSessionId, 'grouped', function (id) {});
+	}
+
+	removeTab(_tab) {
+		Tabbar.tabcontainer.appendChild(_tab);
+
+		var TabSessionId = _tab.getAttribute('data-session');
+		Sessions.UpdateParent(TabSessionId, Tabbar.tabcontainer.id, function (id) {});
+		Sessions.UpdateMode(TabSessionId, 'default', function (id) {});
+
+		if (this.children.length == 0) {
+			var GroupParent = this.parentElement;
+			GroupParent.removeChild(this);
+		}
+	}
+}
+customElements.define('group-parent', NewGroup);
 
 class OhHaiGroup {
-	constructor(id,title){
+
+	constructor(id, title) {
 		this.id = id;
 		this.Group = CoreFunctions.generateElement(`
-			<li class='group' id='${id}'>
+			<li class='group' id='group_${id}'>
 				<div class='ohhai-group-header'>
 					<input type='text' class='ohhai-group-txt' value='${title != null ? title : 'New Group'}'/>
 					<a class='ohhai-togglegroup'></a>
@@ -120,17 +236,46 @@ class OhHaiGroup {
 			GroupMenu.popup(remote.getCurrentWindow());
 		}, false);
 	}
-	set title(value){
+	
+	set title(value) {
 		var GroupName = this.Group.querySelector('.ohhai-group-txt');
 		GroupName.value = value;
-	}
-	get title(){
+	}	
+	get title() {
 		var GroupName = this.Group.querySelector('.ohhai-group-txt');
 		return GroupName.value;
 	}
-	get children(){
-		return this.Group.querySelector('.ohhai-group-children');
+	
+	get children() {
+		return Array.from(this.Group.querySelectorAll('.ohhai-group-children'));
 	}
+
+	addTab(_tab) {
+		var GroupChildren = this.Group.querySelector('.ohhai-group-children');
+		GroupChildren.appendChild(_tab);
+
+		var TabSessionId = _tab.getAttribute('data-session');
+		Sessions.UpdateParent(TabSessionId, this.id, function (id) {});
+		Sessions.UpdateMode(TabSessionId, 'grouped', function (id) {});
+	}
+
+	removeTab(_tab) {
+		Tabbar.tabcontainer.appendChild(_tab);
+
+		var TabSessionId = _tab.getAttribute('data-session');
+		Sessions.UpdateParent(TabSessionId, Tabbar.tabcontainer.id, function (id) {});
+		Sessions.UpdateMode(TabSessionId, 'default', function (id) {});
+
+		if (this.children.length == 0) {
+			var GroupParent = this.Group.parentElement;
+			GroupParent.removeChild(this.Group);
+		}
+	}
+
+	remove(opts) {
+		this.group.parentElement.removeChild(this.group);
+	}
+
 }
 
 const Tabs = {
@@ -152,34 +297,34 @@ const Tabs = {
 			}
 			if (_OPTIONS.mode) {
 				switch (_OPTIONS.mode.toString().toLowerCase()) {
-				case 'dock':
-					Tabbar.pinnedtabcontainer.appendChild(NewWS.tab);
-					break;
-				case 'incog':
-					Tabbar.tabcontainer.appendChild(NewWS.tab);
-					break;
-				case 'grouped':
-					if (_OPTIONS.parent) {
-						if (typeof _OPTIONS.parent == 'string') {
-							_OPTIONS.parent = document.getElementById(_OPTIONS.parent);
-						}
-						if (_OPTIONS.parent != null) {
-							if (_OPTIONS.parent.classList.contains('ohhai-group-children')) {
-								_OPTIONS.parent.appendChild(NewWS.tab);
+					case 'dock':
+						Tabbar.pinnedtabcontainer.appendChild(NewWS.tab);
+						break;
+					case 'incog':
+						Tabbar.tabcontainer.appendChild(NewWS.tab);
+						break;
+					case 'grouped':
+						if (_OPTIONS.parent) {
+							if (typeof _OPTIONS.parent == 'string') {
+								_OPTIONS.parent = document.getElementById(_OPTIONS.parent);
+							}
+							if (_OPTIONS.parent != null) {
+								if (_OPTIONS.parent.classList.contains('ohhai-group-children')) {
+									_OPTIONS.parent.appendChild(NewWS.tab);
+								} else {
+									var GroupedTabs = _OPTIONS.parent.querySelector('.ohhai-group-children');
+									GroupedTabs.appendChild(NewWS.tab);
+								}
 							} else {
-								var GroupedTabs = _OPTIONS.parent.querySelector('.ohhai-group-children');
-								GroupedTabs.appendChild(NewWS.tab);
+								Tabbar.tabcontainer.appendChild(NewWS.tab);
 							}
 						} else {
-							Tabbar.tabcontainer.appendChild(NewWS.tab);
+							_OPTIONS.parent.appendChild(NewWS.tab);
 						}
-					} else {
-						_OPTIONS.parent.appendChild(NewWS.tab);
-					}
-					break;
-				case 'default':
-				default:
-					Tabbar.tabcontainer.appendChild(NewWS.tab);
+						break;
+					case 'default':
+					default:
+						Tabbar.tabcontainer.appendChild(NewWS.tab);
 				}
 			} else {
 				_OPTIONS.mode = 'default';
@@ -195,15 +340,15 @@ const Tabs = {
 			if (IsNew) {
 				var TabParent = null;
 				switch (NewWS.tab.parentElement.className) {
-				case 'ohhai-group-children':
-					var FirstTabParent = NewWS.tab.parentElement;
-					TabParent = FirstTabParent.parentElement.id;
-					break;
-				default:
-					TabParent = NewWS.tab.parentElement.id;
+					case 'ohhai-group-children':
+						var FirstTabParent = NewWS.tab.parentElement;
+						TabParent = FirstTabParent.parentElement.id;
+						break;
+					default:
+						TabParent = NewWS.tab.parentElement.id;
 				}
 
-				Sessions.Set(_ID, 'default', 'TempTitle', _OPTIONS.mode, '\assets/imgs/logo.png', function (id) {
+				Sessions.Set(_ID, 'default', 'TempTitle', _OPTIONS.mode, '/assets/imgs/logo.png', function (id) {
 					if (id != null) {
 						NewWS.tab.setAttribute('data-session', _ID);
 						Sessions.UpdateParent(_ID, TabParent, function (id) {});
@@ -263,9 +408,9 @@ const Tabs = {
 				Tabs.groups.remove(ThisGroup, null, null);
 			}
 		}
-		
+
 		Tabs.count--;
-		Tabs.tabMap.splice(Tabs.tabMap.findIndex(i => i.id == _webSession.id) ,1);
+		Tabs.tabMap.splice(Tabs.tabMap.findIndex(i => i.id == _webSession.id), 1);
 
 		functions.updateTabCounter();
 
@@ -294,7 +439,7 @@ const Tabs = {
 	setCurrent: function (_WebSession, callback) {
 
 		Tabs.getCurrent(function (ctab) {
-			if(ctab){
+			if (ctab) {
 				ctab.selected = false;
 			}
 		});
@@ -310,19 +455,19 @@ const Tabs = {
 		_WebSession.mode = _mode;
 
 		switch (_mode) {
-		case 'dock':
-			Tabbar.pinnedtabcontainer.appendChild(_WebSession.tab);
-			Sessions.UpdateMode(_WebSession.id, 'DOCK', function () {});
-			Sessions.UpdateParent(_WebSession.id, Tabbar.pinnedtabcontainer.id, function () {});
-			break;
-		case 'grouped':
+			case 'dock':
+				Tabbar.pinnedtabcontainer.appendChild(_WebSession.tab);
+				Sessions.UpdateMode(_WebSession.id, 'DOCK', function () {});
+				Sessions.UpdateParent(_WebSession.id, Tabbar.pinnedtabcontainer.id, function () {});
+				break;
+			case 'grouped':
 
-			break;
-		case 'default':
-		default:
-			Tabbar.tabcontainer.appendChild(_WebSession.tab);
-			Sessions.UpdateMode(_WebSession.id, 'Default', function () {});
-			Sessions.UpdateParent(_WebSession.id, Tabbar.tabcontainer.id, function () {});
+				break;
+			case 'default':
+			default:
+				Tabbar.tabcontainer.appendChild(_WebSession.tab);
+				Sessions.UpdateMode(_WebSession.id, 'Default', function () {});
+				Sessions.UpdateParent(_WebSession.id, Tabbar.tabcontainer.id, function () {});
 		}
 
 		callback;
@@ -348,27 +493,33 @@ const Tabs = {
 	groups: {
 		add: function (_id, _title, _tab, callback) {
 			if (_id == null) {
-				_id = 'group-'+ CoreFunctions.generateId();
+				_id = CoreFunctions.generateId();
 			}
 
 			let NewG = new OhHaiGroup(_id, _title);
 
+			let nGroup = new NewGroup({
+				id: _id,
+				title: _title
+			})
+			console.log(nGroup);
+			
 			switch (_tab) {
-			case null:
-				Tabs.add('default', undefined, {
-					selected: true,
-					mode: 'grouped',
-					parent: NewG.children
-				});
-				break;
-			case 'session':
-				break;
-			default:
-				var TabSessionId = _tab.getAttribute('data-session');
-				NewG.children.appendChild(_tab);
-				Sessions.UpdateParent(TabSessionId, NewG.id, function (_id) {
+				case null:
+					Tabs.add('default', undefined, {
+						selected: true,
+						mode: 'grouped',
+						parent: NewG.children
+					});
+					break;
+				case 'session':
+					break;
+				default:
+					var TabSessionId = _tab.getAttribute('data-session');
+					NewG.children.appendChild(_tab);
+					Sessions.UpdateParent(TabSessionId, NewG.id, function (_id) {
 
-				});
+					});
 			}
 			Tabbar.tabcontainer.appendChild(NewG.Group);
 
@@ -393,7 +544,7 @@ const Tabs = {
 				});
 			});
 
-			if(_Group.parentElement != null){
+			if (_Group.parentElement != null) {
 				GroupParent.removeChild(_Group);
 			}
 
@@ -532,17 +683,17 @@ const Tabs = {
 			width: 800,
 			height: 600,
 			frame: false,
-			icon: `file://${__dirname}/browser/assets/imgs/frame/icon.png`,
+			icon: `file://${__dirname}/assets/imgs/frame/icon.png`,
 			show: false,
 			webPreferences: {
-				preload: `file://${__dirname}/browser/preload.js`,
+				preload: `file://${__dirname}/preload.js`,
 			}
 		});
 		win.webContents.on('did-finish-load', () => {
 			win.show();
 			win.focus();
 		});
-		win.loadURL(`file://${__dirname}/system_assets/components/pop_out_window/template.html?url=${params.url}`);
+		win.loadURL(`file://${__dirname}/components/pop_out_window/template.html?url=${params.url}`);
 
 		callback(win);
 	}

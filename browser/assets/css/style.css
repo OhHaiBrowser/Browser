@@ -4,14 +4,9 @@
 @import	url("../../system_assets/modules/Contextuals/Contextuals.css");
 @import url("frame.css");
 
-html,
-body {
+* {
 	margin: 0;
 	padding: 0;
-	background-color: #e9e9e9;
-}
-
-* {
 	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
 }
 
@@ -24,6 +19,7 @@ body {
 	overflow: hidden;
 	display: flex;
 	flex-flow: column;
+	background-color: #e9e9e9;
 }
 
 /*Main Outer*/
@@ -67,12 +63,6 @@ body {
 
 #LeftMenu .tabcommands {
 	padding: 5px;
-}
-
-#leftAccordion {
-	display: flex;
-	flex-flow: column;
-	overflow: hidden;
 }
 
 #Sid {
@@ -129,153 +119,6 @@ body {
 
 		}
 
-
-
-/*Other Menu*/
-#OverFlowMenu {
-	position: fixed;
-	height: 100%;
-	z-index: 100;
-	border: 1px solid rgb(195, 195, 195);
-	background-color: rgba(233, 233, 233, 1);
-	box-shadow: 2px 0px 5px #c4c4c4;
-	transition: right 0.25s;
-}
-
-.OverflowHidden {
-	right: -365px;
-}
-
-.OverflowShow {
-	right: 0;
-}
-
-/* Overflow menu types */
-
-#OverFlowDeepMenu {
-	float: left;
-	width: 350px;
-	height: 100%;
-}
-
-#MegaMenuContent {
-	height: -webkit-calc(100% - 87px);
-	overflow: auto;
-}
-
-#MiniMenuContent {
-	height: -webkit-calc(100% - 48px);
-	overflow: auto;
-}
-
-#OverFlowMiniMenu {
-	float: left;
-	width: 50px;
-	height: 100%;
-}
-
-.MiniMenuList {
-	margin: 0px;
-	padding: 0px;
-	list-style: none;
-}
-
-.MiniMenuList li {}
-
-.MiniMenuList li a {
-	border-radius: 2px;
-	margin: 3px;
-	text-decoration: none;
-	color: #000;
-	width: 40px;
-	height: 40px;
-	display: inline-block;
-	font-size: 28px;
-	vertical-align: middle;
-	text-align: center;
-}
-
-#OverFlowOptions {
-	float: left;
-	width: 350px;
-	height: 100%;
-}
-
-.OverFlowContent ul {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	margin-top: 5PX;
-}
-
-.OverFlowContent ul li {
-	margin: 0;
-	padding: 0;
-}
-
-.OverFlowContent ul li hr {
-	margin: 5PX;
-}
-
-.OverFlowContent ul li a {
-	margin-left: auto;
-	color: #000;
-	text-decoration: none;
-	margin-right: auto;
-	display: block;
-	padding: 10px 15px;
-	color: #000;
-}
-
-.OverFlowContent ul li a:hover {
-	background-color: var(--main);
-	color: var(--controls);
-	color: #fff;
-}
-
-
-.OverFlowTopMenu {
-	list-style: none;
-	margin: 0;
-	height: 47px;
-	padding: 0;
-	border-bottom: 1px solid #999;
-}
-
-.MenuTitle {
-	font-size: 22px;
-	height: 40px;
-	vertical-align: middle;
-}
-
-.CloseOverflow {
-	margin: 3px;
-	text-decoration: none;
-	color: #999;
-	width: 40px;
-	height: 40px;
-	display: inline-block;
-	font-size: 28px;
-	vertical-align: middle;
-	text-align: center;
-}
-
-#Pactions_StaticOptions button {
-	background-color: #fff;
-	border: 2px solid var(--main);
-	border-radius: 2px;
-	width: 149px;
-	padding: 5px 5px 5px 35px;
-	text-align: left;
-	cursor: pointer;
-	margin-bottom: 5px;
-}
-
-#Pactions_StaticOptions button:hover {
-	background-color: var(--main);
-	color: #fff;
-}
-
 .URLDropDown {
 	background-color: #fff;
 	border-bottom: 2px solid var(--main);
@@ -305,10 +148,6 @@ button:focus {
 .QuicklinkActive::before {
 	content: "\2605";
 	font-size: 20px;
-}
-
-#BtnReaderMode {
-	background: url("icons/Reader.png") no-repeat left;
 }
 
 .TabClose::before {
@@ -358,9 +197,6 @@ button:focus {
 	min-height: 70px;
 	max-height: 200px;
 	position: relative;
-
-
-
 	z-index: 100;
 	margin: 0 0 0 -139px;
 	top: 39px;
@@ -487,47 +323,6 @@ button:focus {
 	margin-left: 3px;
 }
 
-
-
-.ModList {
-	padding: 10px;
-}
-
-.ModList button {
-	width: 100%;
-	padding: 5px;
-	font-size: 15px;
-}
-
-
-#UserAccountMenu {
-	padding: 10px 15px 0px 15px;
-}
-
-#UserAccountMenu img {
-	height: 75px;
-	width: 75px;
-	float: left;
-	border-radius: 50px;
-}
-
-#UserAccountMenu a {
-	line-height: 75px;
-	display: inline-block;
-	margin-left: 10px;
-	font-size: 18px;
-	text-decoration: none;
-	font-size: 18px;
-	color: #000;
-}
-
-#UserAccountMenu a:hover {
-	text-decoration: underline;
-}
-
-
-
-
 .WMC_popup {
 	font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
 	cursor: pointer;
@@ -617,8 +412,6 @@ button:focus {
 	border: 1px solid #c4c4c4;
 	background-color: #fff;
 }
-
-
 
 .URL_AutoComplete {
 	position: absolute;

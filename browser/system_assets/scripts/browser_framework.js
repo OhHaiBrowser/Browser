@@ -135,14 +135,14 @@ var OhHaiBrowser = {
 				maximizable: false,
 				fullscreenable: false,
 				alwaysOnTop: true,
-				icon: `file://${__dirname}/browser/assets/imgs/frame/icon.png`,
+				icon: `file://${__dirname}/assets/imgs/frame/icon.png`,
 				show: false
 			});
 			win.webContents.on('did-finish-load', () => {
 				win.show();
 				win.focus();
 			});
-			win.loadURL(`file://${__dirname}/system_assets/components/pop_out_player/template.html?url=${params.url}`);
+			win.loadURL(`file://${__dirname}/components/pop_out_player/template.html?url=${params.url}`);
 			win.webContents.openDevTools();
 			if (typeof callback === 'function') {
 				callback(win);
