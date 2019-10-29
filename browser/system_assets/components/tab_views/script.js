@@ -78,12 +78,12 @@ module.exports = (webSession) => {
 		if (!validate.internalpage(CurrentURL)){
 		//This is not an internal page.
 			if(!webSession.tab.classList.contains('IncognitoTab')){
-				var TabIcon = websession.icon;
+				var TabIcon = webSession.icon;
 				if(TabIcon == 'assets/imgs/loader.gif'){TabIcon = '';}
 
 				History.GetLastItem((lastitem) => {
 					if(lastitem == undefined){
-						History.Add(webSession.tab.getURL(), webSession.webview.getTitle(), TabIcon, OhHaiBrowser.validate.hostname(webSession.webview.getURL()));
+						History.Add(webSession.webview.getURL(), webSession.webview.getTitle(), TabIcon, OhHaiBrowser.validate.hostname(webSession.webview.getURL()));
 					}else{
 						if(lastitem.url != webSession.webview.getURL()){
 							History.Add(webSession.webview.getURL(), webSession.webview.getTitle(), TabIcon, OhHaiBrowser.validate.hostname(webSession.webview.getURL()));
@@ -113,7 +113,7 @@ module.exports = (webSession) => {
 		UpdateTab(webSession);
 
 		if(!webSession.tab.classList.contains('IncognitoTab')){
-			Sessions.UpdateWebPage(webSession.id, webSession.webview.getURL(), webSession.webview.getTitle(), websession.icon , function(id){});
+			Sessions.UpdateWebPage(webSession.id, webSession.webview.getURL(), webSession.webview.getTitle(), webSession.icon , function(id){});
 		}
 
 		var webviewcontent = webSession.webview.getWebContents();	
@@ -165,7 +165,7 @@ module.exports = (webSession) => {
 	});
 
 	webSession.webview.addEventListener('page-favicon-updated', (e) => {
-		websession.icon = e.favicons[0];
+		webSession.icon = e.favicons[0];
 	});
 	webSession.webview.addEventListener('focus', () => {
 		let openMenuItem = document.querySelector('.contextualMenu:not(.contextualMenuHidden)');

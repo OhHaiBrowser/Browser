@@ -51,6 +51,8 @@ function createFrameControls(){
 }
 
 function updateMaxRestoreBtn(){
+	const Window_Center_Control = document.getElementById('Center_FrameBtn');
+
 	if (!thisWindow.isMaximized()) { 
 		Window_Center_Control.className = 'Center_FrameBtn2';	
 	} else { 

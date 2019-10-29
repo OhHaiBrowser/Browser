@@ -33,28 +33,23 @@ class OhHaiWebSession {
 		AddListeners(this);
 	}
 
-	/**
-	 * @param {string} value
-	 */
 	set mode(value) {
 		switch (value) {
-			case 'incog':
-				this.tab.classList.add('IncognitoTab');
-				break;
-			case 'dock':
-				this.tab.classList.remove('DefaultTab');
-				this.tab.classList.add('DockTab');
-				break;
-			case 'default':
-			default:
-				this.tab.classList.remove('DockTab');
-				this.tab.classList.add('DefaultTab');
+		case 'incog':
+			this.tab.classList.add('IncognitoTab');
+			break;
+		case 'dock':
+			this.tab.classList.remove('DefaultTab');
+			this.tab.classList.add('DockTab');
+			break;
+		case 'default':
+		default:
+			this.tab.classList.remove('DockTab');
+			this.tab.classList.add('DefaultTab');
 		}
 	}
 	get mode() {
-		return this.tab.classList.contains('IncognitoTab') ? 'incog' :
-			this.tab.classList.contains('DockTab') ? 'dock' :
-			'default';
+		return this.tab.classList.contains('IncognitoTab') ? 'incog' : this.tab.classList.contains('DockTab') ? 'dock' : 'default';
 	}
 
 	/**
@@ -96,15 +91,15 @@ class OhHaiWebSession {
 		var tabMediaBtn = this.tab.querySelector('.tabMediaBtn');
 		tabMediaBtn.classList.remove('hidden', 'tabMute', 'tabPlaying');
 		switch (value) {
-			case 'play': 
-				tabMediaBtn.classList.add('hidden');
+		case 'play': 
+			tabMediaBtn.classList.add('hidden');
 			break;
-			case 'mute':
-				tabMediaBtn.classList.add('tabMute');
-			break
-			case 'hide' :
-			default :
-				tabMediaBtn.classList.add('tabPlaying');
+		case 'mute':
+			tabMediaBtn.classList.add('tabMute');
+			break;
+		case 'hide' :
+		default :
+			tabMediaBtn.classList.add('tabPlaying');
 			break;
 		}
 	}
@@ -126,87 +121,14 @@ class OhHaiWebSession {
 
 function parseOpenPage(url) {
 	switch (url) {
-		case 'default':
-		case undefined:
-		case '':
-			return 'components/home_page/index.html';
-		default:
-			return url;
+	case 'default':
+	case undefined:
+	case '':
+		return 'components/home_page/index.html';
+	default:
+		return url;
 	}
 }
-
-class NewGroup extends HTMLLIElement {
-	/**
-	 * 
-	 * @param {Object} opts
-	 * @param {String} opts.id
-	 * @param {String} opts.title
-	 */
-	constructor(opts){
-		super();
-		this.id = opts.id;
-		this.classList.add('group');
-		const shadowEl = this.attachShadow({mode: 'open'});
-		shadowEl.innerHTML = `
-			<div class='ohhai-group-header'>
-				<input type='text' class='ohhai-group-txt' value='${opts.title != null ? opts.title : 'New Group'}'/>
-				<a class='ohhai-togglegroup'></a>
-			</div>
-			<ul class='ohhai-group-children'>
-			</ul>
-		`;
-
-		var GroupHead = shadowEl.querySelector('.ohhai-group-header');
-		var GroupName = shadowEl.querySelector('.ohhai-group-txt');
-		var ToggleGroup = shadowEl.querySelector('.ohhai-togglegroup');
-		var GroupChildren = shadowEl.querySelector('.ohhai-group-children');
-		ToggleGroup.addEventListener('click', function (e) {
-			GroupChildren.classList.toggle('ClosedGroup');
-		});
-		GroupName.addEventListener('change', () => Groups.Upsert(opts.id, GroupName.value, (Retid) => {}));
-		GroupHead.addEventListener('contextmenu', (e) => {
-			e.preventDefault();
-			var GroupMenu = OhHaiBrowser.ui.contextmenus.group(this, GroupChildren);
-			GroupMenu.popup(remote.getCurrentWindow());
-		}, false);
-	}
-
-	set title(value) {
-		var GroupName = this.querySelector('.ohhai-group-txt');
-		GroupName.value = value;
-	}	
-	get title() {
-		var GroupName = this.querySelector('.ohhai-group-txt');
-		return GroupName.value;
-	}
-	
-	get children() {
-		return Array.from(this.querySelectorAll('.ohhai-group-children'));
-	}
-
-	addTab(_tab) {
-		var GroupChildren = this.querySelector('.ohhai-group-children');
-		GroupChildren.appendChild(_tab);
-
-		var TabSessionId = _tab.getAttribute('data-session');
-		Sessions.UpdateParent(TabSessionId, this.id, function (id) {});
-		Sessions.UpdateMode(TabSessionId, 'grouped', function (id) {});
-	}
-
-	removeTab(_tab) {
-		Tabbar.tabcontainer.appendChild(_tab);
-
-		var TabSessionId = _tab.getAttribute('data-session');
-		Sessions.UpdateParent(TabSessionId, Tabbar.tabcontainer.id, function (id) {});
-		Sessions.UpdateMode(TabSessionId, 'default', function (id) {});
-
-		if (this.children.length == 0) {
-			var GroupParent = this.parentElement;
-			GroupParent.removeChild(this);
-		}
-	}
-}
-customElements.define('group-parent', NewGroup);
 
 class OhHaiGroup {
 
@@ -247,7 +169,7 @@ class OhHaiGroup {
 	}
 	
 	get children() {
-		return Array.from(this.Group.querySelectorAll('.ohhai-group-children'));
+		return this.Group.querySelector('.ohhai-group-children');
 	}
 
 	addTab(_tab) {
@@ -297,34 +219,34 @@ const Tabs = {
 			}
 			if (_OPTIONS.mode) {
 				switch (_OPTIONS.mode.toString().toLowerCase()) {
-					case 'dock':
-						Tabbar.pinnedtabcontainer.appendChild(NewWS.tab);
-						break;
-					case 'incog':
-						Tabbar.tabcontainer.appendChild(NewWS.tab);
-						break;
-					case 'grouped':
-						if (_OPTIONS.parent) {
-							if (typeof _OPTIONS.parent == 'string') {
-								_OPTIONS.parent = document.getElementById(_OPTIONS.parent);
-							}
-							if (_OPTIONS.parent != null) {
-								if (_OPTIONS.parent.classList.contains('ohhai-group-children')) {
-									_OPTIONS.parent.appendChild(NewWS.tab);
-								} else {
-									var GroupedTabs = _OPTIONS.parent.querySelector('.ohhai-group-children');
-									GroupedTabs.appendChild(NewWS.tab);
-								}
+				case 'dock':
+					Tabbar.pinnedtabcontainer.appendChild(NewWS.tab);
+					break;
+				case 'incog':
+					Tabbar.tabcontainer.appendChild(NewWS.tab);
+					break;
+				case 'grouped':
+					if (_OPTIONS.parent) {
+						if (typeof _OPTIONS.parent == 'string') {
+							_OPTIONS.parent = document.getElementById(_OPTIONS.parent);
+						}
+						if (_OPTIONS.parent != null) {
+							if (_OPTIONS.parent.classList.contains('ohhai-group-children')) {
+								_OPTIONS.parent.appendChild(NewWS.tab);
 							} else {
-								Tabbar.tabcontainer.appendChild(NewWS.tab);
+								var GroupedTabs = _OPTIONS.parent.querySelector('.ohhai-group-children');
+								GroupedTabs.appendChild(NewWS.tab);
 							}
 						} else {
-							_OPTIONS.parent.appendChild(NewWS.tab);
+							Tabbar.tabcontainer.appendChild(NewWS.tab);
 						}
-						break;
-					case 'default':
-					default:
-						Tabbar.tabcontainer.appendChild(NewWS.tab);
+					} else {
+						_OPTIONS.parent.appendChild(NewWS.tab);
+					}
+					break;
+				case 'default':
+				default:
+					Tabbar.tabcontainer.appendChild(NewWS.tab);
 				}
 			} else {
 				_OPTIONS.mode = 'default';
@@ -340,12 +262,12 @@ const Tabs = {
 			if (IsNew) {
 				var TabParent = null;
 				switch (NewWS.tab.parentElement.className) {
-					case 'ohhai-group-children':
-						var FirstTabParent = NewWS.tab.parentElement;
-						TabParent = FirstTabParent.parentElement.id;
-						break;
-					default:
-						TabParent = NewWS.tab.parentElement.id;
+				case 'ohhai-group-children':
+					var FirstTabParent = NewWS.tab.parentElement;
+					TabParent = FirstTabParent.parentElement.id;
+					break;
+				default:
+					TabParent = NewWS.tab.parentElement.id;
 				}
 
 				Sessions.Set(_ID, 'default', 'TempTitle', _OPTIONS.mode, '/assets/imgs/logo.png', function (id) {
@@ -365,6 +287,8 @@ const Tabs = {
 
 		if (typeof callback === 'function') {
 			callback(NewWS);
+		} else {
+			return NewWS;
 		}
 	},
 	remove: function (_webSession, callback) {
@@ -393,9 +317,7 @@ const Tabs = {
 				}
 
 				//need to update the URL now
-				Tabs.getCurrent(function (session) {
-					functions.updateURLBar(session.webview);
-				});
+				functions.updateURLBar(Tabs.getCurrent().webview);
 			}
 		}
 
@@ -428,21 +350,28 @@ const Tabs = {
 			callback(true);
 		}
 	},
-	get: function (tabid, callback) {
+	get: function (tabid, callback = null) {
 		let wSession = Tabs.tabMap.find(ws => ws.tab.id == tabid);
-		callback(wSession);
+		if (typeof callback === 'function') {
+			callback(wSession);
+		} else {
+			return wSession;
+		}
 	},
-	getCurrent: function (callback) {
+	getCurrent: function (callback = null) {
 		let currentWebSession = Tabs.tabMap.find(i => i.selected === true);
-		callback(currentWebSession);
+		if (typeof callback === 'function') {
+			callback(currentWebSession);
+		} else {
+			return currentWebSession;
+		}
 	},
 	setCurrent: function (_WebSession, callback) {
-
-		Tabs.getCurrent(function (ctab) {
-			if (ctab) {
-				ctab.selected = false;
-			}
-		});
+		
+		var ctab = Tabs.getCurrent();
+		if (ctab) {
+			ctab.selected = false;
+		}
 
 		_WebSession.selected = true;
 
@@ -455,19 +384,19 @@ const Tabs = {
 		_WebSession.mode = _mode;
 
 		switch (_mode) {
-			case 'dock':
-				Tabbar.pinnedtabcontainer.appendChild(_WebSession.tab);
-				Sessions.UpdateMode(_WebSession.id, 'DOCK', function () {});
-				Sessions.UpdateParent(_WebSession.id, Tabbar.pinnedtabcontainer.id, function () {});
-				break;
-			case 'grouped':
+		case 'dock':
+			Tabbar.pinnedtabcontainer.appendChild(_WebSession.tab);
+			Sessions.UpdateMode(_WebSession.id, 'DOCK', function () {});
+			Sessions.UpdateParent(_WebSession.id, Tabbar.pinnedtabcontainer.id, function () {});
+			break;
+		case 'grouped':
 
-				break;
-			case 'default':
-			default:
-				Tabbar.tabcontainer.appendChild(_WebSession.tab);
-				Sessions.UpdateMode(_WebSession.id, 'Default', function () {});
-				Sessions.UpdateParent(_WebSession.id, Tabbar.tabcontainer.id, function () {});
+			break;
+		case 'default':
+		default:
+			Tabbar.tabcontainer.appendChild(_WebSession.tab);
+			Sessions.UpdateMode(_WebSession.id, 'Default', function () {});
+			Sessions.UpdateParent(_WebSession.id, Tabbar.tabcontainer.id, function () {});
 		}
 
 		callback;
@@ -497,29 +426,23 @@ const Tabs = {
 			}
 
 			let NewG = new OhHaiGroup(_id, _title);
-
-			let nGroup = new NewGroup({
-				id: _id,
-				title: _title
-			})
-			console.log(nGroup);
 			
 			switch (_tab) {
-				case null:
-					Tabs.add('default', undefined, {
-						selected: true,
-						mode: 'grouped',
-						parent: NewG.children
-					});
-					break;
-				case 'session':
-					break;
-				default:
-					var TabSessionId = _tab.getAttribute('data-session');
-					NewG.children.appendChild(_tab);
-					Sessions.UpdateParent(TabSessionId, NewG.id, function (_id) {
+			case null:
+				Tabs.add('default', undefined, {
+					selected: true,
+					mode: 'grouped',
+					parent: NewG.children
+				});
+				break;
+			case 'session':
+				break;
+			default:
+				var TabSessionId = _tab.getAttribute('data-session');
+				NewG.children.appendChild(_tab);
+				Sessions.UpdateParent(TabSessionId, NewG.id, function (_id) {
 
-					});
+				});
 			}
 			Tabbar.tabcontainer.appendChild(NewG.Group);
 
@@ -531,16 +454,12 @@ const Tabs = {
 
 		},
 		remove: function (_Group, _Options, callback) {
-			var GroupTabs = _Group.querySelectorAll('.ohhai-group-children .tab');
+			var GroupedTabs = _Group.querySelectorAll('.ohhai-group-children .tab');
 			var GroupParent = _Group.parentElement;
 
-			GroupTabs.forEach((gt) => {
+			GroupedTabs.forEach((gt) => {
 				Tabs.get(gt.id, wS => {
-					if (_Options.keepChildren) {
-						Tabs.groups.removeTab(gt);
-					} else {
-						Tabs.remove(wS);
-					}
+					_Options.keepChildren ? Tabs.groups.removeTab(gt) : Tabs.remove(wS);
 				});
 			});
 
@@ -592,86 +511,73 @@ const Tabs = {
 	},
 	activePage: {
 		getURL: function (callback) {
-			Tabs.getCurrent(function (cSession) {
-				if (typeof callback == 'function') {
-					callback(cSession.webview.getURL());
-				} else {
-					return cSession.webview.getURL();
-				}
-			});
+			var cSession = Tabs.getCurrent();
+			if (typeof callback == 'function') {
+				callback(cSession.webview.getURL());
+			} else {
+				return cSession.webview.getURL();
+			}
 		},
 		getTitle: function (callback) {
-			Tabs.getCurrent(function (cSession) {
-				if (typeof callback == 'function') {
-					callback(cSession.webview.getTitle());
-				} else {
-					return cSession.webview.getTitle();
-				}
-			});
+			var cSession = Tabs.getCurrent();
+			if (typeof callback == 'function') {
+				callback(cSession.webview.getTitle());
+			} else {
+				return cSession.webview.getTitle();
+			}
 		},
 		goBack: function (callback) {
-			Tabs.getCurrent(function (cSession) {
-				cSession.webview.goBack();
-			});
+			Tabs.getCurrent().webview.goBack();
 			if (typeof callback == 'function') {
 				callback('request sent');
 			}
 		},
 		goForward: function (callback) {
-			Tabs.getCurrent(function (cSession) {
-				cSession.webview.goForward();
-			});
+			Tabs.getCurrent().webview.goForward();
 			if (typeof callback == 'function') {
 				callback('request sent');
 			}
 		},
 		reload: function (callback) {
-			Tabs.getCurrent(function (cSession) {
-				cSession.webview.reload();
-			});
+			Tabs.getCurrent().webview.reload();
 			if (typeof callback == 'function') {
 				callback('request sent');
 			}
 		},
 		navigate: function (url, callback) {
-			Tabs.getCurrent(function (cSession) {
-				cSession.webview.loadURL(url);
-			});
+			Tabs.getCurrent().webview.loadURL(url);
 			if (typeof callback == 'function') {
 				callback('request sent');
 			}
 		},
 		insertCSS: function (code, callback) {
-			Tabs.getCurrent(function (cSession) {
-				cSession.webview.insertCSS(code);
-			});
+			Tabs.getCurrent().webview.insertCSS(code);
 			if (typeof callback == 'function') {
 				callback('request sent');
 			}
 		},
 		executeJavaScript: function (code, callback) {
-			Tabs.getCurrent(function (cSession) {
-				cSession.webview.executeJavaScript(code);
-			});
+			Tabs.getCurrent().webview.executeJavaScript(code);
 			if (typeof callback == 'function') {
 				callback('request sent');
 			}
 		},
 		hasSibling: function () {
 			var Sibling = null;
-			Tabs.getCurrent(function (cSession) {
-				if (cSession.tab.nextSibling) {
-					Sibling = {
-						'sibling': cSession.tab.nextSibling,
-						'location': 'next'
-					};
-				} else if (cSession.tab.previousSibling) {
-					Sibling = {
-						'sibling': cSession.tab.previousSibling,
-						'location': 'last'
-					};
-				}
-			});
+			var cSession = Tabs.getCurrent();
+		
+			if (cSession.tab.nextSibling) {
+				Sibling = {
+					'sibling': cSession.tab.nextSibling,
+					'location': 'next'
+				};
+			} else if (cSession.tab.previousSibling) {
+				Sibling = {
+					'sibling': cSession.tab.previousSibling,
+					'location': 'last'
+				};
+			}
+	
 			return Sibling;
 		}
 	},

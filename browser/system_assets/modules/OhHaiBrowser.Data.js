@@ -14,7 +14,7 @@ db.version(2).stores({
 	currentsession: '&sessionid, url, icon, title, mode, parent, timestamp',
 	firstrun: null
 });
-db.open().then(function () {}).catch(function (err) {console.warn('database error occured', error)});
+db.open().then(function () {}).catch(function (err) { console.warn('database error occured', err) });
 
 //===== Quicklink functions ====================================================
 module.exports.Quicklinks = {
