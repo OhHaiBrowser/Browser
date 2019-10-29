@@ -1,134 +1,10 @@
 let CoreFunctions = require('./OhHaiBrowser.Core'),
 	{ Sessions, Groups } = require('./OhHaiBrowser.Data'),
-	AddListeners = require('./../components/tab_views/script'),
 	Tabbar = require('./OhHaiBrowser.Tabbar'),
 	{ remote } = require('electron'),
-	{ functions } = require('./../components/nav_bar/controls.js');
+	{ functions } = require('./../components/nav_bar/controls.js'),
+	{ WebSession } = require('../../components/websession/websession.component');
 
-class OhHaiWebSession {
-	constructor(id, url, opts) {
-		this.id = id;
-		this.tab = CoreFunctions.generateElement(`
-			<li class='tab' id='t_${id}' data-container='wv_${id}'>
-				<a class='tabMediaBtn hidden'></a>
-				<img class='ohhai-tab-fav' src='assets/imgs/logo.png'/>
-				<span class='ohhai-tab-txt'>New Tab</span>
-				<a class='TabClose'></a>
-			</li>`);
-		this.webview = CoreFunctions.generateElement(`<webview id='wv_${id}' src='${parseOpenPage(url)}' class='Hidden'></webview>`);
-		if (opts) {
-			if (opts.mode) {
-				this.mode = String(opts.mode);
-			}
-			if (opts.title) {
-				this.title = String(opts.title);
-			}
-			if (opts.favicon) {
-				this.icon = String(opts.favicon);
-			}
-			if (opts.selected) {
-
-			}
-		}
-		AddListeners(this);
-	}
-
-	set mode(value) {
-		switch (value) {
-		case 'incog':
-			this.tab.classList.add('IncognitoTab');
-			break;
-		case 'dock':
-			this.tab.classList.remove('DefaultTab');
-			this.tab.classList.add('DockTab');
-			break;
-		case 'default':
-		default:
-			this.tab.classList.remove('DockTab');
-			this.tab.classList.add('DefaultTab');
-		}
-	}
-	get mode() {
-		return this.tab.classList.contains('IncognitoTab') ? 'incog' : this.tab.classList.contains('DockTab') ? 'dock' : 'default';
-	}
-
-	/**
-	 * @param {boolean} value
-	 */
-	set selected(value) {
-		if (value) {
-			this.tab.classList.add('current');
-			this.webview.classList.remove('Hidden');
-		} else {
-			this.tab.classList.remove('current');
-			this.webview.classList.add('Hidden');
-		}
-	}
-	get selected() {
-		return this.tab.classList.contains('current');
-	}
-
-	/**
-	 * @param {string} value
-	 */
-	set title(value) {
-		var tabTxt = this.tab.querySelector('.ohhai-tab-txt');
-		tabTxt.textContent = value;
-	}
-	get title() {
-		return this.tab.querySelector('.ohhai-tab-txt').textContent;
-	}
-
-	set icon(value) {
-		var tabFav = this.tab.querySelector('.ohhai-tab-fav');
-		tabFav.src = value;
-	}
-	get icon() {
-		return this.tab.querySelector('.ohhai-tab-fav').src;
-	}
-
-	set mediaControl(value) {
-		var tabMediaBtn = this.tab.querySelector('.tabMediaBtn');
-		tabMediaBtn.classList.remove('hidden', 'tabMute', 'tabPlaying');
-		switch (value) {
-		case 'play': 
-			tabMediaBtn.classList.add('hidden');
-			break;
-		case 'mute':
-			tabMediaBtn.classList.add('tabMute');
-			break;
-		case 'hide' :
-		default :
-			tabMediaBtn.classList.add('tabPlaying');
-			break;
-		}
-	}
-	get mediaControl() {
-		var tabMediaBtn = this.tab.querySelector('.tabMediaBtn');
-		return tabMediaBtn.classList.contains('hidden') ? 'hide' : tabMediaBtn.classList.contains('tabMute') ? 'mute' : 'play';
-	}
-
-	toJson() {
-		return JSON.stringify({
-			id: this.id,
-			url: this.webview.getURL(),
-			title: this.title,
-			mode: this.mode
-		});
-	}
-
-}
-
-function parseOpenPage(url) {
-	switch (url) {
-	case 'default':
-	case undefined:
-	case '':
-		return 'components/home_page/index.html';
-	default:
-		return url;
-	}
-}
 
 class OhHaiGroup {
 
@@ -210,7 +86,11 @@ const Tabs = {
 			IsNew = true;
 		}
 
-		let NewWS = new OhHaiWebSession(_ID, _URL, _OPTIONS);
+		let NewWS = new WebSession({
+			id: _ID,
+			url: _URL,
+			_OPTIONS
+		});
 
 		//Are there options?
 		if (_OPTIONS) {

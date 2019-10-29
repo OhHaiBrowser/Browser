@@ -76,9 +76,8 @@ controls.btn_bookmarked.addEventListener('click', function (e) {
 	};
 	if (controls.btn_bookmarked.classList.contains('QuicklinkInactive')) {
 		//Add new bookmark
-		OhHaiBrowser.tabs.getCurrent(function (cTab) {
-			var CurrentWebView = document.getElementById(cTab.getAttribute('data-container'));
-			OhHaiBrowser.bookmarks.add(CurrentWebView.getTitle(), CurrentWebView.getURL(), '', '', popuplocation, function (newqlink) {});
+		OhHaiBrowser.tabs.getCurrent(function (cSession) {
+			OhHaiBrowser.bookmarks.add(cSession.webview.getTitle(), cSession.webview.getURL(), '', '', popuplocation, function (newqlink) {});
 		});
 	} else {
 		//Remove bookmark

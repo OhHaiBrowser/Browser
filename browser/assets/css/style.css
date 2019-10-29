@@ -1,5 +1,5 @@
 /* Imports */
-@import url("../../system_assets/components/tab_views/style.css");
+@import url("../../components/websession/websession.component.css");
 @import url("../../system_assets/components/nav_bar/style.css");
 @import	url("../../system_assets/modules/Contextuals/Contextuals.css");
 @import url("frame.css");
