@@ -2,7 +2,7 @@ let {controls} = require('./system_assets/components/nav_bar/controls.js'),
 	tabbar = require('./system_assets/modules/OhHaiBrowser.Tabbar.js'),
 	AboutMenu = require('./system_assets/scripts/addons/about.js'),
 	SettingsMenu = require('./system_assets/scripts/addons/settings.js'),
-	UrlService = require('./system_assets/services/navbar.js'),
+	{ AutoComplete } = require('./services/navbar.service.js'),
 	Contextuals = require('./system_assets/modules/Contextuals/Contextuals.js');
 
 controls.btn_ToggleTabBar.addEventListener('click', tabbar.toggle );
@@ -41,7 +41,7 @@ controls.txt_urlbar.addEventListener('contextmenu', (e) => {
 let urlbarValid = {};
 controls.txt_urlbar.addEventListener('keydown', function (event) {
 //Check validity of URL content
-	UrlService(this.value, (resp) => {
+	AutoComplete(this.value, (resp) => {
 		urlbarValid = resp;
 	});
 	//On Enter
