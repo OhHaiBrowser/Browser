@@ -1,6 +1,7 @@
 const { Sessions, Groups } = require('../../system_assets/modules/OhHaiBrowser.Data'),
     Tabbar = require('../../system_assets/modules/OhHaiBrowser.Tabbar'),
-    { remote } = require('electron'),
+	{ remote } = require('electron'),
+	{Menu,	MenuItem} = remote,
     CoreFunctions = require('../../system_assets/modules/OhHaiBrowser.Core');
 
 module.exports.Group = class {
@@ -72,3 +73,39 @@ module.exports.Group = class {
 	}
 
 }
+
+const helperFunctions = {
+	contextmenu: (Group, GroupChildren) => {
+		var GroupMenu = new Menu();
+		GroupMenu.append(new MenuItem({
+			label: 'Add tab to group',
+			click() {
+				OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
+					selected: true,
+					mode: 'grouped',
+					parent: GroupChildren
+				});
+			}
+		}));
+		GroupMenu.append(new MenuItem({
+			type: 'separator'
+		}));
+		GroupMenu.append(new MenuItem({
+			label: 'Remove group, keep tabs',
+			click() {
+				OhHaiBrowser.tabs.groups.remove(Group, {
+					keepChildren: true
+				});
+			}
+		}));
+		GroupMenu.append(new MenuItem({
+			label: 'Remove group and tabs',
+			click() {
+				OhHaiBrowser.tabs.groups.remove(Group, {
+					keepChildren: false
+				});
+			}
+		}));
+		return GroupMenu;
+	}
+};

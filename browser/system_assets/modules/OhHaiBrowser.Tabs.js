@@ -8,12 +8,16 @@ let CoreFunctions = require('./OhHaiBrowser.Core'),
 const Tabs = {
 	count: 0,
 	tabMap: new Array(),
-	add: function (_URL, _ID, _OPTIONS, callback) {
-		let IsNew = false;
-		if (_ID == undefined) {
-			_ID = CoreFunctions.generateId();
-			IsNew = true;
-		}
+	/**
+	 * 
+	 * @param {string} _URL 
+	 * @param {string} _ID 
+	 * @param {object} _OPTIONS 
+	 * @param {void} callback 
+	 */
+	add: function (_URL, _ID, _OPTIONS, callback = null) {
+		let IsNew = _ID == undefined ? true : false;
+		_ID = _ID == undefined ? CoreFunctions.generateId() : _ID;  
 
 		let NewWS = new WebSession({
 			id: _ID,
@@ -100,7 +104,7 @@ const Tabs = {
 			return NewWS;
 		}
 	},
-	remove: function (_webSession, callback) {
+	remove: function (_webSession, callback = null) {
 
 		var Parent = _webSession.tab.parentElement;
 		var webviewParent = document.getElementById('BrowserWin');
@@ -136,7 +140,7 @@ const Tabs = {
 		if (Parent.classList.contains('ohhai-group-children')) {
 			var ThisGroup = Parent.parentElement;
 			if (Parent.children.length == 0) {
-				Tabs.groups.remove(ThisGroup, null, null);
+				Tabs.groups.remove(ThisGroup, null);
 			}
 		}
 
@@ -167,6 +171,11 @@ const Tabs = {
 			return wSession;
 		}
 	},
+	/**
+	 * 
+	 * @param {void} callback
+	 * @returns {WebSession}
+	 */
 	getCurrent: function (callback = null) {
 		let currentWebSession = Tabs.tabMap.find(i => i.selected === true);
 		if (typeof callback === 'function') {
@@ -175,7 +184,7 @@ const Tabs = {
 			return currentWebSession;
 		}
 	},
-	setCurrent: function (_WebSession, callback) {
+	setCurrent: function (_WebSession, callback = null) {
 		
 		var ctab = Tabs.getCurrent();
 		if (ctab) {
@@ -195,8 +204,6 @@ const Tabs = {
 		switch (_mode) {
 		case 'dock':
 			Tabbar.pinnedtabcontainer.appendChild(_WebSession.tab);
-			Sessions.UpdateMode(_WebSession.id, 'DOCK', function () {});
-			Sessions.UpdateParent(_WebSession.id, Tabbar.pinnedtabcontainer.id, function () {});
 			break;
 		case 'grouped':
 
@@ -204,8 +211,6 @@ const Tabs = {
 		case 'default':
 		default:
 			Tabbar.tabcontainer.appendChild(_WebSession.tab);
-			Sessions.UpdateMode(_WebSession.id, 'Default', function () {});
-			Sessions.UpdateParent(_WebSession.id, Tabbar.tabcontainer.id, function () {});
 		}
 
 		callback;
@@ -262,7 +267,7 @@ const Tabs = {
 			}
 
 		},
-		remove: function (_Group, _Options, callback) {
+		remove: function (_Group, _Options) {
 			var GroupedTabs = _Group.querySelectorAll('.ohhai-group-children .tab');
 			var GroupParent = _Group.parentElement;
 
@@ -277,12 +282,8 @@ const Tabs = {
 			}
 
 			Groups.Remove(_Group.id, function (result) {});
-
-			if (typeof callback == 'function') {
-				callback(true);
-			}
 		},
-		addTab: function (_tab, _group, callback) {
+		addTab: function (_tab, _group) {
 			if (_group == null) {
 				//New Group
 				Tabs.groups.add(null, null, _tab);
@@ -295,11 +296,8 @@ const Tabs = {
 				Sessions.UpdateParent(TabSessionId, _group.id, function (id) {});
 				Sessions.UpdateMode(TabSessionId, 'grouped', function (id) {});
 			}
-			if (typeof callback == 'function') {
-				callback(true);
-			}
 		},
-		removeTab: function (_tab, callback) {
+		removeTab: function (_tab) {
 			var thisGroupList = _tab.parentElement;
 			var thisGroup = thisGroupList.parentElement;
 
@@ -313,13 +311,10 @@ const Tabs = {
 				var GroupParent = thisGroup.parentElement;
 				GroupParent.removeChild(thisGroup);
 			}
-			if (typeof callback == 'function') {
-				callback(true);
-			}
 		}
 	},
 	activePage: {
-		getURL: function (callback) {
+		getURL: (callback = null) => {
 			var cSession = Tabs.getCurrent();
 			if (typeof callback == 'function') {
 				callback(cSession.webview.getURL());
@@ -327,7 +322,7 @@ const Tabs = {
 				return cSession.webview.getURL();
 			}
 		},
-		getTitle: function (callback) {
+		getTitle: (callback = null) => {
 			var cSession = Tabs.getCurrent();
 			if (typeof callback == 'function') {
 				callback(cSession.webview.getTitle());
@@ -335,43 +330,43 @@ const Tabs = {
 				return cSession.webview.getTitle();
 			}
 		},
-		goBack: function (callback) {
+		goBack: (callback = null) => {
 			Tabs.getCurrent().webview.goBack();
 			if (typeof callback == 'function') {
 				callback('request sent');
 			}
 		},
-		goForward: function (callback) {
+		goForward: (callback = null) => {
 			Tabs.getCurrent().webview.goForward();
 			if (typeof callback == 'function') {
 				callback('request sent');
 			}
 		},
-		reload: function (callback) {
+		reload: (callback = null) => {
 			Tabs.getCurrent().webview.reload();
 			if (typeof callback == 'function') {
 				callback('request sent');
 			}
 		},
-		navigate: function (url, callback) {
+		navigate: (url, callback = null) => {
 			Tabs.getCurrent().webview.loadURL(url);
 			if (typeof callback == 'function') {
 				callback('request sent');
 			}
 		},
-		insertCSS: function (code, callback) {
+		insertCSS: (code, callback = null) => {
 			Tabs.getCurrent().webview.insertCSS(code);
 			if (typeof callback == 'function') {
 				callback('request sent');
 			}
 		},
-		executeJavaScript: function (code, callback) {
+		executeJavaScript: (code, callback = null) => {
 			Tabs.getCurrent().webview.executeJavaScript(code);
 			if (typeof callback == 'function') {
 				callback('request sent');
 			}
 		},
-		hasSibling: function () {
+		hasSibling: () => {
 			var Sibling = null;
 			var cSession = Tabs.getCurrent();
 		
@@ -390,7 +385,7 @@ const Tabs = {
 			return Sibling;
 		}
 	},
-	popupwindow: function (params, callback) {
+	popupwindow: (params, callback = null) => {
 		//This is a pop up window - Does the user want this pop up, does it have a parent control? 
 		const remote = require('electron').remote;
 		const BrowserWindow = remote.BrowserWindow;
@@ -410,8 +405,12 @@ const Tabs = {
 		});
 		win.loadURL(`file://${__dirname}/components/pop_out_window/template.html?url=${params.url}`);
 
-		callback(win);
+		if (typeof callback === 'function') {
+			callback(win);
+		} else {
+			return win;
+		}
 	}
-}
+};
 
-module.exports = Tabs;
+module.exports.tabs = Tabs;
