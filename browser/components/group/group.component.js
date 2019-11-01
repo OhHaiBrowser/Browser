@@ -28,7 +28,7 @@ module.exports.Group = class {
 		GroupName.addEventListener('change', () => Groups.Upsert(id, GroupName.value, (Retid) => {}));
 		GroupHead.addEventListener('contextmenu', (e) => {
 			e.preventDefault();
-			var GroupMenu = OhHaiBrowser.ui.contextmenus.group(this.Group, GroupChildren);
+			var GroupMenu = this.contextMenu();
 			GroupMenu.popup(remote.getCurrentWindow());
 		}, false);
 	}
@@ -72,10 +72,7 @@ module.exports.Group = class {
 		this.group.parentElement.removeChild(this.group);
 	}
 
-}
-
-const helperFunctions = {
-	contextmenu: (Group, GroupChildren) => {
+	contextMenu() {
 		var GroupMenu = new Menu();
 		GroupMenu.append(new MenuItem({
 			label: 'Add tab to group',
@@ -83,7 +80,7 @@ const helperFunctions = {
 				OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
 					selected: true,
 					mode: 'grouped',
-					parent: GroupChildren
+					parent: this.children
 				});
 			}
 		}));
@@ -93,7 +90,7 @@ const helperFunctions = {
 		GroupMenu.append(new MenuItem({
 			label: 'Remove group, keep tabs',
 			click() {
-				OhHaiBrowser.tabs.groups.remove(Group, {
+				OhHaiBrowser.tabs.groups.remove(this.group, {
 					keepChildren: true
 				});
 			}
@@ -101,11 +98,13 @@ const helperFunctions = {
 		GroupMenu.append(new MenuItem({
 			label: 'Remove group and tabs',
 			click() {
-				OhHaiBrowser.tabs.groups.remove(Group, {
+				OhHaiBrowser.tabs.groups.remove(this.group, {
 					keepChildren: false
 				});
 			}
 		}));
+
 		return GroupMenu;
 	}
-};
+
+}

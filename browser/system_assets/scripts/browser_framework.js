@@ -3,17 +3,15 @@ var {clipboard,	remote} = require('electron'),
 	{Quicklinks, Settings, Sessions, Groups, History} = require('./system_assets/modules/OhHaiBrowser.Data.js'),
 	HistoryList = require('./system_assets/scripts/addons/history.js'),
 	BookmarksList = require('./system_assets/scripts/addons/bookmarks.js'),
-	{functions} = require('./system_assets/components/nav_bar/controls.js');
+	{functions} = require('./system_assets/components/nav_bar/controls.js'),
+	{tabs} = require('./system_assets/modules/OhHaiBrowser.Tabs.js');
 
 var OhHaiBrowser = {
 	sessionStartTime: '',
 	sessionDuration: function () {
 		return Date.now() - OhHaiBrowser.sessionStartTime;
 	},
-	builtInPages: {
-		errorPage: `file://${__dirname}/components/error_page/index.html`
-	},
-	tabs: require('./system_assets/modules/OhHaiBrowser.Tabs.js'),
+	tabs: tabs,
 	session: {
 		list: function (callback){
 			Sessions.Get(function (slist) {
@@ -194,227 +192,6 @@ var OhHaiBrowser = {
 				}));
 				return URlMenu;
 			},
-			webview: function (ThisWebview, webviewcontent, params) {
-				var Web_menu = new Menu();
-				if (params.linkURL != '') {
-					Web_menu.append(new MenuItem({
-						label: 'Open link in new tab',
-						click() {
-							OhHaiBrowser.tabs.add(params.linkURL, undefined, {
-								selected: true
-							});
-						}
-					}));
-					Web_menu.append(new MenuItem({
-						type: 'separator'
-					}));
-				}
-
-				if (params.srcURL != '') {
-					Web_menu.append(new MenuItem({
-						label: 'Open ' + params.mediaType + ' in new tab',
-						click() {
-							OhHaiBrowser.tabs.add(params.srcURL, undefined, {
-								selected: true
-							});
-						}
-					}));
-					Web_menu.append(new MenuItem({
-						type: 'separator'
-					}));
-				}
-
-				if (params.selectionText != '' || params.inputFieldType != 'none') {
-					Web_menu.append(new MenuItem({
-						label: 'Copy',
-						click() {
-							clipboard.writeText(params.selectionText);
-						},
-						enabled: params.editFlags.canCopy
-					}));
-					Web_menu.append(new MenuItem({
-						label: 'Paste',
-						click() {
-							webviewcontent.paste();
-						},
-						enabled: params.editFlags.canPaste
-					}));
-					Web_menu.append(new MenuItem({
-						type: 'separator'
-					}));
-					Web_menu.append(new MenuItem({
-						label: 'Google search for selection',
-						click() {
-							OhHaiBrowser.tabs.add(`https://www.google.co.uk/search?q=${params.selectionText}`, undefined, {
-								selected: true
-							});
-						}
-					}));
-				}
-
-				switch (params.mediaType) {
-				case ('image'):
-					Web_menu.append(new MenuItem({
-						label: 'Copy image',
-						click() {
-							webviewcontent.copyImageAt(params.x, params.y);
-						}
-					}));
-					break;
-				}
-
-				Web_menu.append(new MenuItem({
-					label: 'Select all',
-					accelerator: 'CmdOrCtrl+A',
-					click() {
-						webviewcontent.selectAll();
-					}
-				}));
-				Web_menu.append(new MenuItem({
-					type: 'separator'
-				}));
-
-				Web_menu.append(new MenuItem({
-					label: 'Back',
-					accelerator: 'Alt+Left',
-					click() {
-						OhHaiBrowser.tabs.activePage.goBack();
-					}
-				}));
-				Web_menu.append(new MenuItem({
-					label: 'Refresh',
-					accelerator: 'CmdOrCtrl+R',
-					click() {
-						OhHaiBrowser.tabs.activePage.reload();
-					}
-				}));
-				Web_menu.append(new MenuItem({
-					label: 'Forward',
-					accelerator: 'Alt+Right',
-					click() {
-						OhHaiBrowser.tabs.activePage.goForward();
-					}
-				}));
-				Web_menu.append(new MenuItem({
-					type: 'separator'
-				}));
-				Web_menu.append(new MenuItem({
-					label: 'Inspect',
-					accelerator: 'CmdOrCtrl+Shift+I',
-					click() {
-						webviewcontent.inspectElement(params.x, params.y);
-					}
-				}));
-
-				return Web_menu;
-			},
-			tab: function (webSession) {
-
-				var NewMenu = new Menu();
-				NewMenu.append(new MenuItem({
-					label: 'New Tab',
-					click() {
-						OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
-							selected: true
-						});
-					}
-				}));
-				NewMenu.append(new MenuItem({
-					label: 'New Incognito Tab',
-					click() {
-						OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
-							selected: true,
-							mode: 'incog'
-						});
-					}
-				}));
-				NewMenu.append(new MenuItem({
-					type: 'separator'
-				}));
-				if (webSession.tab.parentElement.classList.contains('ohhai-group-children')) {
-					//This tabs is in a group
-					NewMenu.append(new MenuItem({
-						label: 'Remove tab from group',
-						click() {
-							OhHaiBrowser.tabs.groups.removeTab(webSession.tab);
-						}
-					}));
-				} else {
-					//This is a standard tab
-					var GroupMenu = [new MenuItem({
-						label: 'New group',
-						click() {
-							OhHaiBrowser.tabs.groups.addTab(webSession.tab, null);
-						}
-					})];
-					var CurrentGroups = document.getElementsByClassName('group');
-					if (CurrentGroups.length > 0) {
-						GroupMenu.push(new MenuItem({
-							type: 'separator'
-						}));
-						for (var i = 0; i < CurrentGroups.length; i++) {
-							var ThisGroup = CurrentGroups[i];
-							var GroupTitle = ThisGroup.querySelector('.ohhai-group-txt').value;
-							GroupMenu.push(new MenuItem({
-								label: GroupTitle,
-								click() {
-									OhHaiBrowser.tabs.groups.addTab(webSession.tab, ThisGroup);
-								}
-							}));
-						}
-					}
-
-					NewMenu.append(new MenuItem({
-						label: 'Add tab to group',
-						type: 'submenu',
-						submenu: GroupMenu
-					}));
-				}
-				if (webSession.webview.isAudioMuted() == true) {
-					NewMenu.append(new MenuItem({
-						label: 'Unmute Tab',
-						click() {
-							webSession.webview.setAudioMuted(false);
-						}
-					}));
-				} else {
-					NewMenu.append(new MenuItem({
-						label: 'Mute Tab',
-						click() {
-							webSession.webview.setAudioMuted(true);
-						}
-					}));
-				}
-				if(webSession.mode != 'incog'){
-					if(webSession.mode == 'dock'){
-						NewMenu.append(new MenuItem({
-							label: 'Undock Tab',
-							click() {
-								OhHaiBrowser.tabs.setMode(webSession, 'default', function () {});
-							}
-						}));
-					}else{
-						NewMenu.append(new MenuItem({
-							label: 'Dock Tab',
-							click() {
-								OhHaiBrowser.tabs.setMode(webSession, 'dock', function () {});
-							}
-						}));
-					}
-				}
-				NewMenu.append(new MenuItem({
-					type: 'separator'
-				}));
-				NewMenu.append(new MenuItem({
-					label: 'Close Tab',
-					click() {
-						OhHaiBrowser.tabs.remove(webSession);
-					}
-				}));
-
-				return NewMenu;
-
-			},
 			tabmenu: function () {
 				var NewMenu = new Menu();
 				NewMenu.append(new MenuItem({
@@ -475,40 +252,6 @@ var OhHaiBrowser = {
 					}
 				}));
 				return NewMenu;
-			},
-			group: function (Group, GroupChildren) {
-				var GroupMenu = new Menu();
-				GroupMenu.append(new MenuItem({
-					label: 'Add tab to group',
-					click() {
-						OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
-							selected: true,
-							mode: 'grouped',
-							parent: GroupChildren
-						});
-					}
-				}));
-				GroupMenu.append(new MenuItem({
-					type: 'separator'
-				}));
-				GroupMenu.append(new MenuItem({
-					label: 'Remove group, keep tabs',
-					click() {
-						OhHaiBrowser.tabs.groups.remove(Group, {
-							keepChildren: true
-						});
-					}
-				}));
-				GroupMenu.append(new MenuItem({
-					label: 'Remove group and tabs',
-					click() {
-						OhHaiBrowser.tabs.groups.remove(Group, {
-							keepChildren: false
-						});
-					}
-				}));
-
-				return GroupMenu;
 			}
 		},
 		navbar: functions,
