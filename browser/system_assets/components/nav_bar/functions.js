@@ -17,7 +17,7 @@ tabbar.panel.addEventListener('contextmenu', (e) => {
 	case 'CommandBtn AddTab':
 	case 'OhHai-TabMenu':
 		//Everythig which isnt a tab
-		var TbMen = OhHaiBrowser.ui.contextmenus.tabmenu();
+		var TbMen = tabbar.contextMenu();
 		e.preventDefault();
 		TbMen.popup(remote.getCurrentWindow());
 		break;

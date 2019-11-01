@@ -1,3 +1,5 @@
+var {Settings, Sessions, Groups} = require('./system_assets/modules/OhHaiBrowser.Data.js');
+
 OhHaiBrowser.sessionStartTime = Date.now();
 
 let launchparams = remote.getGlobal('sharedObject').prop1,

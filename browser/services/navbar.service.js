@@ -1,9 +1,5 @@
 let searchProvider = OhHaiBrowser.settings.search;
 
-module.exports.AutoComplete = (value,callback) => {
-	callback(new urlAutoComplete(value));
-};
-
 class urlAutoComplete{
 	constructor(url) {
 		let urlbarValid = {};
@@ -15,3 +11,5 @@ class urlAutoComplete{
 		this.results = [];
 	}
 }
+module.exports.AutoComplete = (value,callback) => { callback(new urlAutoComplete(value)); };
+

@@ -6,7 +6,7 @@ const {clipboard,	remote} = require('electron'),
 	CoreFunctions = require('../../system_assets/modules/OhHaiBrowser.Core'),
 	validate = require('../../system_assets/modules/OhHaiBrowser.Validation'),
 	Doodle = require('../../system_assets/modules/Doodle'),
-	{tabs} = require('../../system_assets/modules/OhHaiBrowser.Tabs.js');
+	{tabs} = require('../../services/tabs.service');
 
 class WebSession {
 	constructor(opts) {

@@ -4,7 +4,7 @@ var {clipboard,	remote} = require('electron'),
 	HistoryList = require('./system_assets/scripts/addons/history.js'),
 	BookmarksList = require('./system_assets/scripts/addons/bookmarks.js'),
 	{functions} = require('./system_assets/components/nav_bar/controls.js'),
-	{tabs} = require('./system_assets/modules/OhHaiBrowser.Tabs.js');
+	{tabs} = require('./services/tabs.service.js');
 
 var OhHaiBrowser = {
 	sessionStartTime: '',
@@ -191,34 +191,6 @@ var OhHaiBrowser = {
 					}
 				}));
 				return URlMenu;
-			},
-			tabmenu: function () {
-				var NewMenu = new Menu();
-				NewMenu.append(new MenuItem({
-					label: 'New Tab',
-					click() {
-						OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
-							selected: true
-						});
-					}
-				}));
-				NewMenu.append(new MenuItem({
-					label: 'New Incognito Tab',
-					click() {
-						OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
-							selected: true,
-							mode: 'incog'
-						});
-					}
-				}));
-				NewMenu.append(new MenuItem({
-					label: 'New Group',
-					click() {
-						OhHaiBrowser.tabs.groups.add(null, null, null);
-					}
-				}));
-
-				return NewMenu;
 			},
 			quicklink: function (Id, Name, Url, Item) {
 				var NewMenu = new Menu();
