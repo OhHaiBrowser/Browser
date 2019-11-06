@@ -3,12 +3,8 @@ var {clipboard,	remote} = require('electron'),
 	{Quicklinks, Settings, Sessions, Groups, History} = require('./system_assets/modules/OhHaiBrowser.Data.js'),
 	HistoryList = require('./system_assets/scripts/addons/history.js'),
 	BookmarksList = require('./system_assets/scripts/addons/bookmarks.js'),
-	{functions, controls, AutoComplete} = require('./services/navbar.service.js'),
-	{tabs} = require('./services/tabs.service.js'),
-	tabbar = require('./system_assets/modules/OhHaiBrowser.Tabbar.js'),
-	AboutMenu = require('./system_assets/scripts/addons/about.js'),
-	SettingsMenu = require('./system_assets/scripts/addons/settings.js'),
-	Contextuals = require('./system_assets/modules/Contextuals/Contextuals.js');
+	{functions} = require('./system_assets/components/nav_bar/controls.js'),
+	{tabs} = require('./services/tabs.service.js');
 
 var OhHaiBrowser = {
 	sessionStartTime: '',
@@ -344,105 +340,3 @@ var OhHaiBrowser = {
 	validate: require('./system_assets/modules/OhHaiBrowser.Validation.js'),
 	core: require('./system_assets/modules/OhHaiBrowser.Core.js')
 };
-
-//Ui Functions
-controls.btn_ToggleTabBar.addEventListener('click', tabbar.toggle );
-controls.btn_back.addEventListener('click', tabs.activePage.goBack );
-controls.btn_refresh.addEventListener('click', tabs.activePage.reload );
-controls.btn_forward.addEventListener('click', tabs.activePage.goForward );
-
-tabs._count.asObservable().subscribe((val) => {
-	console.log(val);
-});
-
-tabbar.panel.addEventListener('contextmenu', (e) => {
-	switch (e.target.className) {
-	case 'CommandBtn AddTab':
-	case 'OhHai-TabMenu':
-		//Everythig which isnt a tab
-		var TbMen = tabbar.contextMenu();
-		e.preventDefault();
-		TbMen.popup(remote.getCurrentWindow());
-		break;
-	}
-}, false);
-
-function AddTabButton() {
-	tabs.add(OhHaiBrowser.settings.homepage, undefined, {
-		selected: true
-	});
-}
-
-controls.txt_urlbar.addEventListener('contextmenu', (e) => {
-	e.preventDefault();
-	var URlMenu = OhHaiBrowser.ui.contextmenus.urlbar(controls.txt_urlbar);
-	URlMenu.popup(remote.getCurrentWindow());
-}, false);
-
-let urlbarValid = {};
-controls.txt_urlbar.addEventListener('keydown', function (event) {
-//Check validity of URL content
-	AutoComplete(this.value, (resp) => {
-		urlbarValid = resp;
-	});
-	//On Enter
-	if (event.which == 13) {
-		tabs.activePage.navigate(urlbarValid.output);
-	}
-});
-
-controls.txt_urlbar.addEventListener('click', () => {
-	if (controls.txt_urlbar.value != controls.txt_urlbar.getAttribute('data-text-swap')) {
-		controls.txt_urlbar.value = controls.txt_urlbar.getAttribute('data-text-swap');
-	}
-});
-
-controls.txt_urlbar.addEventListener('focus', () => {
-	controls.div_urlOuter.classList.add('CenterFocus');
-});
-
-controls.txt_urlbar.addEventListener('focusout', () => {
-	controls.txt_urlbar.value = controls.txt_urlbar.getAttribute('data-text-original');
-	controls.div_urlOuter.classList.remove('CenterFocus');
-});
-
-controls.btn_bookmarked.addEventListener('click', function (e) {
-	var popuplocation = {
-		'left': e.currentTarget.offsetLeft,
-		'top': e.currentTarget.offsetTop
-	};
-	if (controls.btn_bookmarked.classList.contains('QuicklinkInactive')) {
-		//Add new bookmark
-		OhHaiBrowser.tabs.getCurrent(function (cSession) {
-			OhHaiBrowser.bookmarks.add(cSession.webview.getTitle(), cSession.webview.getURL(), '', '', popuplocation, function (newqlink) {});
-		});
-	} else {
-		//Remove bookmark
-		var ThisId = Number(controls.btn_bookmarked.getAttribute('data-id'));
-		Quicklinks.Remove(ThisId, function (e) {
-			if (e != 0) {
-				controls.btn_bookmarked.setAttribute('data-id', '');
-				controls.btn_bookmarked.classList.remove('QuicklinkActive');
-				controls.btn_bookmarked.classList.add('QuicklinkInactive');
-			}
-		});
-	}
-});
-
-controls.btn_overflow.addEventListener('click',() => {
-	new Contextuals.menu([
-		{title:'New tab', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
-			tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true});
-		}},
-		{title:'New incognito tab', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
-			tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true,mode:'incog'});
-		}},
-		{seperator:true},
-		{title:'Settings', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
-			OhHaiBrowser.ui.toggleModel(SettingsMenu(),'Settings');
-		}},
-		{title:'About', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
-			OhHaiBrowser.ui.toggleModel(AboutMenu(),'OhHai Browser');
-		}}
-	]);
-});

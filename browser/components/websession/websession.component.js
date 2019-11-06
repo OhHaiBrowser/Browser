@@ -1,11 +1,12 @@
 const {clipboard,	remote} = require('electron'),
 	{Menu,	MenuItem} = remote,
 	Tabbar = require('../../system_assets/modules/OhHaiBrowser.Tabbar'),
-	{controls, functions} = require('../../services/navbar.service'),
+	{controls, functions} = require('../../system_assets/components/nav_bar/controls'),
 	{Sessions, History} = require('../../system_assets/modules/OhHaiBrowser.Data'),
 	CoreFunctions = require('../../system_assets/modules/OhHaiBrowser.Core'),
 	validate = require('../../system_assets/modules/OhHaiBrowser.Validation'),
 	Doodle = require('../../system_assets/modules/Doodle'),
+	{tabs} = require('../../services/tabs.service');
 
 class WebSession {
 	constructor(opts) {
@@ -48,11 +49,10 @@ class WebSession {
 			var Tab_menu = this.tabContextMenu();
 			Tab_menu.popup(remote.getCurrentWindow());
 		}, false);
-
 		this.tab.addEventListener('click', (e) => {
 			switch(e.target.className){
 			case 'TabClose':
-				OhHaiBrowser.tabs.remove(this);
+				tabs.remove(this);
 				break;
 			case 'tabPlaying':
 				this.webview.setAudioMuted(true);
@@ -61,7 +61,7 @@ class WebSession {
 				this.webview.setAudioMuted(false);
 				break;
 			default:
-				OhHaiBrowser.tabs.setCurrent(this);
+				tabs.setCurrent(this);
 				functions.updateURLBar(this.webview);
 			}
 		});
@@ -89,7 +89,7 @@ class WebSession {
 			updateTab();
 		});
 		this.webview.addEventListener('close', () => {
-			OhHaiBrowser.tabs.remove(this);
+			tabs.remove(this);
 		});
 		this.webview.addEventListener('did-fail-load', (e) => {
 			if (e.errorCode != -3 && e.validatedURL == e.target.getURL()) {this.webview.loadURL(`file://${__dirname}/components/error_page/index.html?code=${e.errorCode}&url=${e.validatedURL}`);}
@@ -97,13 +97,13 @@ class WebSession {
 		this.webview.addEventListener('new-window', (e) => {
 			switch(e.disposition){
 			case 'new-window':
-				OhHaiBrowser.tabs.popupwindow(e);
+				tabs.popupwindow(e);
 				break;
 			case 'background-tab':
-				OhHaiBrowser.tabs.add(e.url,undefined);
+				tabs.add(e.url,undefined);
 				break;
 			default:
-				OhHaiBrowser.tabs.add(e.url,undefined,{selected: true});
+				tabs.add(e.url,undefined,{selected: true});
 			}
 		});
 		this.webview.addEventListener('media-started-playing', (e) => {
@@ -335,7 +335,7 @@ class WebSession {
 		NewMenu.append(new MenuItem({
 			label: 'New Tab',
 			click() {
-				OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
+				tabs.add(OhHaiBrowser.settings.homepage, undefined, {
 					selected: true
 				});
 			}
@@ -343,7 +343,7 @@ class WebSession {
 		NewMenu.append(new MenuItem({
 			label: 'New Incognito Tab',
 			click() {
-				OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
+				tabs.add(OhHaiBrowser.settings.homepage, undefined, {
 					selected: true,
 					mode: 'incog'
 				});
@@ -357,7 +357,7 @@ class WebSession {
 			NewMenu.append(new MenuItem({
 				label: 'Remove tab from group',
 				click() {
-					OhHaiBrowser.tabs.groups.removeTab(this.tab);
+					tabs.groups.removeTab(this.tab);
 				}
 			}));
 		} else {
@@ -365,7 +365,7 @@ class WebSession {
 			var GroupMenu = [new MenuItem({
 				label: 'New group',
 				click() {
-					OhHaiBrowser.tabs.groups.addTab(this.tab, null);
+					tabs.groups.addTab(this.tab, null);
 				}
 			})];
 			var CurrentGroups = document.getElementsByClassName('group');
@@ -379,7 +379,7 @@ class WebSession {
 					GroupMenu.push(new MenuItem({
 						label: GroupTitle,
 						click() {
-							OhHaiBrowser.tabs.groups.addTab(this.tab, ThisGroup);
+							tabs.groups.addTab(this.tab, ThisGroup);
 						}
 					}));
 				}
@@ -411,14 +411,14 @@ class WebSession {
 				NewMenu.append(new MenuItem({
 					label: 'Undock Tab',
 					click() {
-						OhHaiBrowser.tabs.setMode(this, 'default', function () {});
+						tabs.setMode(this, 'default', function () {});
 					}
 				}));
 			}else{
 				NewMenu.append(new MenuItem({
 					label: 'Dock Tab',
 					click() {
-						OhHaiBrowser.tabs.setMode(this, 'dock', function () {});
+						tabs.setMode(this, 'dock', function () {});
 					}
 				}));
 			}
@@ -429,7 +429,7 @@ class WebSession {
 		NewMenu.append(new MenuItem({
 			label: 'Close Tab',
 			click() {
-				OhHaiBrowser.tabs.remove(this);
+				tabs.remove(this);
 			}
 		}));
 
@@ -444,7 +444,7 @@ class WebSession {
 			Web_menu.append(new MenuItem({
 				label: 'Open link in new tab',
 				click() {
-					OhHaiBrowser.tabs.add(params.linkURL, undefined, {
+					tabs.add(params.linkURL, undefined, {
 						selected: true
 					});
 				}
@@ -458,7 +458,7 @@ class WebSession {
 			Web_menu.append(new MenuItem({
 				label: 'Open ' + params.mediaType + ' in new tab',
 				click() {
-					OhHaiBrowser.tabs.add(params.srcURL, undefined, {
+					tabs.add(params.srcURL, undefined, {
 						selected: true
 					});
 				}
@@ -489,7 +489,7 @@ class WebSession {
 			Web_menu.append(new MenuItem({
 				label: 'Google search for selection',
 				click() {
-					OhHaiBrowser.tabs.add(`https://www.google.co.uk/search?q=${params.selectionText}`, undefined, {
+					tabs.add(`https://www.google.co.uk/search?q=${params.selectionText}`, undefined, {
 						selected: true
 					});
 				}
@@ -522,21 +522,21 @@ class WebSession {
 			label: 'Back',
 			accelerator: 'Alt+Left',
 			click() {
-				OhHaiBrowser.tabs.activePage.goBack();
+				tabs.activePage.goBack();
 			}
 		}));
 		Web_menu.append(new MenuItem({
 			label: 'Refresh',
 			accelerator: 'CmdOrCtrl+R',
 			click() {
-				OhHaiBrowser.tabs.activePage.reload();
+				tabs.activePage.reload();
 			}
 		}));
 		Web_menu.append(new MenuItem({
 			label: 'Forward',
 			accelerator: 'Alt+Right',
 			click() {
-				OhHaiBrowser.tabs.activePage.goForward();
+				tabs.activePage.goForward();
 			}
 		}));
 		Web_menu.append(new MenuItem({
