@@ -8,6 +8,7 @@ var TabBar = {
 	tabcontainer: document.getElementById('tabs-menu'),
 	pinnedtabcontainer: document.getElementById('tabs-dock'),
 	webviewcontainer: document.getElementById('BrowserWin'),
+	addTabBtn: document.getElementById('AddTab'),
 	pined: true,
 	toggle: function () {
 		if (TabBar.pined == true) {
