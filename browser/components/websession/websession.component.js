@@ -6,6 +6,7 @@ const {clipboard,	remote} = require('electron'),
 	CoreFunctions = require('../../system_assets/modules/OhHaiBrowser.Core'),
 	validate = require('../../system_assets/modules/OhHaiBrowser.Validation'),
 	Doodle = require('../../system_assets/modules/Doodle'),
+	{tabs} = require('../../services/tabs.service');
 
 class WebSession {
 	constructor(opts) {
@@ -48,7 +49,6 @@ class WebSession {
 			var Tab_menu = this.tabContextMenu();
 			Tab_menu.popup(remote.getCurrentWindow());
 		}, false);
-
 		this.tab.addEventListener('click', (e) => {
 			switch(e.target.className){
 			case 'TabClose':

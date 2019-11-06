@@ -5,10 +5,10 @@ var {clipboard,	remote} = require('electron'),
 	BookmarksList = require('./system_assets/scripts/addons/bookmarks.js'),
 	{functions, controls, AutoComplete} = require('./services/navbar.service.js'),
 	{tabs} = require('./services/tabs.service.js'),
-	tabbar = require('./system_assets/modules/OhHaiBrowser.Tabbar.js'),
 	AboutMenu = require('./system_assets/scripts/addons/about.js'),
 	SettingsMenu = require('./system_assets/scripts/addons/settings.js'),
-	Contextuals = require('./system_assets/modules/Contextuals/Contextuals.js');
+	Contextuals = require('./system_assets/modules/Contextuals/Contextuals.js'),
+	tabbar = require('./system_assets/modules/OhHaiBrowser.Tabbar.js');
 
 var OhHaiBrowser = {
 	sessionStartTime: '',
@@ -345,33 +345,10 @@ var OhHaiBrowser = {
 	core: require('./system_assets/modules/OhHaiBrowser.Core.js')
 };
 
-//Ui Functions
 controls.btn_ToggleTabBar.addEventListener('click', tabbar.toggle );
-controls.btn_back.addEventListener('click', tabs.activePage.goBack );
-controls.btn_refresh.addEventListener('click', tabs.activePage.reload );
-controls.btn_forward.addEventListener('click', tabs.activePage.goForward );
-
-tabs._count.asObservable().subscribe((val) => {
-	console.log(val);
-});
-
-tabbar.panel.addEventListener('contextmenu', (e) => {
-	switch (e.target.className) {
-	case 'CommandBtn AddTab':
-	case 'OhHai-TabMenu':
-		//Everythig which isnt a tab
-		var TbMen = tabbar.contextMenu();
-		e.preventDefault();
-		TbMen.popup(remote.getCurrentWindow());
-		break;
-	}
-}, false);
-
-function AddTabButton() {
-	tabs.add(OhHaiBrowser.settings.homepage, undefined, {
-		selected: true
-	});
-}
+controls.btn_back.addEventListener('click', OhHaiBrowser.tabs.activePage.goBack );
+controls.btn_refresh.addEventListener('click', OhHaiBrowser.tabs.activePage.reload );
+controls.btn_forward.addEventListener('click', OhHaiBrowser.tabs.activePage.goForward );
 
 controls.txt_urlbar.addEventListener('contextmenu', (e) => {
 	e.preventDefault();
@@ -387,10 +364,11 @@ controls.txt_urlbar.addEventListener('keydown', function (event) {
 	});
 	//On Enter
 	if (event.which == 13) {
-		tabs.activePage.navigate(urlbarValid.output);
+		OhHaiBrowser.tabs.activePage.navigate(urlbarValid.output);
 	}
 });
 
+//mouse event
 controls.txt_urlbar.addEventListener('click', () => {
 	if (controls.txt_urlbar.value != controls.txt_urlbar.getAttribute('data-text-swap')) {
 		controls.txt_urlbar.value = controls.txt_urlbar.getAttribute('data-text-swap');
@@ -405,6 +383,11 @@ controls.txt_urlbar.addEventListener('focusout', () => {
 	controls.txt_urlbar.value = controls.txt_urlbar.getAttribute('data-text-original');
 	controls.div_urlOuter.classList.remove('CenterFocus');
 });
+
+//--------------------------------------------------------------------------------------------------------------
+//URL bar functions
+
+//-----------------------------------------------------------------------------------------------------
 
 controls.btn_bookmarked.addEventListener('click', function (e) {
 	var popuplocation = {
@@ -429,13 +412,15 @@ controls.btn_bookmarked.addEventListener('click', function (e) {
 	}
 });
 
+//Right Controls
+//-------------------------------------------------------------------------------------------------------------------------
 controls.btn_overflow.addEventListener('click',() => {
 	new Contextuals.menu([
 		{title:'New tab', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
-			tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true});
+			OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true});
 		}},
 		{title:'New incognito tab', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
-			tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true,mode:'incog'});
+			OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage,undefined,{selected: true,mode:'incog'});
 		}},
 		{seperator:true},
 		{title:'Settings', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
@@ -445,4 +430,22 @@ controls.btn_overflow.addEventListener('click',() => {
 			OhHaiBrowser.ui.toggleModel(AboutMenu(),'OhHai Browser');
 		}}
 	]);
+});
+
+tabbar.panel.addEventListener('contextmenu', (e) => {
+	switch (e.target.className) {
+	case 'CommandBtn AddTab':
+	case 'OhHai-TabMenu':
+		//Everythig which isnt a tab
+		var TbMen = tabbar.contextMenu();
+		e.preventDefault();
+		TbMen.popup(remote.getCurrentWindow());
+		break;
+	}
+}, false);
+
+tabbar.addTabBtn.addEventListener('click', () => {
+	OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
+		selected: true
+	});
 });

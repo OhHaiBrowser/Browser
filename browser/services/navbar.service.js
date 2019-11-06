@@ -1,4 +1,5 @@
-let	validate = require('../system_assets/modules/OhHaiBrowser.Validation');
+let validate = require('../system_assets/modules/OhHaiBrowser.Validation');
+
 
 class urlAutoComplete{
 	constructor(url) {
@@ -26,8 +27,9 @@ let controls = {
 	pan_urlAutoComplete: document.getElementById('URLAutoComplete'),
 	btn_forward: document.getElementById('Forward'),
 	btn_overflow: document.getElementById('Menu')
-}
+};
 module.exports.controls = controls;
+
 
 let functions = {
 	updateTabCounter: function () {
@@ -68,5 +70,5 @@ let functions = {
 			controls.lnk_cirtpip.classList.add('CirtError');
 		});
 	}
-}
+};
 module.exports.functions = functions;
