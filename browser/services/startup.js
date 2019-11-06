@@ -1,4 +1,4 @@
-var {Settings, Sessions, Groups} = require('./system_assets/modules/OhHaiBrowser.Data.js');
+var {Groups} = require('./system_assets/modules/OhHaiBrowser.Data.js');
 
 OhHaiBrowser.sessionStartTime = Date.now();
 

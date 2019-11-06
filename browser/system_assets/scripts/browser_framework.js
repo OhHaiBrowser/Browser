@@ -1,6 +1,6 @@
 var {clipboard,	remote} = require('electron'),
 	{Menu,	MenuItem} = remote,
-	{Quicklinks, Settings, Sessions, Groups, History} = require('./system_assets/modules/OhHaiBrowser.Data.js'),
+	{Quicklinks, Settings, Sessions} = require('./system_assets/modules/OhHaiBrowser.Data.js'),
 	HistoryList = require('./system_assets/scripts/addons/history.js'),
 	BookmarksList = require('./system_assets/scripts/addons/bookmarks.js'),
 	{functions, controls, AutoComplete} = require('./services/navbar.service.js'),
