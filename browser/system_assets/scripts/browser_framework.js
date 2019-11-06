@@ -3,7 +3,7 @@ var {clipboard,	remote} = require('electron'),
 	{Quicklinks, Settings, Sessions, Groups, History} = require('./system_assets/modules/OhHaiBrowser.Data.js'),
 	HistoryList = require('./system_assets/scripts/addons/history.js'),
 	BookmarksList = require('./system_assets/scripts/addons/bookmarks.js'),
-	{functions} = require('./system_assets/components/nav_bar/controls.js'),
+	{functions} = require('./services/navbar.service.js'),
 	{tabs} = require('./services/tabs.service.js');
 
 var OhHaiBrowser = {

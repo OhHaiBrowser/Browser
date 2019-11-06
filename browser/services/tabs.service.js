@@ -1,7 +1,7 @@
 let CoreFunctions = require('../system_assets/modules/OhHaiBrowser.Core'),
 	{ Sessions, Groups } = require('../system_assets/modules/OhHaiBrowser.Data'),
 	Tabbar = require('../system_assets/modules/OhHaiBrowser.Tabbar'),
-	{ functions } = require('../system_assets/components/nav_bar/controls'),
+	{ functions } = require('./navbar.service'),
 	{ WebSession } = require('../components/websession/websession.component'),
 	{ Group } = require('../components/group/group.component');
 

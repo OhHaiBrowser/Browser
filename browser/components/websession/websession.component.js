@@ -1,7 +1,7 @@
 const {clipboard,	remote} = require('electron'),
 	{Menu,	MenuItem} = remote,
 	Tabbar = require('../../system_assets/modules/OhHaiBrowser.Tabbar'),
-	{controls, functions} = require('../../system_assets/components/nav_bar/controls'),
+	{controls, functions} = require('../../services/navbar.service'),
 	{Sessions, History} = require('../../system_assets/modules/OhHaiBrowser.Data'),
 	CoreFunctions = require('../../system_assets/modules/OhHaiBrowser.Core'),
 	validate = require('../../system_assets/modules/OhHaiBrowser.Validation'),

@@ -1,8 +1,7 @@
-let {controls} = require('./system_assets/components/nav_bar/controls.js'),
-	tabbar = require('./system_assets/modules/OhHaiBrowser.Tabbar.js'),
+let tabbar = require('./system_assets/modules/OhHaiBrowser.Tabbar.js'),
 	AboutMenu = require('./system_assets/scripts/addons/about.js'),
 	SettingsMenu = require('./system_assets/scripts/addons/settings.js'),
-	{ AutoComplete } = require('./services/navbar.service.js'),
+	{ AutoComplete, controls } = require('./services/navbar.service.js'),
 	Contextuals = require('./system_assets/modules/Contextuals/Contextuals.js');
 
 controls.btn_ToggleTabBar.addEventListener('click', tabbar.toggle );
