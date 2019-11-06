@@ -52,7 +52,7 @@ class WebSession {
 		this.tab.addEventListener('click', (e) => {
 			switch(e.target.className){
 			case 'TabClose':
-				tabs.remove(this);
+				OhHaiBrowser.tabs.remove(this);
 				break;
 			case 'tabPlaying':
 				this.webview.setAudioMuted(true);
@@ -61,7 +61,7 @@ class WebSession {
 				this.webview.setAudioMuted(false);
 				break;
 			default:
-				tabs.setCurrent(this);
+				OhHaiBrowser.tabs.setCurrent(this);
 				functions.updateURLBar(this.webview);
 			}
 		});
@@ -89,7 +89,7 @@ class WebSession {
 			updateTab();
 		});
 		this.webview.addEventListener('close', () => {
-			tabs.remove(this);
+			OhHaiBrowser.tabs.remove(this);
 		});
 		this.webview.addEventListener('did-fail-load', (e) => {
 			if (e.errorCode != -3 && e.validatedURL == e.target.getURL()) {this.webview.loadURL(`file://${__dirname}/components/error_page/index.html?code=${e.errorCode}&url=${e.validatedURL}`);}
@@ -97,13 +97,13 @@ class WebSession {
 		this.webview.addEventListener('new-window', (e) => {
 			switch(e.disposition){
 			case 'new-window':
-				tabs.popupwindow(e);
+				OhHaiBrowser.tabs.popupwindow(e);
 				break;
 			case 'background-tab':
-				tabs.add(e.url,undefined);
+				OhHaiBrowser.tabs.add(e.url,undefined);
 				break;
 			default:
-				tabs.add(e.url,undefined,{selected: true});
+				OhHaiBrowser.tabs.add(e.url,undefined,{selected: true});
 			}
 		});
 		this.webview.addEventListener('media-started-playing', (e) => {
@@ -335,7 +335,7 @@ class WebSession {
 		NewMenu.append(new MenuItem({
 			label: 'New Tab',
 			click() {
-				tabs.add(OhHaiBrowser.settings.homepage, undefined, {
+				OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
 					selected: true
 				});
 			}
@@ -343,7 +343,7 @@ class WebSession {
 		NewMenu.append(new MenuItem({
 			label: 'New Incognito Tab',
 			click() {
-				tabs.add(OhHaiBrowser.settings.homepage, undefined, {
+				OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
 					selected: true,
 					mode: 'incog'
 				});
@@ -357,7 +357,7 @@ class WebSession {
 			NewMenu.append(new MenuItem({
 				label: 'Remove tab from group',
 				click() {
-					tabs.groups.removeTab(this.tab);
+					OhHaiBrowser.tabs.groups.removeTab(this.tab);
 				}
 			}));
 		} else {
@@ -365,7 +365,7 @@ class WebSession {
 			var GroupMenu = [new MenuItem({
 				label: 'New group',
 				click() {
-					tabs.groups.addTab(this.tab, null);
+					OhHaiBrowser.tabs.groups.addTab(this.tab, null);
 				}
 			})];
 			var CurrentGroups = document.getElementsByClassName('group');
@@ -379,7 +379,7 @@ class WebSession {
 					GroupMenu.push(new MenuItem({
 						label: GroupTitle,
 						click() {
-							tabs.groups.addTab(this.tab, ThisGroup);
+							OhHaiBrowser.tabs.groups.addTab(this.tab, ThisGroup);
 						}
 					}));
 				}
@@ -411,14 +411,14 @@ class WebSession {
 				NewMenu.append(new MenuItem({
 					label: 'Undock Tab',
 					click() {
-						tabs.setMode(this, 'default', function () {});
+						OhHaiBrowser.tabs.setMode(this, 'default', function () {});
 					}
 				}));
 			}else{
 				NewMenu.append(new MenuItem({
 					label: 'Dock Tab',
 					click() {
-						tabs.setMode(this, 'dock', function () {});
+						OhHaiBrowser.tabs.setMode(this, 'dock', function () {});
 					}
 				}));
 			}
@@ -429,7 +429,7 @@ class WebSession {
 		NewMenu.append(new MenuItem({
 			label: 'Close Tab',
 			click() {
-				tabs.remove(this);
+				OhHaiBrowser.tabs.remove(this);
 			}
 		}));
 
@@ -444,7 +444,7 @@ class WebSession {
 			Web_menu.append(new MenuItem({
 				label: 'Open link in new tab',
 				click() {
-					tabs.add(params.linkURL, undefined, {
+					OhHaiBrowser.tabs.add(params.linkURL, undefined, {
 						selected: true
 					});
 				}
@@ -458,7 +458,7 @@ class WebSession {
 			Web_menu.append(new MenuItem({
 				label: 'Open ' + params.mediaType + ' in new tab',
 				click() {
-					tabs.add(params.srcURL, undefined, {
+					OhHaiBrowser.tabs.add(params.srcURL, undefined, {
 						selected: true
 					});
 				}
@@ -489,7 +489,7 @@ class WebSession {
 			Web_menu.append(new MenuItem({
 				label: 'Google search for selection',
 				click() {
-					tabs.add(`https://www.google.co.uk/search?q=${params.selectionText}`, undefined, {
+					OhHaiBrowser.tabs.add(`https://www.google.co.uk/search?q=${params.selectionText}`, undefined, {
 						selected: true
 					});
 				}
@@ -522,21 +522,21 @@ class WebSession {
 			label: 'Back',
 			accelerator: 'Alt+Left',
 			click() {
-				tabs.activePage.goBack();
+				OhHaiBrowser.tabs.activePage.goBack();
 			}
 		}));
 		Web_menu.append(new MenuItem({
 			label: 'Refresh',
 			accelerator: 'CmdOrCtrl+R',
 			click() {
-				tabs.activePage.reload();
+				OhHaiBrowser.tabs.activePage.reload();
 			}
 		}));
 		Web_menu.append(new MenuItem({
 			label: 'Forward',
 			accelerator: 'Alt+Right',
 			click() {
-				tabs.activePage.goForward();
+				OhHaiBrowser.tabs.activePage.goForward();
 			}
 		}));
 		Web_menu.append(new MenuItem({
