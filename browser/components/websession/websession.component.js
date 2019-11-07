@@ -24,12 +24,12 @@ class WebSession {
 			}
 		}
 		this.tab = CoreFunctions.generateElement(`
-			<li class='tab' id='t_${opts.id}' data-container='wv_${opts.id}'>
+			<div class='tab' id='t_${opts.id}' data-container='wv_${opts.id}'>
 				<a class='tabMediaBtn hidden'></a>
 				<img class='ohhai-tab-fav' src='assets/imgs/logo.png'/>
 				<span class='ohhai-tab-txt'>New Tab</span>
 				<a class='TabClose'></a>
-			</li>`);
+			</div>`);
 		this.webview = CoreFunctions.generateElement(`<webview id='wv_${opts.id}' src='${parseOpenPage(opts.url)}' class='Hidden'></webview>`);
 		if (opts) {
 			if (opts.mode) {

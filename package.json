@@ -10,8 +10,7 @@
   },
   "main": "main.js",
   "scripts": {
-    "build": "electron .",
-    "start": "electron .",
+    "debug": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "postinstall": "electron-builder install-app-deps"

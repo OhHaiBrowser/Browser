@@ -122,7 +122,7 @@ const Tabs = {
 
 		if (Tabs.count > 1) {
 			if (_webSession.selected) {
-				var Open_Tabs = document.querySelectorAll('li.tab');
+				var Open_Tabs = document.querySelectorAll('div.tab');
 				var This_TabIndex;
 				Open_Tabs.forEach(function (ArrayElement, index) {
 					if (ArrayElement == _webSession.tab) {
