@@ -1,4 +1,4 @@
-const {clipboard,	remote} = require('electron'),
+const {clipboard, remote, webviewTag} = require('electron'),
 	{Menu,	MenuItem} = remote,
 	Tabbar = require('../../system_assets/modules/OhHaiBrowser.Tabbar'),
 	{controls, functions} = require('../../services/navbar.service'),
@@ -6,12 +6,13 @@ const {clipboard,	remote} = require('electron'),
 	CoreFunctions = require('../../system_assets/modules/OhHaiBrowser.Core'),
 	validate = require('../../system_assets/modules/OhHaiBrowser.Validation'),
 	Doodle = require('../../system_assets/modules/Doodle'),
-	{tabs} = require('../../services/tabs.service');
+	{tabItem} = require('../tab/tab.component') ;
 
 class WebSession {
 	constructor(opts) {
 		this.sessionEventAdded = false;
 		this.id = opts.id;
+		this.webReady = false;
 
 		var parseOpenPage = (url) => {
 			switch (url) {
@@ -23,47 +24,50 @@ class WebSession {
 				return url;
 			}
 		}
-		this.tab = CoreFunctions.generateElement(`
-			<div class='tab' id='t_${opts.id}' data-container='wv_${opts.id}'>
-				<a class='tabMediaBtn hidden'></a>
-				<img class='ohhai-tab-fav' src='assets/imgs/logo.png'/>
-				<span class='ohhai-tab-txt'>New Tab</span>
-				<a class='TabClose'></a>
-			</div>`);
+
+		this.tab = new tabItem({id: opts.id});
+
+		this._webview = new webviewTag();
+
 		this.webview = CoreFunctions.generateElement(`<webview id='wv_${opts.id}' src='${parseOpenPage(opts.url)}' class='Hidden'></webview>`);
 		if (opts) {
 			if (opts.mode) {
 				this.mode = String(opts.mode);
 			}
 			if (opts.title) {
-				this.title = String(opts.title);
+				this.tab.title = String(opts.title)
 			}
 			if (opts.favicon) {
-				this.icon = String(opts.favicon);
+				this.tab.icon = String(opts.favicon)
 			}
 		}
 
 		//Tab event listeners
-		this.tab.addEventListener('contextmenu', (e) => {
-			e.preventDefault();
+		this.tab.addEventListener('selected', (e) => {
+			OhHaiBrowser.tabs.setCurrent(this);
+			if (this.webReady) {
+				functions.updateURLBar(this.webview);
+			}			
+		});
+		this.tab.addEventListener('titleChange', (e) => {
+
+		});
+		this.tab.addEventListener('modeChange', (e) => {
+
+		});
+		this.tab.addEventListener('mediaClick', (e) => {
+			if (e.details == 'playing') {
+				this.webview.setAudioMuted(true);
+			} else {
+				this.webview.setAudioMuted(false);
+			}
+		});
+		this.tab.addEventListener('contextClick', (e) => {
 			var Tab_menu = this.tabContextMenu();
 			Tab_menu.popup(remote.getCurrentWindow());
-		}, false);
-		this.tab.addEventListener('click', (e) => {
-			switch(e.target.className){
-			case 'TabClose':
-				OhHaiBrowser.tabs.remove(this);
-				break;
-			case 'tabPlaying':
-				this.webview.setAudioMuted(true);
-				break;
-			case 'tabMute':
-				this.webview.setAudioMuted(false);
-				break;
-			default:
-				OhHaiBrowser.tabs.setCurrent(this);
-				functions.updateURLBar(this.webview);
-			}
+		});
+		this.tab.addEventListener('close', (e) => {
+			OhHaiBrowser.tabs.remove(this);
 		});
 
 		var domLoaded = () => {
@@ -77,11 +81,11 @@ class WebSession {
 			}
 		};
 		var updateTab = () => {
-			if(this.title != null){
-				this.title = this.webview.getTitle(); 
+			if(this.tab.title != null){
+				this.tab.title = this.webview.getTitle();
 			}
-			if(this.icon != null){
-				this.icon = 'assets/imgs/favicon_default.png';
+			if(this.tab.icon != null){
+				this.tab.icon = 'assets/imgs/favicon_default.png';
 			}
 		}
 		//View event listeners
@@ -108,20 +112,20 @@ class WebSession {
 		});
 		this.webview.addEventListener('media-started-playing', (e) => {
 			if(this.webview.isAudioMuted()){
-				this.mediaControl = 'mute';
+				this.tab.mediaControl = 'mute';
 			}else{
-				this.mediaControl = 'play';
+				this.tab.mediaControl = 'play';
 			}
 		});
 		this.webview.addEventListener('media-paused', (e) => {
 			if(this.webview.isAudioMuted()){
-				this.mediaControl = 'mute';
+				this.tab.mediaControl = 'mute';
 			}else{
-				this.mediaControl = 'play';
+				this.tab.mediaControl = 'play';
 			}
 		});
 		this.webview.addEventListener('page-favicon-updated', (e) => {
-			this.icon = e.favicons[0];
+			this.tab.icon = e.favicons[0];
 		});
 		this.webview.addEventListener('focus', () => {
 			let openMenuItem = document.querySelector('.contextualMenu:not(.contextualMenuHidden)');
@@ -130,13 +134,13 @@ class WebSession {
 			}
 		});
 		this.webview.addEventListener('did-start-loading', () => {
-			if(this.mediaControl != 'hide'){
-				this.mediaControl = 'hide';
+			if(this.tab.mediaControl != 'hide'){
+				this.tab.mediaControl = 'hide';
 			}
 			if(this.selected){
 				controls.lnk_cirtpip.classList.add('Loading');
-				this.title = 'Loading...';
-				this.icon = 'assets/imgs/loader.gif';
+				this.tab.title = 'Loading...';
+				this.tab.icon = 'assets/imgs/loader.gif';
 			}
 			if(!this.sessionEventAdded){
 				var thisWebContent =  this.webview.getWebContents();
@@ -209,7 +213,7 @@ class WebSession {
 			if (!validate.internalpage(CurrentURL)){
 				//This is not an internal page.
 				if(this.mode !== 'incog'){
-					var TabIcon = this.icon;
+					var TabIcon = this.tab.icon;
 					if(TabIcon == 'assets/imgs/loader.gif'){TabIcon = '';}
 	
 					History.GetLastItem((lastitem) => {
@@ -227,9 +231,10 @@ class WebSession {
 		this.webview.addEventListener('dom-ready', () => {
 			domLoaded();
 			updateTab();
+			this.webReady = true;
 	
 			if(this.mode !== 'incog'){
-				Sessions.UpdateWebPage(this.id, this.webview.getURL(), this.webview.getTitle(), this.icon , function(id){});
+				Sessions.UpdateWebPage(this.id, this.webview.getURL(), this.webview.getTitle(), this.tab.icon , function(id){});
 			}
 	
 			var webviewcontent = this.webview.getWebContents();	
@@ -245,24 +250,22 @@ class WebSession {
 	set mode(value) {
 		switch (value) {
 		case 'incog':
-			this.tab.classList.add('IncognitoTab');
+			this.tab.mode = 'incog';
 			break;
 		case 'dock':
-			this.tab.classList.remove('DefaultTab');
-			this.tab.classList.add('DockTab');
+			this.tab.mode = 'pinned';
 			Sessions.UpdateMode(this.id, 'DOCK', function () {});
 			Sessions.UpdateParent(this.id, Tabbar.pinnedtabcontainer.id, function () {});
 			break;
 		case 'default':
 		default:
-			this.tab.classList.remove('DockTab');
-			this.tab.classList.add('DefaultTab');
+			this.tab.mode = 'default';
 			Sessions.UpdateMode(this.id, 'Default', function () {});
 			Sessions.UpdateParent(this.id, Tabbar.tabcontainer.id, function () {});
 		}
 	}
 	get mode() {
-		return this.tab.classList.contains('IncognitoTab') ? 'incog' : this.tab.classList.contains('DockTab') ? 'dock' : 'default';
+		return this.tab.mode;
 	}
 
 	/**
@@ -270,62 +273,24 @@ class WebSession {
 	 */
 	set selected(value) {
 		if (value) {
-			this.tab.classList.add('current');
+			if(this.tab.selected != true){
+				this.tab.selected = true;
+			}
 			this.webview.classList.remove('Hidden');
 		} else {
-			this.tab.classList.remove('current');
+			this.tab.selected = false;
 			this.webview.classList.add('Hidden');
 		}
 	}
 	get selected() {
-		return this.tab.classList.contains('current');
-	}
-    
-	/**
-	 * @param {string} value
-	 */
-	set title(value) {
-		var tabTxt = this.tab.querySelector('.ohhai-tab-txt');
-		tabTxt.textContent = value;
-	}
-	get title() {
-		return this.tab.querySelector('.ohhai-tab-txt').textContent;
-	}
-    
-	set icon(value) {
-		var tabFav = this.tab.querySelector('.ohhai-tab-fav');
-		tabFav.src = value;
-	}
-	get icon() {
-		return this.tab.querySelector('.ohhai-tab-fav').src;
-	}
-    
-	set mediaControl(value) {
-		var tabMediaBtn = this.tab.querySelector('.tabMediaBtn');
-		tabMediaBtn.classList.remove('hidden', 'tabMute', 'tabPlaying');
-		switch (value) {
-		case 'play': 
-			tabMediaBtn.classList.add('hidden');
-			break;
-		case 'mute':
-			tabMediaBtn.classList.add('tabMute');
-			break;
-		case 'hide' :
-		default :
-			tabMediaBtn.classList.add('tabPlaying');
-			break;
-		}
-	}
-	get mediaControl() {
-		var tabMediaBtn = this.tab.querySelector('.tabMediaBtn');
-		return tabMediaBtn.classList.contains('hidden') ? 'hide' : tabMediaBtn.classList.contains('tabMute') ? 'mute' : 'play';
+		return this.tab.selected;
 	}
 
 	toJson() {
 		return JSON.stringify({
 			id: this.id,
 			url: this.webview.getURL(),
-			title: this.title,
+			title: this.tab.title,
 			mode: this.mode
 		});
 	}

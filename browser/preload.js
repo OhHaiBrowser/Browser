@@ -1,10 +1,12 @@
 const { remote } = require('electron'),
 	thisWindow = remote.getCurrentWindow(),
-	{ accordionPanel, accordionItem } = require('./components/accordion/accordion.component');
+	{ accordionPanel, accordionItem } = require('./components/accordion/accordion.component'),
+	{ tabItem } = require('./components/tab/tab.component');
 	
 //Define custom controls
 customElements.define('acc-panel', accordionPanel);
 customElements.define('acc-item', accordionItem);
+customElements.define('tab-item', tabItem);
 
 document.addEventListener('DOMContentLoaded', function(){
 	//Load frame controls

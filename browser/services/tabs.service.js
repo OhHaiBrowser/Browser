@@ -122,7 +122,7 @@ const Tabs = {
 
 		if (Tabs.count > 1) {
 			if (_webSession.selected) {
-				var Open_Tabs = document.querySelectorAll('div.tab');
+				var Open_Tabs = Tabbar.panel.querySelectorAll('tab-item');
 				var This_TabIndex;
 				Open_Tabs.forEach(function (ArrayElement, index) {
 					if (ArrayElement == _webSession.tab) {
@@ -197,7 +197,7 @@ const Tabs = {
 	},
 	setCurrent: function (_WebSession, callback = null) {
     
-		var ctab = Tabs.getCurrent();
+		var ctab = Tabs.tabMap.find(i => i.selected === true && i.id !== _WebSession.id);
 		if (ctab) {
 			ctab.selected = false;
 		}
