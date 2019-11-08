@@ -27,7 +27,7 @@ class WebSession {
 
 		this.tab = new tabItem({id: opts.id});
 
-		this._webview = new webviewTag();
+		//this._webview = new webviewTag();
 
 		this.webview = CoreFunctions.generateElement(`<webview id='wv_${opts.id}' src='${parseOpenPage(opts.url)}' class='Hidden'></webview>`);
 		if (opts) {
