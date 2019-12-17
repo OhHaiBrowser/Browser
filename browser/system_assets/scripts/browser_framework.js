@@ -16,15 +16,6 @@ var OhHaiBrowser = {
 		return Date.now() - OhHaiBrowser.sessionStartTime;
 	},
 	tabs: tabs,
-	session: {
-		list: function (callback){
-			Sessions.Get(function (slist) {
-				if (typeof callback === 'function') {
-					callback(slist);
-				}
-			});
-		}
-	},
 	history: {
 		container: document.getElementById('HistoryContainer'),
 		load: () => {

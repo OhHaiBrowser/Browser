@@ -32,7 +32,7 @@ class tabItem extends HTMLElement{
             this.selected = true;
         });
 
-        this.tab_outer.addEventListener('contextmenu', () => {
+        this.tab_outer.addEventListener('contextmenu', (e) => {
             e.preventDefault();
             this.dispatchEvent(new Event('contextClick', {bubbles: true, composed: true, detail: this}));
         });
