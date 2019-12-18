@@ -12,13 +12,11 @@ let launchparams = remote.getGlobal('sharedObject').prop1,
 	};
 
 Settings.Get('FirstRun', function (i) {
-	if (i == undefined) {
-		//this is a new user! - Show them the setup page
+	if (i == undefined) { //this is a new user! - Show them the setup page
 		Settings.Set('FirstRun', Date.now(), function (c) {});
 	}
 });
 
-//var arguments = launchparams.split(",");
 Settings.Get('Launch', function (item) {
 	if (item != undefined) {
 		switch (item.value) {
