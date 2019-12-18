@@ -1,4 +1,4 @@
-const {clipboard, remote, webviewTag} = require('electron'),
+const {clipboard, remote} = require('electron'),
 	{Menu,	MenuItem} = remote,
 	Tabbar = require('../../system_assets/modules/OhHaiBrowser.Tabbar'),
 	{controls, functions} = require('../../services/navbar.service'),
@@ -26,8 +26,6 @@ class WebSession {
 		}
 
 		this.tab = new tabItem({id: opts.id});
-
-		//this._webview = new webviewTag();
 
 		this.webview = CoreFunctions.generateElement(`<webview id='wv_${opts.id}' src='${parseOpenPage(opts.url)}' class='Hidden'></webview>`);
 		if (opts) {

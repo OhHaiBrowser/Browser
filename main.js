@@ -30,7 +30,8 @@ function CreateWindow(){
 		minWidth: 485,
 		webPreferences: {
 			preload: `${__dirname}/browser/preload.js`,
-			nodeIntegration: true
+			nodeIntegration: true,
+			webviewTag: true
 		}
 	});
 

@@ -72,7 +72,7 @@
     "dexie": "^2.0.4"
   },
   "devDependencies": {
-    "electron": "^4.0.4",
-    "electron-builder": "^20.38.5"
+    "electron": "^7.1.1",
+    "electron-builder": "^22.1.0"
   }
 }
