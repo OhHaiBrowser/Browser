@@ -3,7 +3,7 @@ var {Groups} = require('./system_assets/modules/OhHaiBrowser.Data.js');
 OhHaiBrowser.sessionStartTime = Date.now();
 
 let launchparams = remote.getGlobal('sharedObject').prop1,
-	IsLaunchParam = function () {
+	IsLaunchParam = () => {
 		if (launchparams.length == 1) {
 			return false;
 		} else {
@@ -11,13 +11,13 @@ let launchparams = remote.getGlobal('sharedObject').prop1,
 		}
 	};
 
-Settings.Get('FirstRun', function (i) {
+Settings.Get('FirstRun', (i) => {
 	if (i == undefined) { //this is a new user! - Show them the setup page
-		Settings.Set('FirstRun', Date.now(), function (c) {});
+		Settings.Set('FirstRun', Date.now(), (c) => {});
 	}
 });
 
-Settings.Get('Launch', function (item) {
+Settings.Get('Launch', (item) => {
 	if (item != undefined) {
 		switch (item.value) {
 		case 'fresh':
@@ -43,7 +43,7 @@ if (IsLaunchParam) {
 OhHaiBrowser.bookmarks.load();
 OhHaiBrowser.history.load();
 
-Settings.Get('TabBar', function (item) {
+Settings.Get('TabBar', (item) => {
 	if (item != undefined) {
 		if (item.value == false) {
 			OhHaiBrowser.ui.tabbar.panel.classList.add('LeftMenuHidden');
@@ -73,13 +73,13 @@ Settings.Get('search', (settingItem) => {
 
 
 function LoadPreviousSession(){
-	Groups.Get(function (Glist) {
+	Groups.Get((Glist) => {
 		if (Glist.length != 0) {
 			for (g in Glist) {
 				OhHaiBrowser.tabs.groups.add(Glist[g].groupid, Glist[g].name, 'session');
 			}
 		}
-		Sessions.Get(function (Slist) {
+		Sessions.Get((Slist) => {
 			if (Slist.length != 0) {
 				for (s in Slist) {
 					OhHaiBrowser.tabs.add(Slist[s].url, Slist[s].sessionid, {
