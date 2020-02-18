@@ -20,8 +20,8 @@ function CreateWindow(){
 
 	// Create the browser window.
 	mainWindow = new BrowserWindow({
-		width: width,
-		height: height,
+		width,
+		height,
 		titleBarStyle: 'hiddenInset',
 		frame: false,
 		icon: `${__dirname}/browser/assets/imgs/frame/icon.png`,
@@ -43,9 +43,6 @@ function CreateWindow(){
 	mainWindow.loadURL(`file://${__dirname}/browser/index.html`);
 
 	mainWindow.on('closed', function () {
-		// Dereference the window object, usually you would store windows
-		// in an array if your app supports multi windows, this is the time
-		// when you should delete the corresponding element.
 		mainWindow = null;
 	});
 
@@ -53,9 +50,11 @@ function CreateWindow(){
 	mainWindow.focus();
 
 	mainWindow.on('resize', () => {
-		let { width, height } = mainWindow.getBounds();
 		if(!mainWindow.isMaximized()){
-			store.set('windowBounds', { width, height });
+			store.set('windowBounds', { 
+				width: mainWindow.getBounds().width, 
+				height: mainWindow.getBounds().height
+			});
 		}
 		store.set('isMaximised',mainWindow.isMaximized());
 	});
