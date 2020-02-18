@@ -71,6 +71,7 @@ Settings.Get('search', (settingItem) => {
 	}
 });
 
+
 function LoadPreviousSession(){
 	Groups.Get((Glist) => {
 		if (Glist.length != 0) {
