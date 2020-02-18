@@ -77,7 +77,6 @@ function extract(inputArray) {
 	return groupArrays;
 }
 
-
 function addZero(i) {
 	if (i < 10) {
 		i = '0' + i;

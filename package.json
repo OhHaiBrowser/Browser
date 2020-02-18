@@ -8,9 +8,11 @@
     "name": "Lucas Reade",
     "email": "lucas.reade@gmail.com"
   },
-  "main": "main.js",
+  "main": "dist/main.js",
   "scripts": {
-    "debug": "electron .",
+    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
+    "build": "tsc",
+    "debug": "electron ./dist",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "postinstall": "electron-builder install-app-deps"
@@ -73,6 +75,8 @@
   },
   "devDependencies": {
     "electron": "^7.1.1",
-    "electron-builder": "^22.1.0"
+    "electron-builder": "^22.1.0",
+    "typescript": "^3.7.5",
+    "tslint": "^6.0.0"
   }
 }

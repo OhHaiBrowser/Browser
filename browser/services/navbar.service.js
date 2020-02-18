@@ -1,6 +1,5 @@
 let validate = require('../system_assets/modules/OhHaiBrowser.Validation');
 
-
 class urlAutoComplete{
 	constructor(url) {
 		let searchProvider = OhHaiBrowser.settings.search;
@@ -29,7 +28,6 @@ let controls = {
 	btn_overflow: document.getElementById('Menu')
 };
 module.exports.controls = controls;
-
 
 let functions = {
 	updateTabCounter: function () {

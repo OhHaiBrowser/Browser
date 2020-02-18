@@ -32,6 +32,3 @@ case -501:
 	button.textContent = 'Go back';
 	break;
 }
-
-
-

@@ -5,7 +5,6 @@ var Pan_Cert = document.getElementById('SecureCheck');
 
 var RunDir = decodeURI('file://' + __dirname).replace(/\\/g, '/');
 
-
 var Page2Load = getParameterByName('url',window.location.href);
 console.log(Page2Load);
 Popup_webview.setAttribute('src',Page2Load);
@@ -13,7 +12,6 @@ Popup_webview.setAttribute('src',Page2Load);
 Btn_Refresh.addEventListener('click', function(e) {
     Popup_webview.reload();
 });
-
 
 Txt_URL.addEventListener('click', function(e) {
     if(Txt_URL.value != Txt_URL.getAttribute('data-text-swap')){
@@ -33,7 +31,6 @@ Popup_webview.addEventListener('did-stop-loading', function() {
     domloaded(Popup_webview);
 });
 
-
 Popup_webview.addEventListener('dom-ready', function() {
     domloaded(Popup_webview);
 
@@ -44,7 +41,6 @@ Popup_webview.addEventListener('dom-ready', function() {
         WbMen.popup(remote.getCurrentWindow())
     });
 });
-
 
 function domloaded(webview){
 
@@ -67,7 +63,6 @@ function domloaded(webview){
     Pan_Cert.classList.remove('Loading');
 }
 
-
 function ProtcolCheck(webview){
 	var webviewcontent = webview.getWebContents();	
 	var CurrentURL = decodeURI(webview.getURL());
@@ -84,11 +79,7 @@ function ProtcolCheck(webview){
         Pan_Cert.className = 'DoubleURLBtn CirtError';
 	});
 
-
 }
-
-
-
 
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
