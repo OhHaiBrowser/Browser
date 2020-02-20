@@ -4,11 +4,7 @@ OhHaiBrowser.sessionStartTime = Date.now();
 
 let launchparams = remote.getGlobal('sharedObject').prop1,
 	IsLaunchParam = () => {
-		if (launchparams.length == 1) {
-			return false;
-		} else {
-			return true;
-		}
+		return launchparams.length == 1 ? false : true;
 	};
 
 Settings.Get('FirstRun', (i) => {
