@@ -7,21 +7,20 @@ var RunDir = decodeURI('file://' + __dirname).replace(/\\/g, '/');
 
 
 var Page2Load = getParameterByName('url',window.location.href);
-console.log(Page2Load);
 Popup_webview.setAttribute('src',Page2Load);
 
-Btn_Refresh.addEventListener('click', function(e) {
+Btn_Refresh.addEventListener('click', function() {
 	Popup_webview.reload();
 });
 
 
-Txt_URL.addEventListener('click', function(e) {
+Txt_URL.addEventListener('click', function() {
 	if(Txt_URL.value != Txt_URL.getAttribute('data-text-swap')){
 		Txt_URL.value = Txt_URL.getAttribute('data-text-swap');
 	}
 });
 
-Txt_URL.addEventListener('focusout', function (e) {
+Txt_URL.addEventListener('focusout', function () {
 	Txt_URL.value = Txt_URL.getAttribute('data-text-original');
 });
 

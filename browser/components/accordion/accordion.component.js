@@ -51,7 +51,7 @@ module.exports.accordionItem = class extends HTMLElement {
 		this.accTitle.textContent = this.hasAttribute('title') ? this.getAttribute('title') : 'Title';
 	}
 
-	attributeChangedCallback(attrName, oldVal, newVal){
+	attributeChangedCallback(attrName){
 		switch(attrName){
 		case 'active':
 			this.accHeader.classList.toggle('active');

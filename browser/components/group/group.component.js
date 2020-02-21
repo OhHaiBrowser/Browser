@@ -23,7 +23,7 @@ module.exports.Group = class {
 		var GroupName = this.Group.querySelector('.ohhai-group-txt');
 		var ToggleGroup = this.Group.querySelector('.ohhai-togglegroup');
 		var GroupChildren = this.Group.querySelector('.ohhai-group-children');
-		ToggleGroup.addEventListener('click', function (e) {
+		ToggleGroup.addEventListener('click', () => {
 			GroupChildren.classList.toggle('ClosedGroup');
 		});
 		GroupName.addEventListener('change', () => Groups.Upsert(id, GroupName.value));
@@ -69,7 +69,7 @@ module.exports.Group = class {
 		}
 	}
 
-	remove(opts) {
+	remove() {
 		this.group.parentElement.removeChild(this.group);
 	}
 

@@ -17,6 +17,9 @@ if (origin.startsWith('https://')) {
 	origin = origin.slice(7);
 }
 
+moreHelp.textContent = '';
+errorDesc.textContent = '';
+
 switch (errorCode) {
 case -106:
 	title.textContent = 'No internet connection';

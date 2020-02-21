@@ -52,7 +52,7 @@ var OhHaiBrowser = {
 				});
 			});
 
-			Cancel_bookmark.addEventListener('click', function (e) {
+			Cancel_bookmark.addEventListener('click', function () {
 				BookmarkPopup.parentNode.removeChild(BookmarkPopup);
 			});
 
@@ -172,7 +172,7 @@ var OhHaiBrowser = {
 				URlMenu.append(new MenuItem({
 					label: 'Paste',
 					click() {
-						OhHaiBrowser.ui.navbar.txt_urlBar.value = clipboard.readText();
+						URLBar.value = clipboard.readText();
 					}
 				}));
 				return URlMenu;
@@ -276,14 +276,6 @@ var OhHaiBrowser = {
 			}
 		}
 	},
-	toggleLock: function () {
-		if (OhHaiBrowser.isLocked) {
-
-		} else {
-
-		}
-	},
-	isLocked: false,
 	about: {
 		onlineStatus: function (callback) {
 			if (typeof callback === 'function') {

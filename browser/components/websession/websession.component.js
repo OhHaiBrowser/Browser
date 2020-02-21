@@ -41,16 +41,16 @@ class WebSession {
 		}
 
 		//Tab event listeners
-		this.tab.addEventListener('selected', (e) => {
+		this.tab.addEventListener('selected', () => {
 			OhHaiBrowser.tabs.setCurrent(this);
 			if (this.webReady) {
 				functions.updateURLBar(this.webview);
 			}			
 		});
-		this.tab.addEventListener('titleChange', (e) => {
+		this.tab.addEventListener('titleChange', () => {
 
 		});
-		this.tab.addEventListener('modeChange', (e) => {
+		this.tab.addEventListener('modeChange', () => {
 
 		});
 		this.tab.addEventListener('mediaClick', (e) => {
@@ -60,11 +60,11 @@ class WebSession {
 				this.webview.setAudioMuted(false);
 			}
 		});
-		this.tab.addEventListener('contextClick', (e) => {
+		this.tab.addEventListener('contextClick', () => {
 			var Tab_menu = this.tabContextMenu();
 			Tab_menu.popup(remote.getCurrentWindow());
 		});
-		this.tab.addEventListener('close', (e) => {
+		this.tab.addEventListener('close', () => {
 			OhHaiBrowser.tabs.remove(this);
 		});
 
@@ -108,14 +108,14 @@ class WebSession {
 				OhHaiBrowser.tabs.add(e.url,undefined,{selected: true});
 			}
 		});
-		this.webview.addEventListener('media-started-playing', (e) => {
+		this.webview.addEventListener('media-started-playing', () => {
 			if(this.webview.isAudioMuted()){
 				this.tab.mediaControl = 'mute';
 			}else{
 				this.tab.mediaControl = 'play';
 			}
 		});
-		this.webview.addEventListener('media-paused', (e) => {
+		this.webview.addEventListener('media-paused', () => {
 			if(this.webview.isAudioMuted()){
 				this.tab.mediaControl = 'mute';
 			}else{

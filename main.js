@@ -16,10 +16,9 @@ app.on('ready', function() {
 		}
 	});
 
-	protocol.registerStringProtocol('mailto', function (req, cb) {
+	protocol.registerStringProtocol('mailto', function (req) {
 		electron.shell.openExternal(req.url);
-		return null;
-	}, function (error) {});
+	});
 });
 
 // Quit when all windows are closed.

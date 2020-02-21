@@ -27,29 +27,30 @@ class MainWindow extends BrowserWindow {
 				webviewTag: true
 			}
 		});
+		let win = this;
 
 		if(store.get('isMaximised')){
-			this.maximize();
+			win.maximize();
 		}
 	
-		this.setMenu(null);	
-		this.loadURL(`file://${__dirname}/browser/index.html`);
+		win.setMenu(null);	
+		win.loadURL(`file://${__dirname}/browser/index.html`);
 	
-		this.on('closed', function () {
-			this = null;
+		win.on('closed', () => {
+			win = null;
 		});
 	
-		this.show();
-		this.focus();
+		win.show();
+		win.focus();
 	
-		this.on('resize', () => {
-			if(!this.isMaximized()){
+		win.on('resize', () => {
+			if(!win.isMaximized()){
 				store.set('windowBounds', { 
-					width: this.getBounds().width, 
-					height: this.getBounds().height
+					width: win.getBounds().width, 
+					height: win.getBounds().height
 				});
 			}
-			store.set('isMaximised', this.isMaximized());
+			store.set('isMaximised', win.isMaximized());
 		});
 	}
 }
