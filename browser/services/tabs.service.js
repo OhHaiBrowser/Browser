@@ -7,7 +7,7 @@ let CoreFunctions = require('../system_assets/modules/OhHaiBrowser.Core'),
 
 const Tabs = {
 	countInternal: 0,
-	countListener: (val) => {},
+	countListener: (val) => { console.log(val); },
 	set count(val) {
 		this.countInternal = val;
 		this.countListener(val);
@@ -26,96 +26,91 @@ const Tabs = {
  * @param {object} _OPTIONS 
  * @param {void} callback 
  */
-	add: function (_URL, _ID, _OPTIONS, callback = null) {
-		let IsNew = _ID == undefined ? true : false;
-		_ID = _ID == undefined ? CoreFunctions.generateId() : _ID;  
-
-		let NewWS = new WebSession({
-			id: _ID,
-			url: _URL,
-			_OPTIONS
-		});
-
-		//Are there options?
-		if (_OPTIONS) {
-			if (_OPTIONS.selected == true) {
-				Tabs.setCurrent(NewWS);
-			}
-			if (_OPTIONS.mode) {
-				switch (_OPTIONS.mode.toString().toLowerCase()) {
-				case 'dock':
-					Tabbar.pinnedtabcontainer.appendChild(NewWS.tab);
-					break;
-				case 'incog':
-					Tabbar.tabcontainer.appendChild(NewWS.tab);
-					break;
-				case 'grouped':
-					if (_OPTIONS.parent) {
-						if (typeof _OPTIONS.parent == 'string') {
-							_OPTIONS.parent = document.getElementById(_OPTIONS.parent);
-						}
-						if (_OPTIONS.parent != null) {
-							if (_OPTIONS.parent.classList.contains('ohhai-group-children')) {
-								_OPTIONS.parent.appendChild(NewWS.tab);
+	add: (_URL, _ID = undefined, _OPTIONS = {}) => {
+		return new Promise((resolve) => {
+			let IsNew = _ID == undefined ? true : false;
+			_ID = _ID == undefined ? CoreFunctions.generateId() : _ID;  
+	
+			let NewWS = new WebSession({
+				id: _ID,
+				url: _URL,
+				_OPTIONS
+			});
+	
+			//Are there options?
+			if (_OPTIONS) {
+				if (_OPTIONS.selected == true) {
+					Tabs.setCurrent(NewWS);
+				}
+				if (_OPTIONS.mode) {
+					switch (_OPTIONS.mode.toString().toLowerCase()) {
+					case 'dock':
+						Tabbar.pinnedtabcontainer.appendChild(NewWS.tab);
+						break;
+					case 'incog':
+						Tabbar.tabcontainer.appendChild(NewWS.tab);
+						break;
+					case 'grouped':
+						if (_OPTIONS.parent) {
+							if (typeof _OPTIONS.parent == 'string') {
+								_OPTIONS.parent = document.getElementById(_OPTIONS.parent);
+							}
+							if (_OPTIONS.parent != null) {
+								if (_OPTIONS.parent.classList.contains('ohhai-group-children')) {
+									_OPTIONS.parent.appendChild(NewWS.tab);
+								} else {
+									var GroupedTabs = _OPTIONS.parent.querySelector('.ohhai-group-children');
+									GroupedTabs.appendChild(NewWS.tab);
+								}
 							} else {
-								var GroupedTabs = _OPTIONS.parent.querySelector('.ohhai-group-children');
-								GroupedTabs.appendChild(NewWS.tab);
+								Tabbar.tabcontainer.appendChild(NewWS.tab);
 							}
 						} else {
-							Tabbar.tabcontainer.appendChild(NewWS.tab);
+							_OPTIONS.parent.appendChild(NewWS.tab);
 						}
-					} else {
-						_OPTIONS.parent.appendChild(NewWS.tab);
+						break;
+					case 'default':
+					default:
+						Tabbar.tabcontainer.appendChild(NewWS.tab);
 					}
-					break;
-				case 'default':
-				default:
+				} else {
+					_OPTIONS.mode = 'default';
 					Tabbar.tabcontainer.appendChild(NewWS.tab);
 				}
 			} else {
-				_OPTIONS.mode = 'default';
+				//load basic defaults
 				Tabbar.tabcontainer.appendChild(NewWS.tab);
 			}
-		} else {
-			//load basic defaults
-			Tabbar.tabcontainer.appendChild(NewWS.tab);
-		}
-		Tabbar.webviewcontainer.appendChild(NewWS.webview);
-
-		if (NewWS.mode != 'incog') {
-			if (IsNew) {
-				var TabParent = null;
-				switch (NewWS.tab.parentElement.className) {
-				case 'ohhai-group-children':
-					var FirstTabParent = NewWS.tab.parentElement;
-					TabParent = FirstTabParent.parentElement.id;
-					break;
-				default:
-					TabParent = NewWS.tab.parentElement.id;
-				}
-
-				Sessions.Set(_ID, 'default', 'TempTitle', _OPTIONS.mode, '/assets/imgs/logo.png', function (id) {
-					if (id != null) {
-						NewWS.tab.setAttribute('data-session', _ID);
-						Sessions.UpdateParent(_ID, TabParent, function (id) {});
+			Tabbar.webviewcontainer.appendChild(NewWS.webview);
+	
+			if (NewWS.mode != 'incog') {
+				if (IsNew) {
+					var TabParent = null;
+					switch (NewWS.tab.parentElement.className) {
+					case 'ohhai-group-children':
+						var FirstTabParent = NewWS.tab.parentElement;
+						TabParent = FirstTabParent.parentElement.id;
+						break;
+					default:
+						TabParent = NewWS.tab.parentElement.id;
 					}
-				});
-			} else {
-				NewWS.tab.setAttribute('data-session', _ID);
+					Sessions.Set(_ID, 'default', 'TempTitle', _OPTIONS.mode, '/assets/imgs/logo.png').then(() => {
+						NewWS.tab.setAttribute('data-session', _ID);
+						Sessions.UpdateParent(_ID, TabParent);
+					});
+				} else {
+					NewWS.tab.setAttribute('data-session', _ID);
+				}
 			}
-		}
-
-		Tabs.tabMap.push(NewWS);
-		Tabs.count++;
-		functions.updateTabCounter();
-
-		if (typeof callback === 'function') {
-			callback(NewWS);
-		} else {
-			return NewWS;
-		}
+	
+			Tabs.tabMap.push(NewWS);
+			Tabs.count++;
+			functions.updateTabCounter();
+	
+			resolve(NewWS);
+		});
 	},
-	remove: function (_webSession, callback = null) {
+	remove: (_webSession) => {
 
 		var Parent = _webSession.tab.parentElement;
 		var webviewParent = document.getElementById('BrowserWin');
@@ -133,11 +128,11 @@ const Tabs = {
 				if ((Open_Tabs.length - 1) == This_TabIndex) {
 					//Go in a tab
 					let thisSession = Tabs.tabMap.find(i => i.tab == Open_Tabs[This_TabIndex - 1]);
-					Tabs.setCurrent(thisSession, null, null);
+					Tabs.setCurrent(thisSession);
 				} else {
 					//Select next tab
 					let thisSession = Tabs.tabMap.find(i => i.tab == Open_Tabs[This_TabIndex + 1]);
-					Tabs.setCurrent(thisSession, null, null);
+					Tabs.setCurrent(thisSession);
 				}
 
 				//need to update the URL now
@@ -167,82 +162,58 @@ const Tabs = {
 		}
 
 		if (_webSession.mode != 'incog') {
-			Sessions.Remove(_webSession.id, function (result) {});
-		}
-
-		if (typeof callback == 'function') {
-			callback(true);
+			Sessions.Remove(_webSession.id);
 		}
 	},
-	get: function (tabid, callback = null) {
-		let wSession = Tabs.tabMap.find(ws => ws.tab.id == tabid);
-		if (typeof callback === 'function') {
-			callback(wSession);
-		} else {
-			return wSession;
-		}
+	get: (tabid) => {
+		return new Promise((resolve) => {
+			let wSession = Tabs.tabMap.find(ws => ws.tab.id == tabid);
+			resolve(wSession);
+		});
 	},
 	/**
  * 
  * @param {void} callback
  * @returns {WebSession}
  */
-	getCurrent: function (callback = null) {
+	getCurrent: () => {
 		let currentWebSession = Tabs.tabMap.find(i => i.selected === true);
-		if (typeof callback === 'function') {
-			callback(currentWebSession);
-		} else {
-			return currentWebSession;
-		}
+		return currentWebSession;
 	},
-	setCurrent: function (_WebSession, callback = null) {
-    
+	setCurrent: (_WebSession) => {
 		var ctab = Tabs.tabMap.find(i => i.selected === true && i.id !== _WebSession.id);
 		if (ctab) {
 			ctab.selected = false;
 		}
-
 		_WebSession.selected = true;
-
-		if (typeof callback === 'function') {
-			callback(true);
-		}
 	},
-	setMode: function (_WebSession, _mode, callback) {
-
+	setMode: (_WebSession, _mode) => {
 		_WebSession.mode = _mode;
-
 		switch (_mode) {
 		case 'dock':
 			Tabbar.pinnedtabcontainer.appendChild(_WebSession.tab);
 			break;
 		case 'grouped':
-
 			break;
 		case 'default':
 		default:
 			Tabbar.tabcontainer.appendChild(_WebSession.tab);
 		}
-
-		callback;
 	},
-	executeScript: function (tabid, code, callback) {
-		Tabs.get(tabid, wS => {
+	executeScript: (tabid, code) => {
+		Tabs.get(tabid).then(wS => {
 			wS.webview.executeJavaScript(code);
 		});
-		callback('request sent');
 	},
-	insertCSS: function (tabid, code, callback) {
-		Tabs.get(tabid, wS => {
+	insertCSS: (tabid, code) => {
+		Tabs.get(tabid).then(wS => {
 			wS.webview.insertCSS(code);
 		});
-		callback('request sent');
 	},
-	reload: function (tabid, callback) {
-		Tabs.get(tabid, wS => {
+	reload: (tabid) => {
+		Tabs.get(tabid).then(wS => {
 			wS.webview.reload();
 		});
-		callback('request sent');
 	},
 	groups: {
 		add: function (_id, _title, _tab, callback) {
@@ -265,13 +236,11 @@ const Tabs = {
 			default:
 				var TabSessionId = _tab.getAttribute('data-session');
 				NewG.children.appendChild(_tab);
-				Sessions.UpdateParent(TabSessionId, NewG.id, function (_id) {
-
-				});
+				Sessions.UpdateParent(TabSessionId, NewG.id);
 			}
 			Tabbar.tabcontainer.appendChild(NewG.Group);
 
-			Groups.Upsert(NewG.id, NewG.title, function (_id) {});
+			Groups.Upsert(NewG.id, NewG.title);
 
 			if (typeof callback == 'function') {
 				callback(NewG.group);
@@ -283,7 +252,7 @@ const Tabs = {
 			var GroupParent = _Group.parentElement;
 
 			GroupedTabs.forEach((gt) => {
-				Tabs.get(gt.id, wS => {
+				Tabs.get(gt.id).then(wS => {
 					_Options.keepChildren ? Tabs.groups.removeTab(gt) : Tabs.remove(wS);
 				});
 			});
@@ -292,7 +261,7 @@ const Tabs = {
 				GroupParent.removeChild(_Group);
 			}
 
-			Groups.Remove(_Group.id, function (result) {});
+			Groups.Remove(_Group.id);
 		},
 		addTab: function (_tab, _group) {
 			if (_group == null) {
@@ -304,8 +273,8 @@ const Tabs = {
 				GroupChildren.appendChild(_tab);
 
 				var TabSessionId = _tab.getAttribute('data-session');
-				Sessions.UpdateParent(TabSessionId, _group.id, function (id) {});
-				Sessions.UpdateMode(TabSessionId, 'grouped', function (id) {});
+				Sessions.UpdateParent(TabSessionId, _group.id);
+				Sessions.UpdateMode(TabSessionId, 'grouped');
 			}
 		},
 		removeTab: function (_tab) {
@@ -315,8 +284,8 @@ const Tabs = {
 			Tabbar.tabcontainer.appendChild(_tab);
 
 			var TabSessionId = _tab.getAttribute('data-session');
-			Sessions.UpdateParent(TabSessionId, Tabbar.tabcontainer.id, function (id) {});
-			Sessions.UpdateMode(TabSessionId, 'default', function (id) {});
+			Sessions.UpdateParent(TabSessionId, Tabbar.tabcontainer.id);
+			Sessions.UpdateMode(TabSessionId, 'default');
 
 			if (thisGroupList.children.length == 0) {
 				var GroupParent = thisGroup.parentElement;

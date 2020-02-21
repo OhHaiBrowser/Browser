@@ -5,10 +5,10 @@ class urlAutoComplete{
 	constructor(url) {
 		let searchProvider = OhHaiBrowser.settings.search;
 		let urlbarValid = {};
-		OhHaiBrowser.validate.url(url,function(isurl){ urlbarValid = isurl; })
+		OhHaiBrowser.validate.url(url,function(isurl){ urlbarValid = isurl; });
 
 		this.valid = urlbarValid.valid;
-		this.output = this.valid ? urlbarValid.url : searchProvider + urlbarValid.url;;
+		this.output = this.valid ? urlbarValid.url : searchProvider + urlbarValid.url;
 		this.type = this.valid ? 'url' : 'search';
 		this.results = [];
 	}

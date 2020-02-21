@@ -1,28 +1,21 @@
 // Window frame controls
 class FrameControls extends HTMLElement {
-    windowMaximised = false;
-    constructor(){
-        super();
-        this.attachShadow({mode: 'open'});
+	constructor(){
+		super();
+		this.windowMaximised = false;
+		this.attachShadow({mode: 'open'});
         
-        const uA = window.navigator.userAgent.toLowerCase();
-        if(uA.indexOf('mac') !== -1){
-            this.setupMacControls();
-        } else if (uA.indexOf('x11') !== -1 || uA.indexOf('linux') !== -1) {
-            this.setupLinuxControls();
-        } else {
-            this.setupWindowsControls();
-        }
-    }
-    connectedCallback(){
-
-    }
-    attributeChangedCallback(attrName, oldVal, newVal){
-
-    }
-
-    setupWindowsControls() {
-        this.shadowRoot.innerHTML = `
+		const uA = window.navigator.userAgent.toLowerCase();
+		if(uA.indexOf('mac') !== -1){
+			this.setupMacControls();
+		} else if (uA.indexOf('x11') !== -1 || uA.indexOf('linux') !== -1) {
+			this.setupLinuxControls();
+		} else {
+			this.setupWindowsControls();
+		}
+	}
+	setupWindowsControls() {
+		this.shadowRoot.innerHTML = `
             <style>
                 #window-controls {
                     display: grid;
@@ -78,27 +71,27 @@ class FrameControls extends HTMLElement {
                 <div class="button" id="right-button">&#xE8BB;</div>
             </div>
         `;
-        this.shadowRoot.getElementById('left-button').addEventListener('click', () => {
-            this.dispatchEvent(new Event('minimise', {bubbles: true, composed: true}));
-        });
-        const centerBtn = this.shadowRoot.getElementById('center-button');
-        centerBtn.addEventListener('click', () => {
-            if(this.windowMaximised){
-                this.dispatchEvent(new Event('restore', {bubbles: true, composed: true}));
-                centerBtn.innerHTML = '&#xE922;';
-                this.windowMaximised = false;
-            }else{
-                this.dispatchEvent(new Event('maximise', {bubbles: true, composed: true}));
-                centerBtn.innerHTML = '&#xE923;';
-                this.windowMaximised = true;
-            }
-        });
-        this.shadowRoot.getElementById('right-button').addEventListener('click', () => {
-            this.dispatchEvent(new Event('close', {bubbles: true, composed: true}));
-        });
-    }
-    setupMacControls() {
-        this.shadowRoot.innerHTML = `
+		this.shadowRoot.getElementById('left-button').addEventListener('click', () => {
+			this.dispatchEvent(new Event('minimise', {bubbles: true, composed: true}));
+		});
+		const centerBtn = this.shadowRoot.getElementById('center-button');
+		centerBtn.addEventListener('click', () => {
+			if(this.windowMaximised){
+				this.dispatchEvent(new Event('restore', {bubbles: true, composed: true}));
+				centerBtn.innerHTML = '&#xE922;';
+				this.windowMaximised = false;
+			}else{
+				this.dispatchEvent(new Event('maximise', {bubbles: true, composed: true}));
+				centerBtn.innerHTML = '&#xE923;';
+				this.windowMaximised = true;
+			}
+		});
+		this.shadowRoot.getElementById('right-button').addEventListener('click', () => {
+			this.dispatchEvent(new Event('close', {bubbles: true, composed: true}));
+		});
+	}
+	setupMacControls() {
+		this.shadowRoot.innerHTML = `
         <style>
             #window-controls {
                 display: grid;
@@ -144,25 +137,25 @@ class FrameControls extends HTMLElement {
             <div class="button" id="right-button"></div>
         </div>
     `;
-    this.shadowRoot.getElementById('left-button').addEventListener('click', () => {
-        this.dispatchEvent(new Event('close', {bubbles: true, composed: true}));
-    });
-    const centerBtn = this.shadowRoot.getElementById('center-button');
-    centerBtn.addEventListener('click', () => {
-        if(this.windowMaximised){
-            this.dispatchEvent(new Event('restore', {bubbles: true, composed: true}));
-            this.windowMaximised = false;
-        }else{
-            this.dispatchEvent(new Event('maximise', {bubbles: true, composed: true}));
-            this.windowMaximised = true;
-        }
-    });
-    this.shadowRoot.getElementById('right-button').addEventListener('click', () => {
-        this.dispatchEvent(new Event('minimise', {bubbles: true, composed: true}));       
-    });
-    }
-    setupLinuxControls() {
-        this.shadowRoot.innerHTML = `
+		this.shadowRoot.getElementById('left-button').addEventListener('click', () => {
+			this.dispatchEvent(new Event('close', {bubbles: true, composed: true}));
+		});
+		const centerBtn = this.shadowRoot.getElementById('center-button');
+		centerBtn.addEventListener('click', () => {
+			if(this.windowMaximised){
+				this.dispatchEvent(new Event('restore', {bubbles: true, composed: true}));
+				this.windowMaximised = false;
+			}else{
+				this.dispatchEvent(new Event('maximise', {bubbles: true, composed: true}));
+				this.windowMaximised = true;
+			}
+		});
+		this.shadowRoot.getElementById('right-button').addEventListener('click', () => {
+			this.dispatchEvent(new Event('minimise', {bubbles: true, composed: true}));       
+		});
+	}
+	setupLinuxControls() {
+		this.shadowRoot.innerHTML = `
         <style>
             #window-controls {
                 display: grid;
@@ -218,25 +211,25 @@ class FrameControls extends HTMLElement {
             <div class="button" id="right-button">&#xE8BB;</div>
         </div>
     `;
-    this.shadowRoot.getElementById('left-button').addEventListener('click', () => {
-        this.dispatchEvent(new Event('minimise', {bubbles: true, composed: true}));
-    });
-    const centerBtn = this.shadowRoot.getElementById('center-button');
-    centerBtn.addEventListener('click', () => {
-        if(this.windowMaximised){
-            this.dispatchEvent(new Event('restore', {bubbles: true, composed: true}));
-            centerBtn.innerHTML = '&#xE922;';
-            this.windowMaximised = false;
-        }else{
-            this.dispatchEvent(new Event('maximise', {bubbles: true, composed: true}));
-            centerBtn.innerHTML = '&#xE923;';
-            this.windowMaximised = true;
-        }
-    });
-    this.shadowRoot.getElementById('right-button').addEventListener('click', () => {
-        this.dispatchEvent(new Event('close', {bubbles: true, composed: true}));
-    });
-    }
+		this.shadowRoot.getElementById('left-button').addEventListener('click', () => {
+			this.dispatchEvent(new Event('minimise', {bubbles: true, composed: true}));
+		});
+		const centerBtn = this.shadowRoot.getElementById('center-button');
+		centerBtn.addEventListener('click', () => {
+			if(this.windowMaximised){
+				this.dispatchEvent(new Event('restore', {bubbles: true, composed: true}));
+				centerBtn.innerHTML = '&#xE922;';
+				this.windowMaximised = false;
+			}else{
+				this.dispatchEvent(new Event('maximise', {bubbles: true, composed: true}));
+				centerBtn.innerHTML = '&#xE923;';
+				this.windowMaximised = true;
+			}
+		});
+		this.shadowRoot.getElementById('right-button').addEventListener('click', () => {
+			this.dispatchEvent(new Event('close', {bubbles: true, composed: true}));
+		});
+	}
 }
 
 module.exports.frameControls = FrameControls;

@@ -1,5 +1,5 @@
 const { Sessions, Groups } = require('../../system_assets/modules/OhHaiBrowser.Data'),
-    Tabbar = require('../../system_assets/modules/OhHaiBrowser.Tabbar'),
+	Tabbar = require('../../system_assets/modules/OhHaiBrowser.Tabbar'),
 	{ remote } = require('electron'),
 	{Menu,	MenuItem} = remote,
 	CoreFunctions = require('../../system_assets/modules/OhHaiBrowser.Core'),
@@ -26,7 +26,7 @@ module.exports.Group = class {
 		ToggleGroup.addEventListener('click', function (e) {
 			GroupChildren.classList.toggle('ClosedGroup');
 		});
-		GroupName.addEventListener('change', () => Groups.Upsert(id, GroupName.value, (Retid) => {}));
+		GroupName.addEventListener('change', () => Groups.Upsert(id, GroupName.value));
 		GroupHead.addEventListener('contextmenu', (e) => {
 			e.preventDefault();
 			var GroupMenu = this.contextMenu();
@@ -52,16 +52,16 @@ module.exports.Group = class {
 		GroupChildren.appendChild(_tab);
 
 		var TabSessionId = _tab.getAttribute('data-session');
-		Sessions.UpdateParent(TabSessionId, this.id, function (id) {});
-		Sessions.UpdateMode(TabSessionId, 'grouped', function (id) {});
+		Sessions.UpdateParent(TabSessionId, this.id);
+		Sessions.UpdateMode(TabSessionId, 'grouped');
 	}
 
 	removeTab(_tab) {
 		Tabbar.tabcontainer.appendChild(_tab);
 
 		var TabSessionId = _tab.getAttribute('data-session');
-		Sessions.UpdateParent(TabSessionId, Tabbar.tabcontainer.id, function (id) {});
-		Sessions.UpdateMode(TabSessionId, 'default', function (id) {});
+		Sessions.UpdateParent(TabSessionId, Tabbar.tabcontainer.id);
+		Sessions.UpdateMode(TabSessionId, 'default');
 
 		if (this.children.length == 0) {
 			var GroupParent = this.Group.parentElement;
@@ -108,4 +108,4 @@ module.exports.Group = class {
 		return GroupMenu;
 	}
 
-}
+};

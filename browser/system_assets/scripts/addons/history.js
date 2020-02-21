@@ -4,7 +4,7 @@ module.exports = function load(){
 	var HistDiv = document.createElement('div');
 	HistDiv.setAttribute('class','HistDiv');
     
-	History.List((HistItems) => {
+	History.List().then((HistItems) => {
 		if (!Array.isArray(HistItems) || !HistItems.length) {
 			//no items
 			var NoItems = document.createElement('h3');
@@ -50,7 +50,7 @@ function Convert_DateTitle(dateStamp){
 
 function Convert_TimeStamp(timestamp){	
 	var d = new Date(timestamp);			
-	return addZero(d.getHours()) + ':' + addZero(d.getMinutes())
+	return addZero(d.getHours()) + ':' + addZero(d.getMinutes());
 }
 
 function extract(inputArray) {

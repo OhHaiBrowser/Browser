@@ -8,7 +8,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const errorCode = urlParams.get('code');
 const errorUrl = urlParams.get('url');
 
-var origin = errorUrl.slice(0, errorUrl.length - 1)
+var origin = errorUrl.slice(0, errorUrl.length - 1);
         
 // strip protocol
 if (origin.startsWith('https://')) {

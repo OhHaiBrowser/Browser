@@ -42,16 +42,12 @@ var OhHaiBrowser = {
 			var Add_bookmark = BookmarkPopup.querySelector('.bookmark_add');
 			var Cancel_bookmark = BookmarkPopup.querySelector('.bookmark_cancel');
 
-			Add_bookmark.addEventListener('click', function (e) {
-				Quicklinks.Add(bookmarkUrl, Txt_Url.value, bookmarkIcon, '', bookmarkDesc, function (newqlink) {
-					var ReturnVal = ((newqlink != 0 || -1) ? newqlink : null);
-					if (ReturnVal != null) {
-						OhHaiBrowser.bookmarks.btn_bookmark.setAttribute('data-id', newqlink);
-						OhHaiBrowser.bookmarks.btn_bookmark.classList.remove('QuicklinkInactive');
-						OhHaiBrowser.bookmarks.btn_bookmark.classList.add('QuicklinkActive');
-					} else {
-						//Error
-					}
+			Add_bookmark.addEventListener('click', () => {
+				Quicklinks.Add(bookmarkUrl, Txt_Url.value, bookmarkIcon, '', bookmarkDesc).then((newqlink) => {
+					OhHaiBrowser.bookmarks.btn_bookmark.setAttribute('data-id', newqlink);
+					OhHaiBrowser.bookmarks.btn_bookmark.classList.remove('QuicklinkInactive');
+					OhHaiBrowser.bookmarks.btn_bookmark.classList.add('QuicklinkActive');
+
 					BookmarkPopup.parentNode.removeChild(BookmarkPopup);
 				});
 			});
@@ -69,18 +65,14 @@ var OhHaiBrowser = {
 				callback();
 			}
 		},
-		check: function (url, callback) {
-			Quicklinks.IsBookmarked(url, function (item) {
-				var ReturnVal = '';
-				if (item != undefined) {
-					//This is a Qlink
-					ReturnVal = item.id;
-				} else {
-					//Default state
-					ReturnVal = null;
-				}
+		check: (url, callback) => {
+			Quicklinks.IsBookmarked(url).then((id) => {
 				if (typeof callback === 'function') {
-					callback(ReturnVal);
+					callback(id);
+				}
+			}).catch(() => {
+				if (typeof callback === 'function') {
+					callback(null);
 				}
 			});
 		},
@@ -106,12 +98,10 @@ var OhHaiBrowser = {
 		homepage: '',
 		search: '',
 		generic: function (settingName, callback) {
-			Settings.Get(settingName, (genericItem) => {
-				if (genericItem != undefined) {
-					callback(genericItem.value);
-				} else {
-					callback(null);
-				}
+			Settings.Get(settingName).then((genericItem) => {
+				callback(genericItem.value);
+			}).catch(() => {
+				callback(null);
 			});
 		}
 	},
@@ -209,12 +199,8 @@ var OhHaiBrowser = {
 				NewMenu.append(new MenuItem({
 					label: 'Delete',
 					click() {
-						Quicklinks.Remove(Id, function (recordsdeleted) {
-							if (recordsdeleted != 0 || undefined) {
-								Item.parentNode.removeChild(Item);
-							} else {
-								//Error?
-							}
+						Quicklinks.Remove(Id).then(() => {
+							Item.parentNode.removeChild(Item);
 						});
 					}
 				}));
@@ -387,18 +373,15 @@ controls.btn_bookmarked.addEventListener('click', function (e) {
 	};
 	if (controls.btn_bookmarked.classList.contains('QuicklinkInactive')) {
 		//Add new bookmark
-		OhHaiBrowser.tabs.getCurrent(function (cSession) {
-			OhHaiBrowser.bookmarks.add(cSession.webview.getTitle(), cSession.webview.getURL(), '', '', popuplocation, function (newqlink) {});
-		});
+		const cSession = OhHaiBrowser.tabs.getCurrent();
+		OhHaiBrowser.bookmarks.add(cSession.webview.getTitle(), cSession.webview.getURL(), '', '', popuplocation, function (newqlink) {});
 	} else {
 		//Remove bookmark
 		var ThisId = Number(controls.btn_bookmarked.getAttribute('data-id'));
-		Quicklinks.Remove(ThisId, function (e) {
-			if (e != 0) {
-				controls.btn_bookmarked.setAttribute('data-id', '');
-				controls.btn_bookmarked.classList.remove('QuicklinkActive');
-				controls.btn_bookmarked.classList.add('QuicklinkInactive');
-			}
+		Quicklinks.Remove(ThisId).then(() => {
+			controls.btn_bookmarked.setAttribute('data-id', '');
+			controls.btn_bookmarked.classList.remove('QuicklinkActive');
+			controls.btn_bookmarked.classList.add('QuicklinkInactive');
 		});
 	}
 });

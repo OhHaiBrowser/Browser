@@ -11,60 +11,60 @@ console.log(Page2Load);
 Popup_webview.setAttribute('src',Page2Load);
 
 Btn_Refresh.addEventListener('click', function(e) {
-    Popup_webview.reload();
+	Popup_webview.reload();
 });
 
 
 Txt_URL.addEventListener('click', function(e) {
-    if(Txt_URL.value != Txt_URL.getAttribute('data-text-swap')){
-        Txt_URL.value = Txt_URL.getAttribute('data-text-swap');
-    }
+	if(Txt_URL.value != Txt_URL.getAttribute('data-text-swap')){
+		Txt_URL.value = Txt_URL.getAttribute('data-text-swap');
+	}
 });
 
 Txt_URL.addEventListener('focusout', function (e) {
-    Txt_URL.value = Txt_URL.getAttribute('data-text-original');
+	Txt_URL.value = Txt_URL.getAttribute('data-text-original');
 });
 
 Popup_webview.addEventListener('did-start-loading', function() {
-    Pan_Cert.classList.add('Loading');
+	Pan_Cert.classList.add('Loading');
 });
 
 Popup_webview.addEventListener('did-stop-loading', function() {
-    domloaded(Popup_webview);
+	domloaded(Popup_webview);
 });
 
 
 Popup_webview.addEventListener('dom-ready', function() {
-    domloaded(Popup_webview);
+	domloaded(Popup_webview);
 
-    var webviewcontent = Popup_webview.getWebContents();	
-    webviewcontent.on('context-menu', (e, params) => {
-        e.preventDefault()
-        var WbMen = WebView_menu(Popup_webview,webviewcontent,params);
-        WbMen.popup(remote.getCurrentWindow())
-    });
+	var webviewcontent = Popup_webview.getWebContents();	
+	webviewcontent.on('context-menu', (e, params) => {
+		e.preventDefault();
+		var WbMen = WebView_menu(Popup_webview,webviewcontent,params);
+		WbMen.popup(remote.getCurrentWindow());
+	});
 });
 
 
 function domloaded(webview){
 
-    var CurrentURL = decodeURI(webview.getURL());
-    var isInternalPage = CurrentURL.indexOf(RunDir) !== -1
-    if (!isInternalPage){
-        ProtcolCheck(webview);
+	var CurrentURL = decodeURI(webview.getURL());
+	var isInternalPage = CurrentURL.indexOf(RunDir) !== -1;
+	if (!isInternalPage){
+		ProtcolCheck(webview);
         
-        Txt_URL.value = webview.getTitle();
-        Txt_URL.setAttribute('data-text-swap',webview.getURL());
-        Txt_URL.setAttribute('data-text-original',webview.getTitle());
-    }else{
-        Pan_Cert.className = 'DoubleURLBtn Internal';
+		Txt_URL.value = webview.getTitle();
+		Txt_URL.setAttribute('data-text-swap',webview.getURL());
+		Txt_URL.setAttribute('data-text-original',webview.getTitle());
+	}else{
+		Pan_Cert.className = 'DoubleURLBtn Internal';
 
-        Txt_URL.value = '';
-        Txt_URL.setAttribute('data-text-swap','');
-        Txt_URL.setAttribute('data-text-original','');
-    }
+		Txt_URL.value = '';
+		Txt_URL.setAttribute('data-text-swap','');
+		Txt_URL.setAttribute('data-text-original','');
+	}
 
-    Pan_Cert.classList.remove('Loading');
+	Pan_Cert.classList.remove('Loading');
 }
 
 
@@ -73,15 +73,15 @@ function ProtcolCheck(webview){
 	var CurrentURL = decodeURI(webview.getURL());
 
 	if(CurrentURL.includes('http://')){
-        Pan_Cert.className = 'DoubleURLBtn Http';
+		Pan_Cert.className = 'DoubleURLBtn Http';
 	}else if(CurrentURL.includes('https://')){
-        Pan_Cert.className = 'DoubleURLBtn Https';
+		Pan_Cert.className = 'DoubleURLBtn Https';
 	}else{
-        Pan_Cert.className = 'DoubleURLBtn';
+		Pan_Cert.className = 'DoubleURLBtn';
 	}
 
 	webviewcontent.on('certificate-error', (e, url,error,cert) => {
-        Pan_Cert.className = 'DoubleURLBtn CirtError';
+		Pan_Cert.className = 'DoubleURLBtn CirtError';
 	});
 
 
@@ -91,11 +91,11 @@ function ProtcolCheck(webview){
 
 
 function getParameterByName(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, '\\$&');
-    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+	if (!url) url = window.location.href;
+	name = name.replace(/[\[\]]/g, '\\$&');
+	var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+		results = regex.exec(url);
+	if (!results) return null;
+	if (!results[2]) return '';
+	return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }

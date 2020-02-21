@@ -6,7 +6,7 @@ module.exports = function load() {
 
 	let FavList = core.generateElement('<ul></ul>');
 
-	Quicklinks.List(function (FavItems) {
+	Quicklinks.List().then((FavItems) => {
 		if (!Array.isArray(FavItems) || !FavItems.length) {
 			FavList.appendChild(core.generateElement('<li class=\'NoData\'>No bookmarks :(</li>'));
 		} else {
@@ -22,13 +22,13 @@ module.exports = function load() {
 				FavList.appendChild(QuickItem);
 
 				QuickItem.addEventListener('contextmenu', (e) => {
-					e.preventDefault()
+					e.preventDefault();
 					var QlMen = OhHaiBrowser.ui.contextmenus.quicklink(ThisItem.id, ThisItem.title, ThisItem.url, QuickItem);
-					QlMen.popup(remote.getCurrentWindow())
+					QlMen.popup(remote.getCurrentWindow());
 				}, false);
 			});
 		}
-	});
 
-	return FavList;
-}
+		return FavList;
+	});
+};

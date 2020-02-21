@@ -15,12 +15,12 @@ var TabBar = {
 			TabBar.panel.classList.add('LeftMenuHidden');
 			TabBar.panel.classList.remove('LeftMenuShow');
 			TabBar.pined = false;
-			Settings.Set('TabBar', false, function () {});
+			Settings.Set('TabBar', false);
 		} else {
 			TabBar.panel.classList.add('LeftMenuShow');
 			TabBar.panel.classList.remove('LeftMenuHidden');
 			TabBar.pined = true;
-			Settings.Set('TabBar', true, function () {});
+			Settings.Set('TabBar', true);
 		}
 	},
 	contextMenu: () => {
@@ -50,6 +50,6 @@ var TabBar = {
 		}));
 		return NewMenu;
 	}
-}
+};
 
 module.exports = TabBar;

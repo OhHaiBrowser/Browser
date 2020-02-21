@@ -23,7 +23,7 @@ class WebSession {
 			default:
 				return url;
 			}
-		}
+		};
 
 		this.tab = new tabItem({id: opts.id});
 
@@ -33,10 +33,10 @@ class WebSession {
 				this.mode = String(opts.mode);
 			}
 			if (opts.title) {
-				this.tab.title = String(opts.title)
+				this.tab.title = String(opts.title);
 			}
 			if (opts.favicon) {
-				this.tab.icon = String(opts.favicon)
+				this.tab.icon = String(opts.favicon);
 			}
 		}
 
@@ -85,7 +85,7 @@ class WebSession {
 			if(this.tab.icon != null){
 				this.tab.icon = 'assets/imgs/favicon_default.png';
 			}
-		}
+		};
 		//View event listeners
 		this.webview.addEventListener('page-title-updated', () => {
 			updateTab();
@@ -102,7 +102,7 @@ class WebSession {
 				OhHaiBrowser.tabs.popupwindow(e);
 				break;
 			case 'background-tab':
-				OhHaiBrowser.tabs.add(e.url,undefined);
+				OhHaiBrowser.tabs.add(e.url);
 				break;
 			default:
 				OhHaiBrowser.tabs.add(e.url,undefined,{selected: true});
@@ -214,14 +214,12 @@ class WebSession {
 					var TabIcon = this.tab.icon;
 					if(TabIcon == 'assets/imgs/loader.gif'){TabIcon = '';}
 	
-					History.GetLastItem((lastitem) => {
-						if(lastitem == undefined){
+					History.GetLastItem().then((lastitem) => {
+						if(lastitem.url != this.webview.getURL()){
 							History.Add(this.webview.getURL(), this.webview.getTitle(), TabIcon, validate.hostname(this.webview.getURL()));
-						}else{
-							if(lastitem.url != this.webview.getURL()){
-								History.Add(this.webview.getURL(), this.webview.getTitle(), TabIcon, validate.hostname(this.webview.getURL()));
-							}
 						}		
+					}).catch(() => {
+						History.Add(this.webview.getURL(), this.webview.getTitle(), TabIcon, validate.hostname(this.webview.getURL()));
 					});
 				}
 			}
@@ -232,7 +230,7 @@ class WebSession {
 			this.webReady = true;
 	
 			if(this.mode !== 'incog'){
-				Sessions.UpdateWebPage(this.id, this.webview.getURL(), this.webview.getTitle(), this.tab.icon , function(id){});
+				Sessions.UpdateWebPage(this.id, this.webview.getURL(), this.webview.getTitle(), this.tab.icon);
 			}
 	
 			var webviewcontent = this.webview.getWebContents();	
@@ -252,14 +250,14 @@ class WebSession {
 			break;
 		case 'dock':
 			this.tab.mode = 'pinned';
-			Sessions.UpdateMode(this.id, 'DOCK', function () {});
-			Sessions.UpdateParent(this.id, Tabbar.pinnedtabcontainer.id, function () {});
+			Sessions.UpdateMode(this.id, 'DOCK');
+			Sessions.UpdateParent(this.id, Tabbar.pinnedtabcontainer.id);
 			break;
 		case 'default':
 		default:
 			this.tab.mode = 'default';
-			Sessions.UpdateMode(this.id, 'Default', function () {});
-			Sessions.UpdateParent(this.id, Tabbar.tabcontainer.id, function () {});
+			Sessions.UpdateMode(this.id, 'Default');
+			Sessions.UpdateParent(this.id, Tabbar.tabcontainer.id);
 		}
 	}
 	get mode() {
@@ -374,14 +372,14 @@ class WebSession {
 				NewMenu.append(new MenuItem({
 					label: 'Undock Tab',
 					click() {
-						OhHaiBrowser.tabs.setMode(this, 'default', function () {});
+						OhHaiBrowser.tabs.setMode(this, 'default');
 					}
 				}));
 			}else{
 				NewMenu.append(new MenuItem({
 					label: 'Dock Tab',
 					click() {
-						OhHaiBrowser.tabs.setMode(this, 'dock', function () {});
+						OhHaiBrowser.tabs.setMode(this, 'dock');
 					}
 				}));
 			}
@@ -516,5 +514,5 @@ class WebSession {
 		return Web_menu;
 	}
     
-};
+}
 module.exports.WebSession = WebSession;

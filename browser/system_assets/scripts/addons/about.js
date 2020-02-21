@@ -13,9 +13,13 @@ module.exports = function load(){
 	var browser_update = document.createElement('div');
 	var browser_update_status = document.createElement('span');
 		
-	if(true){browser_update_status.appendChild(document.createTextNode('Your browser is upto date :)'));}
-	else{browser_update_status.appendChild(document.createTextNode('Please update your browser!'));}
+	//if(true){
+	browser_update_status.appendChild(document.createTextNode('Your browser is upto date :)'));
+	//}
+	//else{
+	//	browser_update_status.appendChild(document.createTextNode('Please update your browser!'));
+	//}
 	browser_update.appendChild(browser_update_status);		
 		
 	return aboutPage;
-}
+};

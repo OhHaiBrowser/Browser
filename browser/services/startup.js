@@ -6,32 +6,28 @@ let launchparams = remote.getGlobal('sharedObject').prop1,
 	IsLaunchParam = () => {
 		return launchparams.length == 1 ? false : true;
 	};
-
-Settings.Get('FirstRun', (i) => {
-	if (i == undefined) { //this is a new user! - Show them the setup page
-		Settings.Set('FirstRun', Date.now(), (c) => {});
-	}
+Settings.Get('FirstRun').catch(() => {
+	Settings.Set('FirstRun', Date.now());
 });
 
-Settings.Get('Launch', (item) => {
-	if (item != undefined) {
-		switch (item.value) {
-		case 'fresh':
-			//Fresh session
-			if (!IsLaunchParam) {
-				OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
-					selected: true
-				});
-			}
-			break;
-		default:
-			//Old session
-			LoadPreviousSession();
+Settings.Get('Launch').then((item) => {
+	switch (item.value) {
+	case 'fresh':
+		//Fresh session
+		if (!IsLaunchParam) {
+			OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
+				selected: true
+			});
 		}
-	} else {
+		break;
+	default:
+		//Old session
 		LoadPreviousSession();
 	}
+}).catch(() => {
+	LoadPreviousSession();
 });
+
 if (IsLaunchParam) {
 	LoadParam();
 }
@@ -39,52 +35,45 @@ if (IsLaunchParam) {
 OhHaiBrowser.bookmarks.load();
 OhHaiBrowser.history.load();
 
-Settings.Get('TabBar', (item) => {
-	if (item != undefined) {
-		if (item.value == false) {
-			OhHaiBrowser.ui.tabbar.panel.classList.add('LeftMenuHidden');
-			OhHaiBrowser.ui.tabbar.panel.classList.remove('LeftMenuShow');
-			OhHaiBrowser.ui.tabbar.pined = false;
-		} else {
-			OhHaiBrowser.ui.tabbar.pined = true;
-		}
-	}
-});
-
-Settings.Get('Homepage', (homeitem) => {
-	if (homeitem != undefined) {
-		OhHaiBrowser.settings.homepage = homeitem.value;
+Settings.Get('TabBar').then((item) => {
+	if (item.value == false) {
+		OhHaiBrowser.ui.tabbar.panel.classList.add('LeftMenuHidden');
+		OhHaiBrowser.ui.tabbar.panel.classList.remove('LeftMenuShow');
+		OhHaiBrowser.ui.tabbar.pined = false;
 	} else {
-		OhHaiBrowser.settings.homepage = 'default';
+		OhHaiBrowser.ui.tabbar.pined = true;
 	}
 });
 
-Settings.Get('search', (settingItem) => {
-	if (settingItem !== undefined) {
-		OhHaiBrowser.settings.search = settingItem.value;
-	} else {
-		OhHaiBrowser.settings.search = 'https://www.google.co.uk/search?q=';
-	}
+Settings.Get('Homepage').then((homeitem) => {
+	OhHaiBrowser.settings.homepage = homeitem.value;
+}).catch(() => {
+	OhHaiBrowser.settings.homepage = 'default';
 });
 
+Settings.Get('search').then((settingItem) => {
+	OhHaiBrowser.settings.search = settingItem.value;
+}).catch(() => {
+	OhHaiBrowser.settings.search = 'https://www.google.co.uk/search?q=';
+});
 
 function LoadPreviousSession(){
-	Groups.Get((Glist) => {
+	Groups.Get().then((Glist) => {
 		if (Glist.length != 0) {
 			for (g in Glist) {
 				OhHaiBrowser.tabs.groups.add(Glist[g].groupid, Glist[g].name, 'session');
 			}
 		}
-		Sessions.Get((Slist) => {
+		Sessions.Get().then((Slist) => {
 			if (Slist.length != 0) {
-				for (s in Slist) {
-					OhHaiBrowser.tabs.add(Slist[s].url, Slist[s].sessionid, {
+				Slist.forEach((s) => {
+					OhHaiBrowser.tabs.add(s.url, s.sessionid, {
 						selected: true,
-						mode: Slist[s].mode,
-						parent: Slist[s].parent,
-						title: Slist[s].title
+						mode: s.mode,
+						parent: s.parent,
+						title: s.title
 					});
-				}
+				});
 			} else {
 				//No session
 				if (!IsLaunchParam) {
@@ -94,7 +83,7 @@ function LoadPreviousSession(){
 				}
 			}
 		});
-	});	
+	});
 }
 
 function LoadParam(){

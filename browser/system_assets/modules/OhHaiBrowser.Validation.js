@@ -8,7 +8,7 @@ module.exports = {
 			url: testvalue,
 			valid: true
 		};
-		let testUri = function(turi){ return urlWithoutProtocolTest.test(turi) };
+		let testUri = function(turi){ return urlWithoutProtocolTest.test(turi); };
 
 		if(testUri(testvalue)){
 			testvalue = (testvalue.indexOf('://') == -1) ? 'http://' + testvalue : testvalue;
@@ -35,7 +35,7 @@ module.exports = {
 		}
 	},
 	internalpage: function(input){
-		const RunDir = decodeURI(process.cwd().toLocaleLowerCase()).replace(/\\/g, "/");
+		const RunDir = decodeURI(process.cwd().toLocaleLowerCase()).replace(/\\/g, '/');
 		return input.toLocaleLowerCase().indexOf(RunDir) !=0 -1;
 	}
-}
+};
