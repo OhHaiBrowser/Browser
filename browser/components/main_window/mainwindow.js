@@ -1,5 +1,6 @@
-const {BrowserWindow} = require('electron');
+const {BrowserWindow, app} = require('electron');
 const Store = require('../../system_assets/scripts/store');
+const path = require('path');
 
 class MainWindow extends BrowserWindow {
 	constructor() {
@@ -17,12 +18,12 @@ class MainWindow extends BrowserWindow {
 			height,
 			titleBarStyle: 'hiddenInset',
 			frame: false,
-			icon: `${__dirname}/browser/assets/imgs/frame/icon.png`,
+			icon: `${path.join(app.getAppPath(), '/browser/assets/imgs/frame/icon.png')}`,
 			show: false,
 			minHeight: 350,
 			minWidth: 485,
 			webPreferences: {
-				preload: `${__dirname}/browser/preload.js`,
+				preload: `${path.join(app.getAppPath(), '/browser/preload.js')}`,
 				nodeIntegration: true,
 				webviewTag: true
 			}
@@ -33,8 +34,8 @@ class MainWindow extends BrowserWindow {
 			win.maximize();
 		}
 	
-		win.setMenu(null);	
-		win.loadURL(`file://${__dirname}/browser/index.html`);
+		win.setMenu(null);
+		win.loadURL(`${path.join('file://', app.getAppPath(), '/browser/index.html')}`);
 	
 		win.on('closed', () => {
 			win = null;
