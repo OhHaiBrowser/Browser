@@ -1,8 +1,6 @@
 var {clipboard,	remote} = require('electron'),
 	{Menu,	MenuItem} = remote,
 	{Quicklinks, Settings, Sessions} = require('./system_assets/modules/OhHaiBrowser.Data.js'),
-	HistoryList = require('./system_assets/scripts/addons/history.js'),
-	BookmarksList = require('./system_assets/scripts/addons/bookmarks.js'),
 	{functions, controls, AutoComplete} = require('./services/navbar.service.js'),
 	{tabs} = require('./services/tabs.service.js'),
 	AboutMenu = require('./system_assets/scripts/addons/about.js'),
@@ -17,17 +15,11 @@ var OhHaiBrowser = {
 	},
 	tabs: tabs,
 	history: {
-		container: document.getElementById('HistoryContainer'),
-		load: () => {
-			OhHaiBrowser.history.container.appendChild(HistoryList());
-		}
+		container: document.getElementById('HistoryContainer')
 	},
 	bookmarks: {
 		container: document.getElementById('BookmarkContainer'),
 		btn_bookmark: document.getElementById('BtnQuicklink'),
-		load: () => {
-			OhHaiBrowser.bookmarks.container.appendChild(BookmarksList());
-		},
 		add: function (bookmarkName, bookmarkUrl, bookmarkIcon, bookmarkDesc, popuplocal, callback) {
 
 			let BookmarkPopup = OhHaiBrowser.core.generateElement(`
