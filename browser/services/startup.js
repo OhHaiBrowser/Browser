@@ -32,9 +32,6 @@ if (IsLaunchParam) {
 	LoadParam();
 }
 
-OhHaiBrowser.bookmarks.load();
-OhHaiBrowser.history.load();
-
 Settings.Get('TabBar').then((item) => {
 	if (item.value == false) {
 		OhHaiBrowser.ui.tabbar.panel.classList.add('LeftMenuHidden');
