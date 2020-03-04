@@ -1,9 +1,9 @@
 const { remote } = require('electron');
 const { accordionPanel, accordionItem } = require('./components/accordion/accordion.component');
 const { tabItem } = require('./components/tab/tab.component');
-const { frameControls } = require('./components/frame.controls');
-const favoritesList = require('./components/favorites_list/bookmarks');
-const histList = require('./components/history_list/history');
+const { frameControls } = require('./components/frame-controls/frame.controls');
+const favoritesList = require('./components/fav-list/bookmarks');
+const histList = require('./components/hist-list/history');
 const thisWindow = remote.getCurrentWindow();
 
 //Define custom controls
