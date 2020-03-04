@@ -5,7 +5,7 @@ const {clipboard, remote} = require('electron'),
 	{Sessions, History} = require('../../system_assets/modules/OhHaiBrowser.Data'),
 	CoreFunctions = require('../../system_assets/modules/OhHaiBrowser.Core'),
 	validate = require('../../system_assets/modules/OhHaiBrowser.Validation'),
-	Doodle = require('../../system_assets/modules/Doodle'),
+	Doodle = require('../../services/doodle.service'),
 	{tabItem} = require('../tab/tab.component') ;
 
 class WebSession {
@@ -199,7 +199,7 @@ class WebSession {
 				//only kick event if the mainframe is loaded, no comments or async BS!
 				if(e.isMainFrame){
 					//is doodle already open? - we dont want to bug the users so much. - Actully we shouldnt need to check...Doodle should know.
-					Doodle.DEPLOY(this.webview);
+					Doodle.deploy(this.webview);
 				}
 			}
 		});	

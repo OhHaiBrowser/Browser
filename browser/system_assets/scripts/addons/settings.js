@@ -2,6 +2,7 @@ var {Settings} = require('./../../modules/OhHaiBrowser.Data');
 var core = require('./../../modules/OhHaiBrowser.Core');
 
 module.exports = function load(){
+
 	let settingsMenu = core.generateElement(`
 		<div class='SettingsList'>
 			<p>When browser opens</p>

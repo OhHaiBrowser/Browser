@@ -1,5 +1,5 @@
 const {BrowserWindow, app} = require('electron');
-const Store = require('../../system_assets/scripts/store');
+const Store = require('../../services/store.service');
 const path = require('path');
 
 class MainWindow extends BrowserWindow {
