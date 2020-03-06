@@ -1,0 +1,81 @@
+*{ margin: 0; padding: 0; box-sizing: border-box; outline: none;}
+button, input[type=text] { border: none; }
+
+/* Basic layout */
+.componentOuter{
+    width: 100%;
+    height: 100%;
+    padding: 3px;
+}
+.urlOuter{
+    padding: 2px;
+    display: flex;
+    flex-direction: row;
+}
+    .DoubleURLBtn{
+        display: inline-block;
+        width: 52px;
+    }
+    .URLBar{
+        flex: auto;
+    }
+    .URLButton{
+        width: 26px;
+    }
+    .URL_AutoComplete{
+        width: 100%;
+    }
+    .AutoComplete_hidden{
+        display: none;
+    }
+/* End basic layout */
+
+/* Colours and grandular styles */
+.urlOuter{
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.6);
+    transition: all 0.25s;
+}
+    #SecureCheck{
+        border-right: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    #URLBar{
+        -webkit-app-region: no-drag;
+        background: transparent;
+        outline: none;
+        border: none;
+        padding: 2px 2px;
+        font-size: 16px;
+        text-align: center;
+        transition: all 0.5s;
+        color: rgba(0, 0, 0, 0.65);
+    }
+        #URLBar:focus, #URLBar:hover {
+            color: #000;
+        }
+    .DoubleURLBtn, .URLButton{
+        -webkit-app-region: no-drag;
+        background: transparent;
+        transition: background 0.5s;
+        font-family: "Segoe MDL2 Assets";
+        text-align: center;
+        line-height: 24px;
+        border-radius: 4px;
+    }
+        .DoubleURLBtn:hover, .URLButton:hover{
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .DoubleURLBtn:active, .URLButton:active{
+            background: rgba(255, 255, 255, 0.5);
+        }
+        #BtnQuicklink{
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 14px;
+        }
+        #Refresh{
+            padding-top: 1px;
+        }
+    #URLAutoComplete{
+
+    }
+/* End colours and grandular styles */

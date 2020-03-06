@@ -1,16 +1,18 @@
-module.exports = class UrlBar extends HTMLElement {
+class UrlBar extends HTMLElement {
 	constructor() {
 		super();
 		const shadowEl = this.attachShadow({mode: 'open'});
 		shadowEl.innerHTML = `
-            <link rel='stylesheet' href='${__dirname}/urbar.component.css' />
-            <div id="URLBackColour" class="CenterCenter">
-                <a id="SecureCheck" class="DoubleURLBtn"></a>
-                <input class="URLBar" type="text" id="URLBar" />
-                <button id="BtnQuicklink" class="URLButton"></button>
-                <button id="Refresh" title="Refresh this page" class="URLButton Refresh"></button>
-                <div id="URLAutoComplete" class="URL_AutoComplete AutoComplete_hidden"></div>
-            </div>
+			<link rel='stylesheet' href='${__dirname}/urlbar.component.css' />
+			<div class="componentOuter">
+				<div class="urlOuter">
+					<a id="SecureCheck" class="DoubleURLBtn">&#xE72E;</a>
+					<input class="URLBar" type="text" id="URLBar" />
+					<button id="BtnQuicklink" class="URLButton">&#xE734;</button>
+					<button id="Refresh" title="Refresh this page" class="URLButton Refresh">&#xE72C;</button>             
+				</div>
+				<div id="URLAutoComplete" class="URL_AutoComplete AutoComplete_hidden"></div>
+			</div>
         `;
 		this.shadowRoot.getElementById('SecureCheck').addEventListener('click', () => {
 
@@ -21,16 +23,30 @@ module.exports = class UrlBar extends HTMLElement {
 		this.shadowRoot.getElementById('Refresh').addEventListener('click', () => {
 			this.dispatchEvent(new Event('refresh'));
 		});
-		this.shadowRoot.getElementById('URLBar').addEventListener('click', () => {
 
+		let txtUrlBar = this.shadowRoot.getElementById('URLBar');
+		txtUrlBar.addEventListener('click', () => {
+			if(txtUrlBar.value != txtUrlBar.getAttribute('data-text-swap')){
+				txtUrlBar.value = txtUrlBar.getAttribute('data-text-swap');
+			}
 		});
-		this.shadowRoot.getElementById('URLBar').addEventListener('focusout', () => {
-
+		txtUrlBar.addEventListener('focusout', () => {
+			this.shadowRoot.getElementById('URLAutoComplete').classList.add('AutoComplete_hidden');
+			txtUrlBar.value = txtUrlBar.getAttribute('data-text-original');
 		});
-		this.shadowRoot.getElementById('URLBar').addEventListener('keydown', (e) => {
+		txtUrlBar.addEventListener('keydown', (e) => {
+			this.shadowRoot.getElementById('URLAutoComplete').classList.remove('AutoComplete_hidden');
 			if(e.keyCode === 13) {
-				this.dispatchEvent(new Event('enter', { detail: this.shadowRoot.getElementById('URLBar').value}));
+				this.dispatchEvent(new Event('enter', { detail: txtUrlBar.value}));
 			}
 		});
 	}
-};
+	setValues(friendly, raw) {
+		let txtUrlBar = this.shadowRoot.getElementById('URLBar');
+		txtUrlBar.value = friendly;
+		txtUrlBar.setAttribute('data-text-swap', raw);
+		txtUrlBar.setAttribute('data-text-original', friendly);
+	}
+}
+
+module.exports.UrlBar = UrlBar;
