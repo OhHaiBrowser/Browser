@@ -1,4 +1,4 @@
-*{ margin: 0; padding: 0; box-sizing: border-box; outline: none;}
+*{ margin: 0; padding: 0; box-sizing: border-box; outline: none; font-family: Arial, Helvetica, sans-serif;}
 button, input[type=text] { border: none; }
 
 /* Basic layout */
@@ -36,8 +36,11 @@ button, input[type=text] { border: none; }
     background-color: rgba(255, 255, 255, 0.6);
     transition: all 0.25s;
 }
+.urlFocus {
+    background-color: #fff !important;
+}
     #SecureCheck{
-        border-right: 1px solid rgba(255, 255, 255, 0.2);
+        font-size: 12px;
     }
     #URLBar{
         -webkit-app-region: no-drag;
@@ -47,7 +50,6 @@ button, input[type=text] { border: none; }
         padding: 2px 2px;
         font-size: 16px;
         text-align: center;
-        transition: all 0.5s;
         color: rgba(0, 0, 0, 0.65);
     }
         #URLBar:focus, #URLBar:hover {
@@ -57,20 +59,34 @@ button, input[type=text] { border: none; }
         -webkit-app-region: no-drag;
         background: transparent;
         transition: background 0.5s;
-        font-family: "Segoe MDL2 Assets";
         text-align: center;
         line-height: 24px;
-        border-radius: 4px;
+        border-radius: 2px;
     }
-        .DoubleURLBtn:hover, .URLButton:hover{
+        .URLButton{
+            font-family: "Segoe MDL2 Assets";
+        }
+        .URLButton:hover{
             background: rgba(255, 255, 255, 0.2);
         }
-        .DoubleURLBtn:active, .URLButton:active{
+        .URLButton:active{
             background: rgba(255, 255, 255, 0.5);
         }
+        #BtnQuicklink::before{
+            display: block;
+            margin-top: -1px;
+            content: '\E734';
+        }
+        #BtnQuicklink.active::before{
+            content: '\E735';
+            color: yellow;
+        }
         #BtnQuicklink{
-            border-left: 1px solid rgba(255, 255, 255, 0.2);
             font-size: 14px;
+            padding-top: -1px;
+        }
+        #Refresh::before{
+            content: '\E72C';
         }
         #Refresh{
             padding-top: 1px;
@@ -79,3 +95,38 @@ button, input[type=text] { border: none; }
 
     }
 /* End colours and grandular styles */
+
+
+.Http::before {
+    content: "Http";
+}
+
+.Http {
+    background-color: #cfcfc4;
+}
+
+.Https::before {
+    content: "Https";
+}
+
+.Https {
+    background-color: #77dd77;
+}
+
+.Internal::before {
+    content: "OhHai";
+}
+
+.Internal {
+    background-color: #172467;
+    color: #fff;
+}
+
+.CirtError::before {
+    content: "Error";
+}
+
+.CirtError {
+    background-color: rgb(255, 0, 0);
+    color: #fff;
+}
