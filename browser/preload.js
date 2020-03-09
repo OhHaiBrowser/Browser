@@ -1,11 +1,10 @@
-const { remote } = require('electron');
 const { accordionPanel, accordionItem } = require('./components/accordion/accordion.component');
 const { tabItem } = require('./components/tab/tab.component');
 const { frameControls } = require('./components/frame-controls/frame.controls');
 const { urlbar } = require('./components/url-bar/urlbar.component');
 const favoritesList = require('./components/fav-list/bookmarks');
 const histList = require('./components/hist-list/history');
-const thisWindow = remote.getCurrentWindow();
+const { initUi } = require('./services/ui.service');
 
 //Define custom controls
 customElements.define('acc-panel', accordionPanel);
@@ -16,23 +15,7 @@ customElements.define('fav-list', favoritesList);
 customElements.define('hist-list', histList);
 customElements.define('url-bar', urlbar);
 
+//Load core ui functions
 document.addEventListener('DOMContentLoaded', function(){
-	createFrameControls();
+	initUi();
 });
-
-function createFrameControls(){
-	const frameControl = document.getElementById('frameControls');
-	frameControl.windowMaximised = thisWindow.isMaximized();
-	frameControl.addEventListener('minimise', () => {
-		thisWindow.minimize();
-	});
-	frameControl.addEventListener('restore', () => {
-		thisWindow.restore();
-	});
-	frameControl.addEventListener('maximise', () => {
-		thisWindow.maximize();
-	});
-	frameControl.addEventListener('close', () => {
-		thisWindow.close();
-	});
-}

@@ -57,7 +57,7 @@ class UrlBar extends HTMLElement {
 		this.updateCertBtn();
 	}
 	updateCertBtn(override = ''){
-		let rawURL = this.shadowRoot.getElementById('URLBar').getAttribute('data-text-swap').toLowerCase();
+		let rawURL = this.shadowRoot.getElementById('URLBar').getAttribute('data-text-swap');
 		let certBtn = this.shadowRoot.getElementById('SecureCheck');
 		certBtn.classList.remove('Http', 'Https', 'CirtError', 'Loading', 'Internal');
 		if(override != '') {

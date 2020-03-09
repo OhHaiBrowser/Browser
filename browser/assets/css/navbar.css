@@ -89,10 +89,6 @@
     border-radius: 3px;
 }
 
-.Loading {
-    background: transparent url("../imgs/loader.gif") no-repeat center;
-}
-
 @media (max-width:920px) {
 
     Header {

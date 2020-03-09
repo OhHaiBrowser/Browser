@@ -302,8 +302,9 @@ var OhHaiBrowser = {
 
 controls.btn_ToggleTabBar.addEventListener('click', tabbar.toggle );
 controls.btn_back.addEventListener('click', OhHaiBrowser.tabs.activePage.goBack );
-controls.btn_refresh.addEventListener('click', OhHaiBrowser.tabs.activePage.reload );
 controls.btn_forward.addEventListener('click', OhHaiBrowser.tabs.activePage.goForward );
+
+controls.txt_urlbar.addEventListener('refresh', OhHaiBrowser.tabs.activePage.reload);
 
 controls.txt_urlbar.addEventListener('contextmenu', (e) => {
 	e.preventDefault();
@@ -329,11 +330,10 @@ controls.txt_urlbar.addEventListener('favorited', (e) => {
 		const cSession = OhHaiBrowser.tabs.getCurrent();
 		OhHaiBrowser.bookmarks.add(cSession.webview.getTitle(), cSession.webview.getURL(), '', '', popuplocation, function (newqlink) {});
 	} else {
-		//Remove bookmark
-		var ThisId = Number(controls.btn_bookmarked.getAttribute('data-id'));
+		//Remove bookmark	
+		var ThisId = Number(controls.txt_urlbar.bookmarkId);
 		Quicklinks.Remove(ThisId).then(() => {
-			let urlBar = document.getElementById('URLBar');
-			urlBar.bookmarkId = null;
+			controls.txt_urlbar.bookmarkId = null;
 		});
 	}
 });

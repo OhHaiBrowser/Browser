@@ -130,3 +130,7 @@ button, input[type=text] { border: none; }
     background-color: rgb(255, 0, 0);
     color: #fff;
 }
+
+.Loading {
+    background: transparent url("../../assets/imgs/loader.gif") no-repeat center;
+}
