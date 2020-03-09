@@ -21,12 +21,8 @@
 					<div class="FlexControl">
 						<button id="Back" title="Click to go back" class="ControlButton Back"></button>
 					</div>
-					<div id="URLBackColour" class="CenterCenter">
-						<a id="SecureCheck" class="DoubleURLBtn"></a>
-						<input class="URLBar" type="text" id="URLBar" />
-						<button id="BtnQuicklink" class="URLButton"></button>
-						<button id="Refresh" title="Refresh this page" class="URLButton Refresh"></button>
-						<div id="URLAutoComplete" class="URL_AutoComplete AutoComplete_hidden"></div>
+					<div class="CenterCenter">
+						<url-bar id="URLBar"></url-bar>
 					</div>
 					<button id="Forward" title="Click to go forward" class="ControlButton Forward"></button>
 				</div>
@@ -50,7 +46,8 @@
 						</div>
 					</acc-item>
 					<acc-item title='Bookmarks'>
-						<fav-listi id="FavoritesList"></fav-list>
+						<fav-listi id="FavoritesList">
+							</fav-list>
 					</acc-item>
 					<acc-item title='History'>
 						<hist-list id="HistoryList"></hist-list>

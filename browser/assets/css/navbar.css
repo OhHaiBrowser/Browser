@@ -56,36 +56,11 @@
 .CenterCenter {
     box-flex: 2;
     -webkit-box-flex: 2;
-    border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.6);
-    padding: 0 3px;
-    margin: 0 5px;
-    transition: all 0.25s;
 }
 
 .CenterFocus {
     background-color: #fff;
 }
-
-.URLBar {
-    -webkit-app-region: no-drag;
-    width: calc(100% - 108px);
-    background-color: transparent;
-    height: 28px;
-    outline: none;
-    border: none;
-    padding: 2px 2px;
-    font-size: 16px;
-    text-align: center;
-    transition: all 0.5s;
-    color: rgba(0, 0, 0, 0.65);
-}
-    .URLBar:hover {
-        color: #000;
-    }
-    .URLBar:focus {
-        color: #000;
-    }
 
 .URLButton {
     padding: 5px;
@@ -112,40 +87,6 @@
     outline: none;
     transition: all 0.5s;
     border-radius: 3px;
-}
-
-.Http::before {
-    content: "Http";
-}
-
-.Http {
-    background-color: #cfcfc4;
-}
-
-.Https::before {
-    content: "Https";
-}
-
-.Https {
-    background-color: #77dd77;
-}
-
-.Internal::before {
-    content: "OhHai";
-}
-
-.Internal {
-    background-color: #172467;
-    color: #fff;
-}
-
-.CirtError::before {
-    content: "Error";
-}
-
-.CirtError {
-    background-color: rgb(255, 0, 0);
-    color: #fff;
 }
 
 .Loading {

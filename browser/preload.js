@@ -2,6 +2,7 @@ const { remote } = require('electron');
 const { accordionPanel, accordionItem } = require('./components/accordion/accordion.component');
 const { tabItem } = require('./components/tab/tab.component');
 const { frameControls } = require('./components/frame-controls/frame.controls');
+const { urlbar } = require('./components/url-bar/urlbar.component');
 const favoritesList = require('./components/fav-list/bookmarks');
 const histList = require('./components/hist-list/history');
 const thisWindow = remote.getCurrentWindow();
@@ -13,6 +14,7 @@ customElements.define('tab-item', tabItem);
 customElements.define('frame-controls', frameControls);
 customElements.define('fav-list', favoritesList);
 customElements.define('hist-list', histList);
+customElements.define('url-bar', urlbar);
 
 document.addEventListener('DOMContentLoaded', function(){
 	createFrameControls();

@@ -14,16 +14,6 @@ Btn_Refresh.addEventListener('click', function() {
 });
 
 
-Txt_URL.addEventListener('click', function() {
-	if(Txt_URL.value != Txt_URL.getAttribute('data-text-swap')){
-		Txt_URL.value = Txt_URL.getAttribute('data-text-swap');
-	}
-});
-
-Txt_URL.addEventListener('focusout', function () {
-	Txt_URL.value = Txt_URL.getAttribute('data-text-original');
-});
-
 Popup_webview.addEventListener('did-start-loading', function() {
 	Pan_Cert.classList.add('Loading');
 });
@@ -51,16 +41,10 @@ function domloaded(webview){
 	var isInternalPage = CurrentURL.indexOf(RunDir) !== -1;
 	if (!isInternalPage){
 		ProtcolCheck(webview);
-        
-		Txt_URL.value = webview.getTitle();
-		Txt_URL.setAttribute('data-text-swap',webview.getURL());
-		Txt_URL.setAttribute('data-text-original',webview.getTitle());
+		Txt_URL.setValues(webview.getTitle(), webview.getURL());
 	}else{
 		Pan_Cert.className = 'DoubleURLBtn Internal';
-
-		Txt_URL.value = '';
-		Txt_URL.setAttribute('data-text-swap','');
-		Txt_URL.setAttribute('data-text-original','');
+		Txt_URL.setValues('', '');
 	}
 
 	Pan_Cert.classList.remove('Loading');

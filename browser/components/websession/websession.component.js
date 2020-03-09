@@ -71,7 +71,8 @@ class WebSession {
 		var domLoaded = () => {
 			if(this.selected){
 				functions.updateURLBar(this.webview);
-				controls.lnk_cirtpip.classList.remove('Loading');
+				let urlBar = document.getElementById('URLBar');
+				urlBar.updateCertBtn('loading');
 				//check if this site is a qlink
 				OhHaiBrowser.bookmarks.check(this.webview.getURL(),function(returnval){
 					OhHaiBrowser.bookmarks.updateBtn(returnval);

@@ -19,7 +19,6 @@ var OhHaiBrowser = {
 	},
 	bookmarks: {
 		container: document.getElementById('BookmarkContainer'),
-		btn_bookmark: document.getElementById('BtnQuicklink'),
 		add: function (bookmarkName, bookmarkUrl, bookmarkIcon, bookmarkDesc, popuplocal, callback) {
 
 			let BookmarkPopup = OhHaiBrowser.core.generateElement(`
@@ -36,9 +35,8 @@ var OhHaiBrowser = {
 
 			Add_bookmark.addEventListener('click', () => {
 				Quicklinks.Add(bookmarkUrl, Txt_Url.value, bookmarkIcon, '', bookmarkDesc).then((newqlink) => {
-					OhHaiBrowser.bookmarks.btn_bookmark.setAttribute('data-id', newqlink);
-					OhHaiBrowser.bookmarks.btn_bookmark.classList.remove('QuicklinkInactive');
-					OhHaiBrowser.bookmarks.btn_bookmark.classList.add('QuicklinkActive');
+					let urlBar = document.getElementById('URLBar');
+					urlBar.bookmarkId = newqlink;
 
 					BookmarkPopup.parentNode.removeChild(BookmarkPopup);
 				});
@@ -70,16 +68,12 @@ var OhHaiBrowser = {
 		},
 		updateBtn: function (ReturnVal, callback) {
 			if (ReturnVal != null) {
-				OhHaiBrowser.bookmarks.btn_bookmark.setAttribute('data-id', ReturnVal);
-
-				OhHaiBrowser.bookmarks.btn_bookmark.classList.remove('QuicklinkInactive');
-				OhHaiBrowser.bookmarks.btn_bookmark.classList.add('QuicklinkActive');
+				let urlBar = document.getElementById('URLBar');
+				urlBar.bookmarkId = ReturnVal;
 			} else {
 				//Default state
-				OhHaiBrowser.bookmarks.btn_bookmark.classList.remove('QuicklinkActive');
-				OhHaiBrowser.bookmarks.btn_bookmark.classList.add('QuicklinkInactive');
-
-				OhHaiBrowser.bookmarks.btn_bookmark.setAttribute('data-id', '');
+				let urlBar = document.getElementById('URLBar');
+				urlBar.bookmarkId = null;
 			}
 			if (typeof callback === 'function') {
 				callback('complete');
@@ -317,45 +311,20 @@ controls.txt_urlbar.addEventListener('contextmenu', (e) => {
 	URlMenu.popup(remote.getCurrentWindow());
 }, false);
 
-let urlbarValid = {};
-controls.txt_urlbar.addEventListener('keydown', function (event) {
-//Check validity of URL content
-	AutoComplete(this.value, (resp) => {
-		urlbarValid = resp;
-	});
-	//On Enter
-	if (event.which == 13) {
-		OhHaiBrowser.tabs.activePage.navigate(urlbarValid.output);
-	}
-});
-
-//mouse event
-controls.txt_urlbar.addEventListener('click', () => {
-	if (controls.txt_urlbar.value != controls.txt_urlbar.getAttribute('data-text-swap')) {
-		controls.txt_urlbar.value = controls.txt_urlbar.getAttribute('data-text-swap');
-	}
-});
-
-controls.txt_urlbar.addEventListener('focus', () => {
-	controls.div_urlOuter.classList.add('CenterFocus');
-});
-
-controls.txt_urlbar.addEventListener('focusout', () => {
-	controls.txt_urlbar.value = controls.txt_urlbar.getAttribute('data-text-original');
-	controls.div_urlOuter.classList.remove('CenterFocus');
+controls.txt_urlbar.addEventListener('enter', function (event) {
+	OhHaiBrowser.tabs.activePage.navigate(event.detail);
 });
 
 //--------------------------------------------------------------------------------------------------------------
 //URL bar functions
 
 //-----------------------------------------------------------------------------------------------------
-
-controls.btn_bookmarked.addEventListener('click', function (e) {
+controls.txt_urlbar.addEventListener('favorited', (e) => {
 	var popuplocation = {
 		'left': e.currentTarget.offsetLeft,
 		'top': e.currentTarget.offsetTop
 	};
-	if (controls.btn_bookmarked.classList.contains('QuicklinkInactive')) {
+	if(e.detail) {
 		//Add new bookmark
 		const cSession = OhHaiBrowser.tabs.getCurrent();
 		OhHaiBrowser.bookmarks.add(cSession.webview.getTitle(), cSession.webview.getURL(), '', '', popuplocation, function (newqlink) {});
@@ -363,9 +332,8 @@ controls.btn_bookmarked.addEventListener('click', function (e) {
 		//Remove bookmark
 		var ThisId = Number(controls.btn_bookmarked.getAttribute('data-id'));
 		Quicklinks.Remove(ThisId).then(() => {
-			controls.btn_bookmarked.setAttribute('data-id', '');
-			controls.btn_bookmarked.classList.remove('QuicklinkActive');
-			controls.btn_bookmarked.classList.add('QuicklinkInactive');
+			let urlBar = document.getElementById('URLBar');
+			urlBar.bookmarkId = null;
 		});
 	}
 });

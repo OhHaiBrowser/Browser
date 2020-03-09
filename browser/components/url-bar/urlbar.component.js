@@ -1,9 +1,11 @@
+let validate = require('../../system_assets/modules/OhHaiBrowser.Validation');
+
 class UrlBar extends HTMLElement {
 	constructor() {
 		super();
 		const shadowEl = this.attachShadow({mode: 'open'});
 		shadowEl.innerHTML = `
-			<link rel='stylesheet' href='style.css' />
+			<link rel='stylesheet' href='${__dirname}/urlbar.component.css' />
 			<div class="componentOuter">
 				<div class="urlOuter">
 					<a id="SecureCheck" class="DoubleURLBtn Internal"></a>
@@ -54,19 +56,38 @@ class UrlBar extends HTMLElement {
 		txtUrlBar.setAttribute('data-text-original', friendly);
 		this.updateCertBtn();
 	}
-	updateCertBtn(){
+	updateCertBtn(override = ''){
 		let rawURL = this.shadowRoot.getElementById('URLBar').getAttribute('data-text-swap').toLowerCase();
 		let certBtn = this.shadowRoot.getElementById('SecureCheck');
 		certBtn.classList.remove('Http', 'Https', 'CirtError', 'Loading', 'Internal');
-		switch(true) {
-		case rawURL.startsWith('https://'):
-			certBtn.classList.add('Https');
-			break;
-		case rawURL.startsWith('http://'):
-			certBtn.classList.add('Http');
-			break;
+		if(override != '') {
+			certBtn.classList.add(override);
+		} else{
+			if (!validate.internalpage(decodeURI(rawURL))) {
+				switch(true) {
+				case rawURL.startsWith('https://'):
+					certBtn.classList.add('Https');
+					break;
+				case rawURL.startsWith('http://'):
+					certBtn.classList.add('Http');
+					break;
+				}
+			} else {
+				certBtn.classList.add('Internal');
+			}
 		}
+	}
+	get bookmarkId(){
+		return this.shadowRoot.getElementById('BtnQuicklink').getAttribute('data-id');
+	}
+	set bookmarkId(val) {
+		if (val !== null || val !== ''){
+			this.shadowRoot.getElementById('BtnQuicklink').classList.add('active');
+		}else{
+			this.shadowRoot.getElementById('BtnQuicklink').classList.remove('active');
+		}
+		this.shadowRoot.getElementById('BtnQuicklink').setAttribute('data-id', val);
 	}
 }
 
-module.exports.UrlBar = UrlBar;
+module.exports.urlbar = UrlBar;
