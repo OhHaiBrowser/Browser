@@ -72,7 +72,7 @@ class WebSession {
 			if(this.selected){
 				functions.updateURLBar(this.webview);
 				let urlBar = document.getElementById('URLBar');
-				urlBar.updateCertBtn('loading');
+				urlBar.updateCertBtn('Loading');
 				//check if this site is a qlink
 				OhHaiBrowser.bookmarks.check(this.webview.getURL(),function(returnval){
 					OhHaiBrowser.bookmarks.updateBtn(returnval);
@@ -137,7 +137,8 @@ class WebSession {
 				this.tab.mediaControl = 'hide';
 			}
 			if(this.selected){
-				controls.lnk_cirtpip.classList.add('Loading');
+				let urlBar = document.getElementById('URLBar');
+				urlBar.updateCertBtn('Loading');
 				this.tab.title = 'Loading...';
 				this.tab.icon = 'assets/imgs/loader.gif';
 			}
