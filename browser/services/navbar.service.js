@@ -13,21 +13,21 @@ class urlAutoComplete{
 module.exports.AutoComplete = (value,callback) => { callback(new urlAutoComplete(value)); };
 
 let controls = {
-	btn_ToggleTabBar: () => document.getElementById('HideShow'),
-	lbl_TabCount: () => document.getElementById('HideShowCount'),
-	btn_back: () => document.getElementById('Back'),
-	txt_urlbar: () => document.getElementById('URLBar'),
-	btn_forward: () => document.getElementById('Forward'),
-	btn_overflow: () => document.getElementById('Menu')
+	btn_ToggleTabBar: document.getElementById('HideShow'),
+	lbl_TabCount: document.getElementById('HideShowCount'),
+	btn_back: document.getElementById('Back'),
+	txt_urlbar: document.getElementById('URLBar'),
+	btn_forward: document.getElementById('Forward'),
+	btn_overflow: document.getElementById('Menu')
 };
 module.exports.controls = controls;
 
 let functions = {
 	updateTabCounter: function () {
-		controls.lbl_TabCount().textContent = OhHaiBrowser.tabs.count;
+		controls.lbl_TabCount.textContent = OhHaiBrowser.tabs.count;
 	},
 	updateURLBar: function (webview, callback) {
-		controls.txt_urlbar().setValues(webview.getTitle(), webview.getURL());
+		controls.txt_urlbar.setValues(webview.getTitle(), webview.getURL());
 		this.updatePageInfo(webview);
 		if (typeof callback == 'function') {
 			callback(true);
@@ -36,7 +36,7 @@ let functions = {
 	updatePageInfo: function (webview) {
 		var webviewcontent = webview.getWebContents();
 		webviewcontent.on('certificate-error', (e, url, error, cert) => {
-			controls.txt_urlbar().updateCertBtn('error');
+			controls.txt_urlbar.updateCertBtn('error');
 		});
 	}
 };
