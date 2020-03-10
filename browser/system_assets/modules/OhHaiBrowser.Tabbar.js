@@ -4,21 +4,21 @@ var {remote} = require('electron'),
 	{tabs} = require('../../services/tabs.service');
 
 var TabBar = {
-	panel: document.getElementById('LeftMenu'),
-	tabcontainer: document.getElementById('tabs-menu'),
-	pinnedtabcontainer: document.getElementById('tabs-dock'),
-	webviewcontainer: document.getElementById('BrowserWin'),
-	addTabBtn: document.getElementById('AddTab'),
+	panel: () => document.getElementById('LeftMenu'),
+	tabcontainer: () => document.getElementById('tabs-menu'),
+	pinnedtabcontainer: () => document.getElementById('tabs-dock'),
+	webviewcontainer: () => document.getElementById('BrowserWin'),
+	addTabBtn: () => document.getElementById('AddTab'),
 	pined: true,
 	toggle: function () {
 		if (TabBar.pined == true) {
-			TabBar.panel.classList.add('LeftMenuHidden');
-			TabBar.panel.classList.remove('LeftMenuShow');
+			TabBar.panel().classList.add('LeftMenuHidden');
+			TabBar.panel().classList.remove('LeftMenuShow');
 			TabBar.pined = false;
 			Settings.Set('TabBar', false);
 		} else {
-			TabBar.panel.classList.add('LeftMenuShow');
-			TabBar.panel.classList.remove('LeftMenuHidden');
+			TabBar.panel().classList.add('LeftMenuShow');
+			TabBar.panel().classList.remove('LeftMenuHidden');
 			TabBar.pined = true;
 			Settings.Set('TabBar', true);
 		}

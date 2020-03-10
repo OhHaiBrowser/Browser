@@ -15,6 +15,11 @@ app.on('ready', function() {
 			mainWindow.webContents.openDevTools();
 		}
 	});
+	globalShortcut.register('CommandOrControl+R', () => {
+		if(mainWindow.isFocused() == true){
+			mainWindow.reload();
+		}
+	});
 
 	protocol.registerStringProtocol('mailto', function (req) {
 		electron.shell.openExternal(req.url);

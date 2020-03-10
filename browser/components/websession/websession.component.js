@@ -253,13 +253,13 @@ class WebSession {
 		case 'dock':
 			this.tab.mode = 'pinned';
 			Sessions.UpdateMode(this.id, 'DOCK');
-			Sessions.UpdateParent(this.id, Tabbar.pinnedtabcontainer.id);
+			Sessions.UpdateParent(this.id, Tabbar.pinnedtabcontainer().id);
 			break;
 		case 'default':
 		default:
 			this.tab.mode = 'default';
 			Sessions.UpdateMode(this.id, 'Default');
-			Sessions.UpdateParent(this.id, Tabbar.tabcontainer.id);
+			Sessions.UpdateParent(this.id, Tabbar.tabcontainer().id);
 		}
 	}
 	get mode() {
