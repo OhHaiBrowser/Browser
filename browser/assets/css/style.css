@@ -435,40 +435,6 @@ button:focus {
 	display: none;
 }
 
-.Datetitle {
-	margin: 0;
-	padding: 10px;
-	background-color: #d2d4f2;
-	font-size: 13px;
-}
-
-.histitem {
-	margin: 10px 5px;
-}
-
-.hist_img {
-	height: 18px;
-	width: 18px;
-	margin-right: 10px;
-	float: left;
-}
-
-.hist_link {
-	display: inline-block;
-	width: 100px;
-	height: 20px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	line-height: 20px;
-	font-size: 13px;
-}
-
-.hist_datetime {
-	float: right;
-	font-size: 13px;
-}
-
 .blurBrowser{
 	filter: blur(5px);
 }
