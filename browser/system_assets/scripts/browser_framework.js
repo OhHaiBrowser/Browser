@@ -9,16 +9,11 @@ var {clipboard,	remote} = require('electron'),
 	tabbar = require('./system_assets/modules/OhHaiBrowser.Tabbar.js');
 
 var OhHaiBrowser = {
-	sessionStartTime: '',
 	sessionDuration: function () {
 		return Date.now() - OhHaiBrowser.sessionStartTime;
 	},
 	tabs: tabs,
-	history: {
-		container: document.getElementById('HistoryContainer')
-	},
 	bookmarks: {
-		container: document.getElementById('BookmarkContainer'),
 		add: function (bookmarkName, bookmarkUrl, bookmarkIcon, bookmarkDesc, popuplocal, callback) {
 
 			let BookmarkPopup = OhHaiBrowser.core.generateElement(`
@@ -256,7 +251,6 @@ controls.txt_urlbar.addEventListener('enter', function (event) {
 
 //--------------------------------------------------------------------------------------------------------------
 //URL bar functions
-
 //-----------------------------------------------------------------------------------------------------
 controls.txt_urlbar.addEventListener('favorited', (e) => {
 	var popuplocation = {

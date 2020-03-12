@@ -80,44 +80,6 @@
     flex: 1 1 auto;
 }
 
-
-#BookmarkContainer ul {
-	margin: 5px;
-	padding: 0px;
-	list-style: none;
-}
-
-#BookmarkContainer ul li p {
-	margin: 10px 0px;
-	font-size: 13px;
-}
-
-#BookmarkContainer .bookmark {
-	margin: 5px 0px;
-}
-
-	#BookmarkContainer .bookmark a {
-		display: block;
-		font-size: 13px;
-		padding: 5px 0px;
-		text-decoration: none;
-		border-radius: 3px;
-		color: #000;
-	}
-	#BookmarkContainer .bookmark a:hover {
-		background: rgba(255, 255, 255, 0.7);
-	}
-
-		#BookmarkContainer .bookmark a img {
-			height: 16px;
-			width: 16px;
-			float: left;
-			margin: 0px 5px;
-		}
-		#BookmarkContainer .bookmark a span {
-
-		}
-
 .URLDropDown {
 	background-color: #fff;
 	border-bottom: 2px solid var(--main);

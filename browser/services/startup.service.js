@@ -2,7 +2,7 @@ const {remote} = require('electron');
 const {Groups, Settings, Sessions} = require('../system_assets/modules/OhHaiBrowser.Data');
 
 module.exports.runStartup = () => {
-	OhHaiBrowser.sessionStartTime = Date.now();
+	window.OhHaiBrowser.sessionStartTime = Date.now();
 	
 	const launchparams = remote.getGlobal('sharedObject').prop1;
 	let IsLaunchParam = () => {

@@ -6,6 +6,7 @@ const favoritesList = require('./components/fav-list/bookmarks');
 const histList = require('./components/hist-list/history');
 const { initUi } = require('./services/ui.service');
 const { runStartup } = require('./services/startup.service');
+const { definePublicAPIs } = require('./services/public.api.service');
 
 //Define custom controls
 customElements.define('acc-panel', accordionPanel);
@@ -18,6 +19,7 @@ customElements.define('url-bar', urlbar);
 
 //Load core ui functions
 document.addEventListener('DOMContentLoaded', function(){
+	//definePublicAPIs();
 	initUi();
 	runStartup();
 });
