@@ -9,6 +9,7 @@ var {clipboard,	remote} = require('electron'),
 	tabbar = require('./system_assets/modules/OhHaiBrowser.Tabbar.js');
 
 var OhHaiBrowser = {
+	sessionStartTime: '',
 	sessionDuration: function () {
 		return Date.now() - OhHaiBrowser.sessionStartTime;
 	},
