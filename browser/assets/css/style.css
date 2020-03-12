@@ -338,34 +338,6 @@ button:focus {
 	transition: all 0.5s, transform 0.5s;
 }
 
-.WMC_Show {
-	right: 20px;
-}
-
-.WCM_msg {
-	font-size: 15px;
-	line-height: 75px;
-	width: 300px;
-	display: inline-block;
-	padding: 0 10px;
-	box-sizing: border-box;
-	color: #000;
-}
-
-.WCM_close {
-	font-size: 15px;
-	cursor: pointer;
-	float: right;
-	background-color: transparent;
-	height: 65px;
-	width: 50px;
-	border: none;
-	outline: none;
-	color: #999;
-	font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
-	border-left: 1px solid #c4c4c4;
-	margin: 5px 0;
-}
 
 
 .bookmark_popup {

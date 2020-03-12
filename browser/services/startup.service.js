@@ -36,8 +36,8 @@ module.exports.runStartup = () => {
     
 	Settings.Get('TabBar').then((item) => {
 		if (item.value == false) {
-			OhHaiBrowser.ui.tabbar.panel().classList.add('LeftMenuHidden');
-			OhHaiBrowser.ui.tabbar.panel().classList.remove('LeftMenuShow');
+			OhHaiBrowser.ui.tabbar.panel.classList.add('LeftMenuHidden');
+			OhHaiBrowser.ui.tabbar.panel.classList.remove('LeftMenuShow');
 			OhHaiBrowser.ui.tabbar.pined = false;
 		} else {
 			OhHaiBrowser.ui.tabbar.pined = true;

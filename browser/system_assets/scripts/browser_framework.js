@@ -1,7 +1,7 @@
 var {clipboard,	remote} = require('electron'),
 	{Menu,	MenuItem} = remote,
-	{Quicklinks, Settings, Sessions} = require('./system_assets/modules/OhHaiBrowser.Data.js'),
-	{functions, controls, AutoComplete} = require('./services/navbar.service.js'),
+	{Quicklinks, Settings} = require('./system_assets/modules/OhHaiBrowser.Data.js'),
+	{functions, controls} = require('./services/navbar.service.js'),
 	{tabs} = require('./services/tabs.service.js'),
 	AboutMenu = require('./system_assets/scripts/addons/about.js'),
 	SettingsMenu = require('./system_assets/scripts/addons/settings.js'),
@@ -117,29 +117,6 @@ var OhHaiBrowser = {
 				callback(win);
 			}
 		},
-		notifications: {
-			post: function (notificationText, callback) {
-				if (typeof callback === 'function') {
-					callback();
-				}
-			},
-			remove: function (notificationId, callback) {
-				if (typeof callback === 'function') {
-					callback();
-				}
-			}
-		},
-		theme: {
-			load: function (stylesheet, callback) {
-				var ThemeCss = document.getElementById('ThemeStyle');
-				if (ThemeCss != null) {
-					ThemeCss.setAttribute('href', stylesheet);
-					if (typeof callback === 'function') {
-						callback(true);
-					}
-				}
-			}
-		},
 		contextmenus: {
 			urlbar: (URLBar) => {
 				var URlMenu = new Menu();
@@ -195,45 +172,6 @@ var OhHaiBrowser = {
 		},
 		navbar: functions,
 		tabbar: require('./system_assets/modules/OhHaiBrowser.Tabbar.js'),
-		wcm: {
-			template: `
-				<div class='WMC_popup'>
-					<span class='WCM_msg'></span>
-					<input type='button' class='WCM_close' value='X'/>
-				</div>`,
-			post: function (msg, onclick_func) {
-				var this_WCM = OhHaiBrowser.core.generateElement(this.template);
-
-				this_WCM.querySelector('.WCM_msg').textContent = msg;
-				this_WCM.querySelector('.WCM_close').addEventListener('click', function () {
-					this_WCM.classList.remove('WMC_Show');
-					setTimeout(function () {
-						this_WCM.remove();
-					}, 800);
-				});
-				this_WCM.querySelector('.WCM_msg').addEventListener('click', function () {
-					this_WCM.classList.remove('WMC_Show');
-					setTimeout(function () {
-						this_WCM.remove();
-					}, 800);
-					onclick_func();
-				});
-
-				document.body.appendChild(this_WCM);
-				setTimeout(function () {
-					this_WCM.classList.add('WMC_Show');
-				}, 10);
-
-				//auto close after 5 seconds
-				setTimeout(function () {
-					this_WCM.classList.remove('WMC_Show');
-					setTimeout(function () {
-						this_WCM.remove();
-					}, 800);
-				}, 5000);
-
-			}
-		},
 		toggleModel: (content, menuTitle) => {
 			let mainWin = document.getElementById('AppBound');
 			let bgWin = document.getElementById('BlurBg');
