@@ -22,10 +22,10 @@ class UrlBar extends HTMLElement {
 		let btnFav = this.shadowRoot.getElementById('BtnQuicklink');
 		btnFav.addEventListener('click', () => {
 			btnFav.classList.toggle('active');
-			this.dispatchEvent(new Event('favorited', { detail: btnFav.classList.contains('active') }));
+			this.dispatchEvent(new CustomEvent('favorited', { detail: btnFav.classList.contains('active') }));
 		});
 		this.shadowRoot.getElementById('Refresh').addEventListener('click', () => {
-			this.dispatchEvent(new Event('refresh'));
+			this.dispatchEvent(new CustomEvent('refresh'));
 		});
 
 		let txtUrlBar = this.shadowRoot.getElementById('URLBar');
@@ -45,7 +45,8 @@ class UrlBar extends HTMLElement {
 		txtUrlBar.addEventListener('keydown', (e) => {
 			this.shadowRoot.getElementById('URLAutoComplete').classList.remove('AutoComplete_hidden');
 			if(e.keyCode === 13) {
-				this.dispatchEvent(new Event('enter', { detail: txtUrlBar.value}));
+				const data = txtUrlBar.value;
+				this.dispatchEvent(new CustomEvent('enter', { detail: data}));
 			}
 		});
 	}

@@ -7,6 +7,7 @@ const { Quicklinks } = require('../system_assets/modules/OhHaiBrowser.Data');
 const Contextuals = require('../system_assets/modules/Contextuals/Contextuals');
 const AboutMenu = require('../system_assets/scripts/addons/about');
 const SettingsMenu = require('../system_assets/scripts/addons/settings');
+const validate = require('../system_assets/modules/OhHaiBrowser.Validation');
 
 module.exports.initUi = () => {
 	createFrameControls();
@@ -41,7 +42,11 @@ function createNavEvents() {
 		URlMenu.popup(remote.getCurrentWindow());
 	}, false);
 	controls.txt_urlbar().addEventListener('enter', function (event) {
-		tabs.activePage.navigate(event.detail);
+		validate.url(event.detail, (resp) => {
+			if(resp.valid) {
+				tabs.activePage.navigate(resp.url);
+			}
+		});
 	});	
 	//--------------------------------------------------------------------------------------------------------------
 	//URL bar functions

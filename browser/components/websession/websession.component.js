@@ -1,11 +1,10 @@
 const {clipboard, remote} = require('electron'),
 	{Menu,	MenuItem} = remote,
-	Tabbar = require('../../system_assets/modules/OhHaiBrowser.Tabbar'),
-	{controls, functions} = require('../../services/navbar.service'),
+	{tabbar} = require('../../services/tabbar.service'),
+	{functions} = require('../../services/navbar.service'),
 	{Sessions, History} = require('../../system_assets/modules/OhHaiBrowser.Data'),
 	CoreFunctions = require('../../system_assets/modules/OhHaiBrowser.Core'),
 	validate = require('../../system_assets/modules/OhHaiBrowser.Validation'),
-	Doodle = require('../../services/doodle.service'),
 	{tabItem} = require('../tab/tab.component') ;
 
 class WebSession {
@@ -42,7 +41,7 @@ class WebSession {
 
 		//Tab event listeners
 		this.tab.addEventListener('selected', () => {
-			OhHaiBrowser.tabs.setCurrent(this);
+			window.OhHaiBrowser.tabs.setCurrent(this);
 			if (this.webReady) {
 				functions.updateURLBar(this.webview);
 			}			
@@ -65,17 +64,14 @@ class WebSession {
 			Tab_menu.popup(remote.getCurrentWindow());
 		});
 		this.tab.addEventListener('close', () => {
-			OhHaiBrowser.tabs.remove(this);
+			window.OhHaiBrowser.tabs.remove(this);
 		});
 
 		var domLoaded = () => {
 			if(this.selected){
 				functions.updateURLBar(this.webview);
-				let urlBar = document.getElementById('URLBar');
-				//urlBar.updateCertBtn('Loading');
-				//check if this site is a qlink
-				OhHaiBrowser.bookmarks.check(this.webview.getURL(),function(returnval){
-					OhHaiBrowser.bookmarks.updateBtn(returnval);
+				window.OhHaiBrowser.bookmarks.check(this.webview.getURL(),function(returnval){
+					window.OhHaiBrowser.bookmarks.updateBtn(returnval);
 				});
 			}
 		};
@@ -92,7 +88,7 @@ class WebSession {
 			updateTab();
 		});
 		this.webview.addEventListener('close', () => {
-			OhHaiBrowser.tabs.remove(this);
+			window.OhHaiBrowser.tabs.remove(this);
 		});
 		this.webview.addEventListener('did-fail-load', (e) => {
 			if (e.errorCode != -3 && e.validatedURL == e.target.getURL()) {this.webview.loadURL(`file://${__dirname}/components/error_page/index.html?code=${e.errorCode}&url=${e.validatedURL}`);}
@@ -100,13 +96,13 @@ class WebSession {
 		this.webview.addEventListener('new-window', (e) => {
 			switch(e.disposition){
 			case 'new-window':
-				OhHaiBrowser.tabs.popupwindow(e);
+				window.OhHaiBrowser.tabs.popupwindow(e);
 				break;
 			case 'background-tab':
-				OhHaiBrowser.tabs.add(e.url);
+				window.OhHaiBrowser.tabs.add(e.url);
 				break;
 			default:
-				OhHaiBrowser.tabs.add(e.url,undefined,{selected: true});
+				window.OhHaiBrowser.tabs.add(e.url,undefined,{selected: true});
 			}
 		});
 		this.webview.addEventListener('media-started-playing', () => {
@@ -196,15 +192,7 @@ class WebSession {
 			// 	}
 			// }
 		});
-		this.webview.addEventListener('load-commit', (e) => {
-			if(this.selected){
-				//only kick event if the mainframe is loaded, no comments or async BS!
-				if(e.isMainFrame){
-					//is doodle already open? - we dont want to bug the users so much. - Actully we shouldnt need to check...Doodle should know.
-					Doodle.deploy(this.webview);
-				}
-			}
-		});	
+
 		this.webview.addEventListener('did-stop-loading', () => {
 			domLoaded();
 			updateTab();
@@ -253,13 +241,13 @@ class WebSession {
 		case 'dock':
 			this.tab.mode = 'pinned';
 			Sessions.UpdateMode(this.id, 'DOCK');
-			Sessions.UpdateParent(this.id, Tabbar.pinnedtabcontainer.id);
+			Sessions.UpdateParent(this.id, tabbar.pinnedtabcontainer().id);
 			break;
 		case 'default':
 		default:
 			this.tab.mode = 'default';
 			Sessions.UpdateMode(this.id, 'Default');
-			Sessions.UpdateParent(this.id, Tabbar.tabcontainer.id);
+			Sessions.UpdateParent(this.id, tabbar.tabcontainer().id);
 		}
 	}
 	get mode() {
@@ -298,7 +286,7 @@ class WebSession {
 		NewMenu.append(new MenuItem({
 			label: 'New Tab',
 			click() {
-				OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
+				window.OhHaiBrowser.tabs.add(window.OhHaiBrowser.settings.homepage, undefined, {
 					selected: true
 				});
 			}
@@ -306,7 +294,7 @@ class WebSession {
 		NewMenu.append(new MenuItem({
 			label: 'New Incognito Tab',
 			click() {
-				OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
+				window.OhHaiBrowser.tabs.add(window.OhHaiBrowser.settings.homepage, undefined, {
 					selected: true,
 					mode: 'incog'
 				});
@@ -320,7 +308,7 @@ class WebSession {
 			NewMenu.append(new MenuItem({
 				label: 'Remove tab from group',
 				click() {
-					OhHaiBrowser.tabs.groups.removeTab(this.tab);
+					window.OhHaiBrowser.tabs.groups.removeTab(this.tab);
 				}
 			}));
 		} else {
@@ -328,7 +316,7 @@ class WebSession {
 			var GroupMenu = [new MenuItem({
 				label: 'New group',
 				click() {
-					OhHaiBrowser.tabs.groups.addTab(this.tab, null);
+					window.OhHaiBrowser.tabs.groups.addTab(this.tab, null);
 				}
 			})];
 			var CurrentGroups = document.getElementsByClassName('group');
@@ -342,7 +330,7 @@ class WebSession {
 					GroupMenu.push(new MenuItem({
 						label: GroupTitle,
 						click() {
-							OhHaiBrowser.tabs.groups.addTab(this.tab, ThisGroup);
+							window.OhHaiBrowser.tabs.groups.addTab(this.tab, ThisGroup);
 						}
 					}));
 				}
@@ -374,14 +362,14 @@ class WebSession {
 				NewMenu.append(new MenuItem({
 					label: 'Undock Tab',
 					click() {
-						OhHaiBrowser.tabs.setMode(this, 'default');
+						window.OhHaiBrowser.tabs.setMode(this, 'default');
 					}
 				}));
 			}else{
 				NewMenu.append(new MenuItem({
 					label: 'Dock Tab',
 					click() {
-						OhHaiBrowser.tabs.setMode(this, 'dock');
+						window.OhHaiBrowser.tabs.setMode(this, 'dock');
 					}
 				}));
 			}
@@ -392,7 +380,7 @@ class WebSession {
 		NewMenu.append(new MenuItem({
 			label: 'Close Tab',
 			click() {
-				OhHaiBrowser.tabs.remove(this);
+				window.OhHaiBrowser.tabs.remove(this);
 			}
 		}));
 
@@ -407,7 +395,7 @@ class WebSession {
 			Web_menu.append(new MenuItem({
 				label: 'Open link in new tab',
 				click() {
-					OhHaiBrowser.tabs.add(params.linkURL, undefined, {
+					window.OhHaiBrowser.tabs.add(params.linkURL, undefined, {
 						selected: true
 					});
 				}
@@ -421,7 +409,7 @@ class WebSession {
 			Web_menu.append(new MenuItem({
 				label: 'Open ' + params.mediaType + ' in new tab',
 				click() {
-					OhHaiBrowser.tabs.add(params.srcURL, undefined, {
+					window.OhHaiBrowser.tabs.add(params.srcURL, undefined, {
 						selected: true
 					});
 				}
@@ -452,7 +440,7 @@ class WebSession {
 			Web_menu.append(new MenuItem({
 				label: 'Google search for selection',
 				click() {
-					OhHaiBrowser.tabs.add(`https://www.google.co.uk/search?q=${params.selectionText}`, undefined, {
+					window.OhHaiBrowser.tabs.add(`https://www.google.co.uk/search?q=${params.selectionText}`, undefined, {
 						selected: true
 					});
 				}
@@ -485,21 +473,21 @@ class WebSession {
 			label: 'Back',
 			accelerator: 'Alt+Left',
 			click() {
-				OhHaiBrowser.tabs.activePage.goBack();
+				window.OhHaiBrowser.tabs.activePage.goBack();
 			}
 		}));
 		Web_menu.append(new MenuItem({
 			label: 'Refresh',
 			accelerator: 'CmdOrCtrl+R',
 			click() {
-				OhHaiBrowser.tabs.activePage.reload();
+				window.OhHaiBrowser.tabs.activePage.reload();
 			}
 		}));
 		Web_menu.append(new MenuItem({
 			label: 'Forward',
 			accelerator: 'Alt+Right',
 			click() {
-				OhHaiBrowser.tabs.activePage.goForward();
+				window.OhHaiBrowser.tabs.activePage.goForward();
 			}
 		}));
 		Web_menu.append(new MenuItem({
