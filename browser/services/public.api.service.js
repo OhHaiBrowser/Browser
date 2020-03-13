@@ -5,7 +5,7 @@ const validate = require('../system_assets/modules/OhHaiBrowser.Validation');
 const core = require('../system_assets/modules/OhHaiBrowser.Core');
 const {Quicklinks, Settings} = require('../system_assets/modules/OhHaiBrowser.Data');
 const {functions} = require('./navbar.service');
-const tabbar = require('../system_assets/modules/OhHaiBrowser.Tabbar.js');
+const {tabbar} = require('./tabbar.service');
 
 module.exports.definePublicAPIs = () => {
 	window.OhHaiBrowser = {

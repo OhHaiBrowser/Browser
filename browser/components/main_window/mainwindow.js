@@ -24,7 +24,6 @@ class MainWindow extends BrowserWindow {
 			minWidth: 485,
 			webPreferences: {
 				preload: `${path.join(app.getAppPath(), '/browser/preload.js')}`,
-				nodeIntegration: true,
 				webviewTag: true
 			}
 		});

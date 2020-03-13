@@ -1,5 +1,7 @@
 const {remote} = require('electron');
 const {Groups, Settings, Sessions} = require('../system_assets/modules/OhHaiBrowser.Data');
+const {tabs} = require('./tabs.service');
+const {tabbar} = require('./tabbar.service');
 
 module.exports.runStartup = () => {
 	window.OhHaiBrowser.sessionStartTime = Date.now();
@@ -17,7 +19,7 @@ module.exports.runStartup = () => {
 		case 'fresh':
 			//Fresh session
 			if (!IsLaunchParam) {
-				OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
+				tabs.add(window.OhHaiBrowser.settings.homepage, undefined, {
 					selected: true
 				});
 			}
@@ -36,24 +38,24 @@ module.exports.runStartup = () => {
     
 	Settings.Get('TabBar').then((item) => {
 		if (item.value == false) {
-			OhHaiBrowser.ui.tabbar.panel.classList.add('LeftMenuHidden');
-			OhHaiBrowser.ui.tabbar.panel.classList.remove('LeftMenuShow');
-			OhHaiBrowser.ui.tabbar.pined = false;
+			tabbar.panel().classList.add('LeftMenuHidden');
+			tabbar.panel().classList.remove('LeftMenuShow');
+			tabbar.pined = false;
 		} else {
-			OhHaiBrowser.ui.tabbar.pined = true;
+			tabbar.pined = true;
 		}
 	});
     
 	Settings.Get('Homepage').then((homeitem) => {
-		OhHaiBrowser.settings.homepage = homeitem.value;
+		window.OhHaiBrowser.settings.homepage = homeitem.value;
 	}).catch(() => {
-		OhHaiBrowser.settings.homepage = 'default';
+		window.OhHaiBrowser.settings.homepage = 'default';
 	});
     
 	Settings.Get('search').then((settingItem) => {
-		OhHaiBrowser.settings.search = settingItem.value;
+		window.OhHaiBrowser.settings.search = settingItem.value;
 	}).catch(() => {
-		OhHaiBrowser.settings.search = 'https://www.google.co.uk/search?q=';
+		window.OhHaiBrowser.settings.search = 'https://www.google.co.uk/search?q=';
 	});
     
 };
@@ -61,14 +63,14 @@ module.exports.runStartup = () => {
 function LoadPreviousSession(IsLaunchParam){
 	Groups.Get().then((Glist) => {
 		if (Glist.length != 0) {
-			for (g in Glist) {
-				OhHaiBrowser.tabs.groups.add(Glist[g].groupid, Glist[g].name, 'session');
+			for (let g in Glist) {
+				tabs.groups.add(Glist[g].groupid, Glist[g].name, 'session');
 			}
 		}
 		Sessions.Get().then((Slist) => {
 			if (Slist.length != 0) {
 				Slist.forEach((s) => {
-					OhHaiBrowser.tabs.add(s.url, s.sessionid, {
+					tabs.add(s.url, s.sessionid, {
 						selected: true,
 						mode: s.mode,
 						parent: s.parent,
@@ -78,7 +80,7 @@ function LoadPreviousSession(IsLaunchParam){
 			} else {
 				//No session
 				if (!IsLaunchParam) {
-					OhHaiBrowser.tabs.add(OhHaiBrowser.settings.homepage, undefined, {
+					tabs.add(window.OhHaiBrowser.settings.homepage, undefined, {
 						selected: true
 					});
 				}
@@ -89,9 +91,9 @@ function LoadPreviousSession(IsLaunchParam){
 
 function LoadParam(launchparams){
 	launchparams.forEach(param => {
-		OhHaiBrowser.validate.url(param, function (valresult) {
+		window.OhHaiBrowser.validate.url(param, function (valresult) {
 			if (valresult == true) {
-				OhHaiBrowser.tabs.add(param, undefined, {
+				tabs.add(param, undefined, {
 					selected: true
 				});
 			}

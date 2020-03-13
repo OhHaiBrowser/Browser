@@ -1,6 +1,6 @@
 let CoreFunctions = require('../system_assets/modules/OhHaiBrowser.Core'),
 	{ Sessions, Groups } = require('../system_assets/modules/OhHaiBrowser.Data'),
-	Tabbar = require('../system_assets/modules/OhHaiBrowser.Tabbar'),
+	{tabbar} = require('./tabbar.service'),
 	{ functions } = require('./navbar.service'),
 	{ WebSession } = require('../components/websession/websession.component'),
 	{ Group } = require('../components/group/group.component');
@@ -45,10 +45,10 @@ const Tabs = {
 				if (_OPTIONS.mode) {
 					switch (_OPTIONS.mode.toString().toLowerCase()) {
 					case 'dock':
-						Tabbar.pinnedtabcontainer.appendChild(NewWS.tab);
+						tabbar.pinnedtabcontainer().appendChild(NewWS.tab);
 						break;
 					case 'incog':
-						Tabbar.tabcontainer.appendChild(NewWS.tab);
+						tabbar.tabcontainer().appendChild(NewWS.tab);
 						break;
 					case 'grouped':
 						if (_OPTIONS.parent) {
@@ -63,7 +63,7 @@ const Tabs = {
 									GroupedTabs.appendChild(NewWS.tab);
 								}
 							} else {
-								Tabbar.tabcontainer.appendChild(NewWS.tab);
+								tabbar.tabcontainer().appendChild(NewWS.tab);
 							}
 						} else {
 							_OPTIONS.parent.appendChild(NewWS.tab);
@@ -71,17 +71,18 @@ const Tabs = {
 						break;
 					case 'default':
 					default:
-						Tabbar.tabcontainer.appendChild(NewWS.tab);
+						console.log(tabbar);
+						tabbar.tabcontainer().appendChild(NewWS.tab);
 					}
 				} else {
 					_OPTIONS.mode = 'default';
-					Tabbar.tabcontainer.appendChild(NewWS.tab);
+					tabbar.tabcontainer().appendChild(NewWS.tab);
 				}
 			} else {
 				//load basic defaults
-				Tabbar.tabcontainer.appendChild(NewWS.tab);
+				tabbar.tabcontainer().appendChild(NewWS.tab);
 			}
-			Tabbar.webviewcontainer.appendChild(NewWS.webview);
+			tabbar.webviewcontainer().appendChild(NewWS.webview);
 	
 			if (NewWS.mode != 'incog') {
 				if (IsNew) {
@@ -117,7 +118,7 @@ const Tabs = {
 
 		if (Tabs.count > 1) {
 			if (_webSession.selected) {
-				var Open_Tabs = Tabbar.panel.querySelectorAll('tab-item');
+				var Open_Tabs = tabbar.panel().querySelectorAll('tab-item');
 				var This_TabIndex;
 				Open_Tabs.forEach(function (ArrayElement, index) {
 					if (ArrayElement == _webSession.tab) {
@@ -191,13 +192,13 @@ const Tabs = {
 		_WebSession.mode = _mode;
 		switch (_mode) {
 		case 'dock':
-			Tabbar.pinnedtabcontainer.appendChild(_WebSession.tab);
+			tabbar.pinnedtabcontainer().appendChild(_WebSession.tab);
 			break;
 		case 'grouped':
 			break;
 		case 'default':
 		default:
-			Tabbar.tabcontainer.appendChild(_WebSession.tab);
+			tabbar.tabcontainer().appendChild(_WebSession.tab);
 		}
 	},
 	executeScript: (tabid, code) => {
@@ -238,7 +239,7 @@ const Tabs = {
 				NewG.children.appendChild(_tab);
 				Sessions.UpdateParent(TabSessionId, NewG.id);
 			}
-			Tabbar.tabcontainer.appendChild(NewG.Group);
+			tabbar.tabcontainer().appendChild(NewG.Group);
 
 			Groups.Upsert(NewG.id, NewG.title);
 
@@ -281,10 +282,10 @@ const Tabs = {
 			var thisGroupList = _tab.parentElement;
 			var thisGroup = thisGroupList.parentElement;
 
-			Tabbar.tabcontainer.appendChild(_tab);
+			tabbar.tabcontainer().appendChild(_tab);
 
 			var TabSessionId = _tab.getAttribute('data-session');
-			Sessions.UpdateParent(TabSessionId, Tabbar.tabcontainer.id);
+			Sessions.UpdateParent(TabSessionId, tabbar.tabcontainer().id);
 			Sessions.UpdateMode(TabSessionId, 'default');
 
 			if (thisGroupList.children.length == 0) {
