@@ -7,7 +7,6 @@ const { Quicklinks } = require('../system_assets/modules/OhHaiBrowser.Data');
 const Contextuals = require('../system_assets/modules/Contextuals/Contextuals');
 const AboutMenu = require('../system_assets/scripts/addons/about');
 const SettingsMenu = require('../system_assets/scripts/addons/settings');
-const validate = require('../system_assets/modules/OhHaiBrowser.Validation');
 
 module.exports.initUi = () => {
 	createFrameControls();

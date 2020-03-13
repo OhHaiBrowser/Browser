@@ -1,8 +1,8 @@
 class urlAutoComplete{
 	constructor(url) {
-		let searchProvider = OhHaiBrowser.settings.search;
+		let searchProvider = window.OhHaiBrowser.settings.search;
 		let urlbarValid = {};
-		OhHaiBrowser.validate.url(url,function(isurl){ urlbarValid = isurl; });
+		window.OhHaiBrowser.validate.url(url,function(isurl){ urlbarValid = isurl; });
 
 		this.valid = urlbarValid.valid;
 		this.output = this.valid ? urlbarValid.url : searchProvider + urlbarValid.url;
@@ -24,7 +24,7 @@ module.exports.controls = controls;
 
 let functions = {
 	updateTabCounter: function () {
-		controls.lbl_TabCount().textContent = OhHaiBrowser.tabs.count;
+		controls.lbl_TabCount().textContent = window.OhHaiBrowser.tabs.count;
 	},
 	updateURLBar: function (webview, callback) {
 		controls.txt_urlbar().value = webview.getURL();
