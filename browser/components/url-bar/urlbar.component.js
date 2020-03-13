@@ -82,10 +82,10 @@ class UrlBar extends HTMLElement {
 		return this.shadowRoot.getElementById('BtnQuicklink').getAttribute('data-id');
 	}
 	set bookmarkId(val) {
-		if (val !== null || val !== ''){
-			this.shadowRoot.getElementById('BtnQuicklink').classList.add('active');
-		}else{
+		if (val === null || val === ''){
 			this.shadowRoot.getElementById('BtnQuicklink').classList.remove('active');
+		}else{
+			this.shadowRoot.getElementById('BtnQuicklink').classList.add('active');
 		}
 		this.shadowRoot.getElementById('BtnQuicklink').setAttribute('data-id', val);
 	}

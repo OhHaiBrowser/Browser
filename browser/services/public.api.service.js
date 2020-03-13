@@ -63,14 +63,8 @@ module.exports.definePublicAPIs = () => {
 				});
 			},
 			updateBtn: function (ReturnVal, callback) {
-				if (ReturnVal != null) {
-					let urlBar = document.getElementById('URLBar');
-					urlBar.bookmarkId = ReturnVal;
-				} else {
-					//Default state
-					let urlBar = document.getElementById('URLBar');
-					urlBar.bookmarkId = null;
-				}
+				let urlBar = document.getElementById('URLBar');
+				urlBar.bookmarkId = ReturnVal;
 				if (typeof callback === 'function') {
 					callback('complete');
 				}
