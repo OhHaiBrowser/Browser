@@ -27,7 +27,7 @@ let functions = {
 		controls.lbl_TabCount().textContent = OhHaiBrowser.tabs.count;
 	},
 	updateURLBar: function (webview, callback) {
-		controls.txt_urlbar().setValues(webview.getTitle(), webview.getURL());
+		controls.txt_urlbar().value = webview.getURL();
 		this.updatePageInfo(webview);
 		if (typeof callback == 'function') {
 			callback(true);

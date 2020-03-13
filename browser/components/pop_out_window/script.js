@@ -41,10 +41,10 @@ function domloaded(webview){
 	var isInternalPage = CurrentURL.indexOf(RunDir) !== -1;
 	if (!isInternalPage){
 		ProtcolCheck(webview);
-		Txt_URL.setValues(webview.getTitle(), webview.getURL());
+		Txt_URL.value = webview.getURL();
 	}else{
 		Pan_Cert.className = 'DoubleURLBtn Internal';
-		Txt_URL.setValues('', '');
+		Txt_URL.value = '';
 	}
 
 	Pan_Cert.classList.remove('Loading');

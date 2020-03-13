@@ -70,7 +70,8 @@
     }
   },
   "dependencies": {
-    "dexie": "^2.0.4"
+    "dexie": "^2.0.4",
+    "publicsuffixlist": "^0.3.0"
   },
   "devDependencies": {
     "electron": "^7.1.1",

@@ -71,8 +71,6 @@ class WebSession {
 			if(this.selected){
 				functions.updateURLBar(this.webview);
 				window.OhHaiBrowser.bookmarks.check(this.webview.getURL(),function(returnval){
-					console.log(returnval);
-					
 					window.OhHaiBrowser.bookmarks.updateBtn(returnval);
 				});
 			}

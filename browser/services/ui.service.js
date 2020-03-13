@@ -42,11 +42,7 @@ function createNavEvents() {
 		URlMenu.popup(remote.getCurrentWindow());
 	}, false);
 	controls.txt_urlbar().addEventListener('enter', function (event) {
-		validate.url(event.detail, (resp) => {
-			if(resp.valid) {
-				tabs.activePage.navigate(resp.url);
-			}
-		});
+		tabs.activePage.navigate(event.detail);
 	});	
 	//--------------------------------------------------------------------------------------------------------------
 	//URL bar functions

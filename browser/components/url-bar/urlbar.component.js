@@ -1,4 +1,9 @@
-let validate = require('../../system_assets/modules/OhHaiBrowser.Validation');
+const url = require('url');
+const PublicSuffixList = require('publicsuffixlist');
+const validate = require('../../system_assets/modules/OhHaiBrowser.Validation');
+
+var psl = new PublicSuffixList();
+psl.initializeSync();
 
 class UrlBar extends HTMLElement {
 	constructor() {
@@ -46,15 +51,27 @@ class UrlBar extends HTMLElement {
 			this.shadowRoot.getElementById('URLAutoComplete').classList.remove('AutoComplete_hidden');
 			if(e.keyCode === 13) {
 				const data = txtUrlBar.value;
-				this.dispatchEvent(new CustomEvent('enter', { detail: data}));
+				validate.url(data, (resp) => {
+					if(resp.valid) {
+						this.dispatchEvent(new CustomEvent('enter', { detail: resp.url}));
+					}
+				});
 			}
 		});
 	}
-	setValues(friendly, raw) {
+	get value(){
 		let txtUrlBar = this.shadowRoot.getElementById('URLBar');
-		txtUrlBar.value = friendly;
-		txtUrlBar.setAttribute('data-text-swap', raw);
-		txtUrlBar.setAttribute('data-text-original', friendly);
+		return txtUrlBar.getAttribute('data-text-swap');
+	}
+	set value(val){
+		let checkURI = tld1(val);
+
+		let txtUrlBar = this.shadowRoot.getElementById('URLBar');
+		txtUrlBar.setAttribute('data-text-swap', checkURI.url);
+
+		txtUrlBar.value = checkURI.tld1;
+		txtUrlBar.setAttribute('data-text-original', checkURI.tld1);
+
 		this.updateCertBtn();
 	}
 	updateCertBtn(override = ''){
@@ -92,3 +109,23 @@ class UrlBar extends HTMLElement {
 }
 
 module.exports.urlbar = UrlBar;
+
+function tld1(uri) {
+	uri = uri.startsWith('http://') || uri.startsWith('https://') ? uri : 'http://' + uri;
+	let txtURL = url.parse(uri);
+	let host = txtURL.host;
+	if(validate.isIpAddress(host)){
+		return {
+			secure: (txtURL.protocol.toLowerCase() === 'https:') ? true : false,
+			tld1: host,
+			url: txtURL.href
+		};
+	} else {
+		let dotSplit = psl.domain(host);
+		return {
+			secure: (txtURL.protocol.toLowerCase() === 'https:') ? true : false,
+			tld1: dotSplit,
+			url: txtURL.href
+		};
+	}
+}
