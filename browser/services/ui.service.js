@@ -35,11 +35,7 @@ function createNavEvents() {
 	controls.btn_back().addEventListener('click', tabs.activePage.goBack );
 	controls.btn_forward().addEventListener('click', tabs.activePage.goForward );	
 	controls.txt_urlbar().addEventListener('refresh', tabs.activePage.reload);
-	controls.txt_urlbar().addEventListener('contextmenu', (e) => {
-		e.preventDefault();
-		var URlMenu = window.OhHaiBrowser.ui.contextmenus.urlbar(controls.txt_urlbar());
-		URlMenu.popup(remote.getCurrentWindow());
-	}, false);
+
 	controls.txt_urlbar().addEventListener('enter', function (event) {
 		tabs.activePage.navigate(event.detail);
 	});	

@@ -1,6 +1,8 @@
 var {remote} = require('electron');
+const {Menu, MenuItem} = remote;
 var {Quicklinks} = require('../../system_assets/modules/OhHaiBrowser.Data');
 var core = require('../../system_assets/modules/OhHaiBrowser.Core');
+var {tabs} = require('../../services/tabs.service');
 
 module.exports = class FavoritesEl extends HTMLElement {
 	constructor() {
@@ -35,8 +37,13 @@ module.exports = class FavoritesEl extends HTMLElement {
 
 					QuickItem.addEventListener('contextmenu', (e) => {
 						e.preventDefault();
-						var QlMen = OhHaiBrowser.ui.contextmenus.quicklink(ThisItem.id, ThisItem.title, ThisItem.url, QuickItem);
-						QlMen.popup(remote.getCurrentWindow());
+						var NewMenu = new Menu();
+						NewMenu.append(new MenuItem({label: 'Open', click() { tabs.activePage.navigate(ThisItem.url); }}));
+						NewMenu.append(new MenuItem({label: 'Open in new tab', click() { tabs.add(ThisItem.url, undefined, { selected: true });}}));
+						NewMenu.append(new MenuItem({type: 'separator'}));
+						NewMenu.append(new MenuItem({label: 'Delete', click() { Quicklinks.Remove(ThisItem.id).then(() => { QuickItem.parentNode.removeChild(QuickItem); }); }}));
+
+						NewMenu.popup(remote.getCurrentWindow());
 					}, false);
 				});
 			}

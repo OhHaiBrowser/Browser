@@ -1,6 +1,9 @@
+const {clipboard, remote} = require('electron');
+const {Menu, MenuItem} = remote;
 const url = require('url');
 const PublicSuffixList = require('publicsuffixlist');
 const validate = require('../../system_assets/modules/OhHaiBrowser.Validation');
+const {tabs} = require('../../services/tabs.service');
 
 var psl = new PublicSuffixList();
 psl.initializeSync();
@@ -59,6 +62,15 @@ class UrlBar extends HTMLElement {
 				});
 			}
 		});
+
+		txtUrlBar.addEventListener('contextmenu', (e) => {
+			e.preventDefault();
+			var URlMenu = new Menu();
+			URlMenu.append(new MenuItem({label: 'Copy title', click() { tabs.activePage.getTitle(Pt => clipboard.writeText(Pt)); }}));
+			URlMenu.append(new MenuItem({label: 'Copy URL', click() { tabs.activePage.getURL(Purl => clipboard.writeText(Purl)); }}));
+			URlMenu.append(new MenuItem({label: 'Paste', click() { this.value = clipboard.readText(); }}));
+			URlMenu.popup(remote.getCurrentWindow());
+		}, false);
 	}
 	get value(){
 		let txtUrlBar = this.shadowRoot.getElementById('URLBar');

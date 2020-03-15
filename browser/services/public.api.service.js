@@ -82,59 +82,6 @@ module.exports.definePublicAPIs = () => {
 			}
 		},
 		ui: {
-			contextmenus: {
-				urlbar: (URLBar) => {
-					var URlMenu = new Menu();
-					URlMenu.append(new MenuItem({
-						label: 'Copy title',
-						click() {
-							tabs.activePage.getTitle(Pt => clipboard.writeText(Pt));
-						}
-					}));
-					URlMenu.append(new MenuItem({
-						label: 'Copy URL',
-						click() {
-							tabs.activePage.getURL(Purl => clipboard.writeText(Purl));
-						}
-					}));
-					URlMenu.append(new MenuItem({
-						label: 'Paste',
-						click() {
-							URLBar.value = clipboard.readText();
-						}
-					}));
-					return URlMenu;
-				},
-				quicklink: function (Id, Name, Url, Item) {
-					var NewMenu = new Menu();
-					NewMenu.append(new MenuItem({
-						label: 'Open',
-						click() {
-							tabs.activePage.navigate(Url);
-						}
-					}));
-					NewMenu.append(new MenuItem({
-						label: 'Open in new tab',
-						click() {
-							tabs.add(Url, undefined, {
-								selected: true
-							});
-						}
-					}));
-					NewMenu.append(new MenuItem({
-						type: 'separator'
-					}));
-					NewMenu.append(new MenuItem({
-						label: 'Delete',
-						click() {
-							Quicklinks.Remove(Id).then(() => {
-								Item.parentNode.removeChild(Item);
-							});
-						}
-					}));
-					return NewMenu;
-				}
-			},
 			navbar: functions,
 			tabbar,
 			toggleModel: (content, menuTitle) => {
