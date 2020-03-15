@@ -34,9 +34,10 @@ class UrlBar extends HTMLElement {
 		});
 
 		let txtUrlBar = this.shadowRoot.getElementById('URLBar');
-		txtUrlBar.addEventListener('click', () => {
+		txtUrlBar.addEventListener('click', (e) => {
 			if(txtUrlBar.value != txtUrlBar.getAttribute('data-text-swap')){
 				txtUrlBar.value = txtUrlBar.getAttribute('data-text-swap');
+				txtUrlBar.select();
 			}
 		});
 		txtUrlBar.addEventListener('focusout', () => {

@@ -6,7 +6,10 @@ module.exports = class FavoritesEl extends HTMLElement {
 	constructor() {
 		super();
 		const shadowEl = this.attachShadow({mode: 'open'});
-		shadowEl.innerHTML = '<ul id="Favlist"></ul>';
+		shadowEl.innerHTML = `
+			<link rel="stylesheet" href="${__dirname}/bookmarks.css"/>
+			<ul id="Favlist"></ul>
+		`;
 
 		this.updateData();
 	}
