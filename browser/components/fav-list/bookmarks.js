@@ -14,15 +14,16 @@ module.exports = class FavoritesEl extends HTMLElement {
 		`;
 
 		this.addEventListener('dragenter', (e) => {
-
+			showDragOverView(shadowEl, true);
 		});
 		this.addEventListener('dragleave', (e) => {
-
+			showDragOverView(shadowEl, false);
 		});
 		this.addEventListener('dragover', (e) => { e.preventDefault(); });
 		this.addEventListener('drop', (e) => {
 			e.preventDefault();
 			let data = event.dataTransfer.getData('Text');
+			showNewBookmarkView(shadowEl, data);
 		});
 
 		this.updateData();
@@ -86,4 +87,12 @@ function buildQuickLinksList(favlist){
 			});
 		}
 	});
+}
+
+function showDragOverView(shadowEl, active){
+
+}
+
+function showNewBookmarkView(shadowEl, data){
+
 }
