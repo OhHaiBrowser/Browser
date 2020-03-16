@@ -49,11 +49,26 @@ module.exports = class FavoritesEl extends HTMLElement {
 			}
 		});
 	}
-	add(){
-
+	add(url, title, icon, text, desc){
+		Quicklinks.Add(url, title, icon, text, desc).then((resp) => {
+			this.updateData();
+		});
 	}
-	remove(){
-
+	remove(id){
+		Quicklinks.Remove(id).then((resp) => {
+			this.updateData();
+		});
+	}
+	isBookmarked(url, callback){
+		Quicklinks.IsBookmarked(url).then((id) => {
+			if (typeof callback === 'function') {
+				callback(id);
+			}
+		}).catch(() => {
+			if (typeof callback === 'function') {
+				callback(null);
+			}
+		});
 	}
 };
 

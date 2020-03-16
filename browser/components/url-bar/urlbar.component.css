@@ -84,6 +84,7 @@ button, input[type=text] { border: none; }
             font-size: 14px;
             padding-top: -1px;
         }
+
         #Refresh::before{
             content: '\E72C';
         }

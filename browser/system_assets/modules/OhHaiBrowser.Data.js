@@ -1,5 +1,6 @@
 var Dexie = require('dexie');
 const db = new Dexie('ohhai_browser_db');
+
 //Version 1
 db.version(1).stores({
 	quicklinks: '++id,&url, title, icon, text, desc, timestamp',

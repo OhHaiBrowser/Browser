@@ -2,10 +2,17 @@
 module.exports.accordionPanel = class extends HTMLElement {
 	constructor(){
 		super();
-		this.addEventListener('click', (e) =>{
-			if(e.target.classList.contains('panel')){
-				this.showPanel(e.target);
-			}
+	}
+	connectedCallback(){
+		document.addEventListener('DOMContentLoaded', () => { 
+			Array.from(this.children).forEach(element => {
+				element.addEventListener('dragOverTitle', (e) => {
+					this.showPanel(e.detail);
+				});
+				element.addEventListener('clickTitle', (e) => {
+					this.showPanel(e.detail);
+				});
+			});
 		});
 	}
 	showPanel(panel){
@@ -39,6 +46,13 @@ module.exports.accordionItem = class extends HTMLElement {
 		this.accHeader = this.shadowRoot.querySelector('.acc-header');
 		this.accTitle = this.shadowRoot.querySelector('.acc-header .panTitle');
 		this.accBody = this.shadowRoot.querySelector('.acc-body');
+
+		this.accHeader.addEventListener('dragenter', (e) => {
+			this.dispatchEvent(new CustomEvent('dragOverTitle', {detail: this}));
+		});
+		this.accHeader.addEventListener('click', (e) => {
+			this.dispatchEvent(new CustomEvent('clickTitle', { detail: this}));
+		});
 	}
 
 	connectedCallback(){
