@@ -47,10 +47,10 @@ module.exports.accordionItem = class extends HTMLElement {
 		this.accTitle = this.shadowRoot.querySelector('.acc-header .panTitle');
 		this.accBody = this.shadowRoot.querySelector('.acc-body');
 
-		this.accHeader.addEventListener('dragenter', (e) => {
+		this.accHeader.addEventListener('dragenter', () => {
 			this.dispatchEvent(new CustomEvent('dragOverTitle', {detail: this}));
 		});
-		this.accHeader.addEventListener('click', (e) => {
+		this.accHeader.addEventListener('click', () => {
 			this.dispatchEvent(new CustomEvent('clickTitle', { detail: this}));
 		});
 	}
