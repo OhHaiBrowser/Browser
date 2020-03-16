@@ -20,3 +20,17 @@
 .bookmark a span{
 
 }
+
+#dragOverUi{
+    display: none;
+}
+#dragOverUi.active{
+    display: block;
+}
+
+#newFavUi{
+    display: none;
+}
+#newFavUi.active{
+    display: block;
+}

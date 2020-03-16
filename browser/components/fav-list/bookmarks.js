@@ -11,6 +11,8 @@ module.exports = class FavoritesEl extends HTMLElement {
 		shadowEl.innerHTML = `
 			<link rel="stylesheet" href="${__dirname}/bookmarks.css"/>
 			<ul id="Favlist"></ul>
+			<div id="dragOverUi"></div>
+			<div id="newFavUi"></div>
 		`;
 
 		this.addEventListener('dragenter', (e) => {
@@ -90,9 +92,12 @@ function buildQuickLinksList(favlist){
 }
 
 function showDragOverView(shadowEl, active){
-
+	let dragOverUi = shadowEl.getElementById('dragOverUi');
+	dragOverUi.classList.toggle('active', active);
 }
 
 function showNewBookmarkView(shadowEl, data){
-
+	let newFavUi = shadowEl.getElementById('newFavUi');
+	newFavUi.classList.add('active');
+	
 }
