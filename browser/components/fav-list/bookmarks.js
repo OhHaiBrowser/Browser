@@ -29,37 +29,7 @@ module.exports = class FavoritesEl extends HTMLElement {
 	}
 	updateData() {
 		let favlist = this.shadowRoot.getElementById('Favlist');
-		Quicklinks.List().then((FavItems) => {
-			if (!Array.isArray(FavItems) || !FavItems.length) {
-				favlist.innerHTML = `
-					<li class='NoData'>No bookmarks :(</li>
-				`;
-			} else {
-				FavItems.forEach((ThisItem) => {
-					favlist.innerHTML = '';
-					var QuickItem = core.generateElement(`
-					<li class='bookmark'>
-						<a href='javascript:OhHaiBrowser.tabs.activePage.navigate("${ThisItem.url}");'>
-							<img src='${ThisItem.icon === '' ? 'assets/imgs/favicon_default.png' : ThisItem.icon}'/>
-							<span>${ThisItem.title}</span>
-						</a>
-					</li>
-					`);
-					favlist.appendChild(QuickItem);
-
-					QuickItem.addEventListener('contextmenu', (e) => {
-						e.preventDefault();
-						var NewMenu = new Menu();
-						NewMenu.append(new MenuItem({label: 'Open', click() { tabs.activePage.navigate(ThisItem.url); }}));
-						NewMenu.append(new MenuItem({label: 'Open in new tab', click() { tabs.add(ThisItem.url, undefined, { selected: true });}}));
-						NewMenu.append(new MenuItem({type: 'separator'}));
-						NewMenu.append(new MenuItem({label: 'Delete', click() { Quicklinks.Remove(ThisItem.id).then(() => { QuickItem.parentNode.removeChild(QuickItem); }); }}));
-
-						NewMenu.popup(remote.getCurrentWindow());
-					}, false);
-				});
-			}
-		});
+		buildQuickLinksList(favlist);
 	}
 	add(url, title, icon, text, desc){
 		Quicklinks.Add(url, title, icon, text, desc).then((resp) => {
@@ -84,3 +54,36 @@ module.exports = class FavoritesEl extends HTMLElement {
 	}
 };
 
+function buildQuickLinksList(favlist){
+	Quicklinks.List().then((FavItems) => {
+		if (!Array.isArray(FavItems) || !FavItems.length) {
+			favlist.innerHTML = `
+				<li class='NoData'>No bookmarks :(</li>
+			`;
+		} else {
+			FavItems.forEach((ThisItem) => {
+				favlist.innerHTML = '';
+				var QuickItem = core.generateElement(`
+				<li class='bookmark'>
+					<a href='javascript:OhHaiBrowser.tabs.activePage.navigate("${ThisItem.url}");'>
+						<img src='${ThisItem.icon === '' ? 'assets/imgs/favicon_default.png' : ThisItem.icon}'/>
+						<span>${ThisItem.title}</span>
+					</a>
+				</li>
+				`);
+				favlist.appendChild(QuickItem);
+
+				QuickItem.addEventListener('contextmenu', (e) => {
+					e.preventDefault();
+					var NewMenu = new Menu();
+					NewMenu.append(new MenuItem({label: 'Open', click() { tabs.activePage.navigate(ThisItem.url); }}));
+					NewMenu.append(new MenuItem({label: 'Open in new tab', click() { tabs.add(ThisItem.url, undefined, { selected: true });}}));
+					NewMenu.append(new MenuItem({type: 'separator'}));
+					NewMenu.append(new MenuItem({label: 'Delete', click() { Quicklinks.Remove(ThisItem.id).then(() => { QuickItem.parentNode.removeChild(QuickItem); }); }}));
+
+					NewMenu.popup(remote.getCurrentWindow());
+				}, false);
+			});
+		}
+	});
+}
