@@ -16,6 +16,8 @@ db.version(2).stores({
 });
 db.open().then(function () {}).catch(function (err) { console.warn('database error occured', err); });
 
+module.exports.db = db;
+
 //===== Quicklink functions ====================================================
 module.exports.Quicklinks = {
 	List: () => {

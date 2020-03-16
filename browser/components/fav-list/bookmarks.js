@@ -49,4 +49,11 @@ module.exports = class FavoritesEl extends HTMLElement {
 			}
 		});
 	}
-}
+	add(){
+
+	}
+	remove(){
+
+	}
+};
+
