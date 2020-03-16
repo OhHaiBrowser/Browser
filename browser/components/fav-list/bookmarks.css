@@ -1,7 +1,15 @@
+.fillArea{
+    width: 100%;
+    height: 100%;
+}
+
 #Favlist{
     margin: 0;
     padding: 0;
     list-style: none;
+}
+#Favlist.hidden{
+    display: none;
 }
 
 .NoData{
@@ -23,14 +31,42 @@
 
 #dragOverUi{
     display: none;
+    padding-top: 20px;
+    text-align: center;
 }
 #dragOverUi.active{
     display: block;
 }
+    #dragOverUi .icon::before{
+        content: '\E734';
+        font-size: 50px;
+    }
+    #dragOverUi .icon{
+        font-family: "Segoe MDL2 Assets";
+    }
+
+    #dragOverUi .label{
+
+    }
 
 #newFavUi{
     display: none;
 }
 #newFavUi.active{
     display: block;
+}
+#newFavUi p{
+
+}
+#newFavUi #Txtname{
+
+}
+#newFavUi #Txturl{
+
+}
+#newFavUi #BtnSave{
+
+}
+#newFavUi #Btncancel{
+    
 }

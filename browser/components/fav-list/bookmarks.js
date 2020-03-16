@@ -10,9 +10,18 @@ module.exports = class FavoritesEl extends HTMLElement {
 		const shadowEl = this.attachShadow({mode: 'open'});
 		shadowEl.innerHTML = `
 			<link rel="stylesheet" href="${__dirname}/bookmarks.css"/>
-			<ul id="Favlist"></ul>
-			<div id="dragOverUi"></div>
-			<div id="newFavUi"></div>
+			<ul id="Favlist" class="fillArea"></ul>
+			<div id="dragOverUi" class="fillArea">
+				<p class="icon"></p>
+				<p class="label">Drop to create bookmark.</p>
+			</div>
+			<div id="newFavUi" class="fillArea">
+				<p>New bookmark</p>
+				<input type="text" value="" placeholder="name" id="Txtname"/>
+				<input type="text" value="" placeholder="url" id="Txturl"/>
+				<input type="button" value="Save" id="BtnSave"/>
+				<input type="button" value="Cancel" id="Btncancel"/>
+			</div>
 		`;
 
 		this.addEventListener('dragenter', (e) => {
@@ -25,6 +34,7 @@ module.exports = class FavoritesEl extends HTMLElement {
 		this.addEventListener('drop', (e) => {
 			e.preventDefault();
 			let data = event.dataTransfer.getData('Text');
+			console.log(data);
 			showNewBookmarkView(shadowEl, data);
 		});
 
@@ -92,11 +102,17 @@ function buildQuickLinksList(favlist){
 }
 
 function showDragOverView(shadowEl, active){
+	let favList = shadowEl.getElementById('Favlist');
+	favList.classList.toggle('hidden', active);
 	let dragOverUi = shadowEl.getElementById('dragOverUi');
 	dragOverUi.classList.toggle('active', active);
+
 }
 
 function showNewBookmarkView(shadowEl, data){
+	showDragOverView(shadowEl, false);
+	let favList = shadowEl.getElementById('Favlist');
+	favList.classList.add('hidden');
 	let newFavUi = shadowEl.getElementById('newFavUi');
 	newFavUi.classList.add('active');
 	
