@@ -13,6 +13,18 @@ module.exports = class FavoritesEl extends HTMLElement {
 			<ul id="Favlist"></ul>
 		`;
 
+		this.addEventListener('dragenter', (e) => {
+
+		});
+		this.addEventListener('dragleave', (e) => {
+
+		});
+		this.addEventListener('dragover', (e) => { e.preventDefault(); });
+		this.addEventListener('drop', (e) => {
+			e.preventDefault();
+			let data = event.dataTransfer.getData('Text');
+		});
+
 		this.updateData();
 	}
 	updateData() {
