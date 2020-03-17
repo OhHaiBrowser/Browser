@@ -34,7 +34,6 @@ module.exports = class FavoritesEl extends HTMLElement {
 		this.addEventListener('drop', (e) => {
 			e.preventDefault();
 			let data = event.dataTransfer.getData('Text');
-			console.log(data);
 			showNewBookmarkView(shadowEl, data);
 		});
 
@@ -115,5 +114,22 @@ function showNewBookmarkView(shadowEl, data){
 	favList.classList.add('hidden');
 	let newFavUi = shadowEl.getElementById('newFavUi');
 	newFavUi.classList.add('active');
-	
+
+	let name = shadowEl.getElementById('Txtname');
+	let url = shadowEl.getElementById('Txturl');
+
+	name.value = '';
+	url.value = data;
+
+	shadowEl.getElementById('BtnSave').addEventListener('click', () => {
+		Quicklinks.Add(url.value, name.value, icon, text, desc).then((resp) => {
+			this.updateData();
+			favList.classList.remove('hidden');
+			newFavUi.classList.remove('active');
+		});
+	});
+	shadowEl.getElementById('Btncancel').addEventListener('click', () => {
+		favList.classList.remove('hidden');
+		newFavUi.classList.remove('active');
+	});
 }
