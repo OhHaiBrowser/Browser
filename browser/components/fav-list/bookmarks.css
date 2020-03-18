@@ -54,19 +54,36 @@
 }
 #newFavUi.active{
     display: block;
+    box-sizing: border-box;
+    padding: 10px;
 }
 #newFavUi p{
-
+    margin: 5px 0;
+    border-bottom: 1px solid #999;
+}
+#newFavUi #ImgIcon{
+    width: 40px;
+    height: 40px;
+    margin: 10px auto 5px auto;
+    display: block;
 }
 #newFavUi #Txtname{
-
+    width: 100%;
+    margin: 5px 0;
+    padding: 3px;
 }
 #newFavUi #Txturl{
-
+    width: 100%;
+    margin: 5px 0;
+    padding: 3px;
 }
 #newFavUi #BtnSave{
-
+    width: 49%;
+    margin: 5px 0;
+    padding: 3px;
 }
 #newFavUi #Btncancel{
-    
+    width: 48%;
+    margin: 5px 0;
+    padding: 3px;
 }

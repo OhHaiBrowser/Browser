@@ -17,6 +17,7 @@ module.exports = class FavoritesEl extends HTMLElement {
 			</div>
 			<div id="newFavUi" class="fillArea">
 				<p>New bookmark</p>
+				<img src="#" id="ImgIcon"/>
 				<input type="text" value="" placeholder="name" id="Txtname"/>
 				<input type="text" value="" placeholder="url" id="Txturl"/>
 				<input type="button" value="Save" id="BtnSave"/>
@@ -115,6 +116,7 @@ function showNewBookmarkView(shadowEl, data){
 	let newFavUi = shadowEl.getElementById('newFavUi');
 	newFavUi.classList.add('active');
 
+	let icon = shadowEl.getElementById('ImgIcon');
 	let name = shadowEl.getElementById('Txtname');
 	let url = shadowEl.getElementById('Txturl');
 
@@ -122,8 +124,8 @@ function showNewBookmarkView(shadowEl, data){
 	url.value = data;
 
 	shadowEl.getElementById('BtnSave').addEventListener('click', () => {
-		Quicklinks.Add(url.value, name.value, icon, text, desc).then((resp) => {
-			this.updateData();
+		Quicklinks.Add(url.value, name.value, icon.src, '', '').then((resp) => {
+			buildQuickLinksList(favList);
 			favList.classList.remove('hidden');
 			newFavUi.classList.remove('active');
 		});
