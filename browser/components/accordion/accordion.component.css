@@ -35,7 +35,7 @@
 }
  .acc-body.active {
     opacity: 1;
-    overflow: hidden;          
+    overflow-y: auto;         
 }
  .acc-body.active::-webkit-scrollbar {
     width: 10px;
@@ -48,7 +48,3 @@
      .acc-body.active::-webkit-scrollbar-thumb:hover {
         background: rgb(110, 110, 110);
     }
-
-.acc-body.active:hover{
-    overflow-y: auto;
-}
