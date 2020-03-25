@@ -7,7 +7,6 @@ const histList = require('./components/hist-list/history');
 const { initUi } = require('./services/ui.service');
 const { runStartup } = require('./services/startup.service');
 const { definePublicAPIs } = require('./services/public.api.service');
-const settingsMenu = require('./components/settings/settings.component');
 
 //Define custom controls
 customElements.define('acc-panel', accordionPanel);
@@ -16,7 +15,6 @@ customElements.define('tab-item', tabItem);
 customElements.define('frame-controls', frameControls);
 customElements.define('fav-list', favoritesList);
 customElements.define('hist-list', histList);
-customElements.define('settings-menu', settingsMenu);
 customElements.define('url-bar', urlbar);
 definePublicAPIs();
 

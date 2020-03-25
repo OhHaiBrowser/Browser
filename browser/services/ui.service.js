@@ -5,6 +5,9 @@ const tabbar = require('../system_assets/modules/OhHaiBrowser.Tabbar.js');
 const {tabs} = require('./tabs.service');
 const { Quicklinks } = require('../system_assets/modules/OhHaiBrowser.Data');
 const Contextuals = require('../system_assets/modules/Contextuals/Contextuals');
+const AboutMenu = require('../system_assets/scripts/addons/about');
+const SettingsMenu = require('../system_assets/scripts/addons/settings');
+
 
 module.exports.initUi = () => {
 	createFrameControls();
@@ -29,7 +32,7 @@ function createFrameControls(){
 }
 
 function createNavEvents() {
-	//controls.btn_ToggleTabBar().addEventListener('click', tabbar.toggle );
+	controls.btn_ToggleTabBar().addEventListener('click', tabbar.toggle );
 	controls.btn_back().addEventListener('click', tabs.activePage.goBack );
 	controls.btn_forward().addEventListener('click', tabs.activePage.goForward );	
 	controls.txt_urlbar().addEventListener('refresh', tabs.activePage.reload);
@@ -59,6 +62,23 @@ function createNavEvents() {
 	});
 	//Right Controls
 	//-------------------------------------------------------------------------------------------------------------------------
+	controls.btn_overflow().addEventListener('click',() => {
+		new Contextuals.menu([
+			{title:'New tab', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
+				tabs.add(window.OhHaiBrowser.settings.homepage,undefined,{selected: true});
+			}},
+			{title:'New incognito tab', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
+				tabs.add(window.OhHaiBrowser.settings.homepage,undefined,{selected: true,mode:'incog'});
+			}},
+			{seperator:true},
+			{title:'Settings', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
+				window.OhHaiBrowser.ui.toggleModel(SettingsMenu(),'Settings');
+			}},
+			{title:'About', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
+				window.OhHaiBrowser.ui.toggleModel(AboutMenu(),'OhHai Browser');
+			}}
+		]);
+	});
 	tabbar.panel().addEventListener('contextmenu', (e) => {
 		switch (e.target.className) {
 		case 'CommandBtn AddTab':
