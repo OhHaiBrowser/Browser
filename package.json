@@ -74,8 +74,8 @@
     "publicsuffixlist": "^0.3.0"
   },
   "devDependencies": {
-    "electron": "^7.1.1",
-    "electron-builder": "^22.1.0",
+    "electron": "^8.2.0",
+    "electron-builder": "^22.4.1",
     "eslint": "^6.8.0"
   }
 }
