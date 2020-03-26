@@ -36,6 +36,7 @@
 	overflow-x: hidden;
 	transition: width 0.25s;
 	display: flex;
+	flex-direction: column;
 }
 
 .LeftMenuHidden {
@@ -64,10 +65,15 @@
 	padding: 5px;
 }
 
+.SidControls{
+	padding: 5px;
+}
+
 #Sid {
     background: var(--sidebar_bg);
     display: flex;
-    flex-flow: column;
+	flex-flow: column;
+	flex: auto;
 }
 
 #Sid .panel {
