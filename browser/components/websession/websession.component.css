@@ -58,7 +58,7 @@
 #BrowserWin{background-color:#fff;overflow: auto;flex: 1 1 auto; display: flex; flex-flow: row;}
 #BrowserWin webview{outline: none; flex: 1 1 auto;}
 #BrowserWin webview[hidden]{display:flex !important;visibility: hidden;}
-#BrowserWin webview.hidden {visibility: hidden;}
+#BrowserWin webview.Hidden {visibility: hidden; display: none;}
 
 
 
