@@ -121,9 +121,9 @@
 }
 
 #HideShowCount {
-    font-size: 11px;
+    font-size: 10px;
     position: relative;
-    top: -24px;
+    top: -29px;
 }
 
 .AddTab::before {
