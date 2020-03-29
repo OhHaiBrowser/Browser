@@ -79,7 +79,8 @@ class WebSession {
 			if(this.tab.title != null){
 				this.tab.title = this.webview.getTitle();
 			}
-			if(this.tab.icon != null){
+			console.log(this.tab.icon);
+			if(this.tab.icon == null || this.tab.icon == undefined){
 				this.tab.icon = 'assets/imgs/favicon_default.png';
 			}
 		};
