@@ -44,18 +44,18 @@
 
 .Center {
     display: -webkit-box;
-    width: 900px;
+    max-width: 900px;
     min-width: 300px;
     margin-left: auto;
     margin-right: auto;
-    box-flex: 2;
     -webkit-box-flex: 2;
+    box-flex: 2;
     transition: all 0.5s;
 }
 
 .CenterCenter {
-    box-flex: 2;
     -webkit-box-flex: 2;
+    box-flex: 2;
 }
 
 .CenterFocus {
