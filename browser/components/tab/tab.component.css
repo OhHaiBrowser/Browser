@@ -7,6 +7,8 @@
     min-width: 34px; 
     transition: background-color 0.5s; 
     cursor: pointer; 
+    border-radius: 5px;
+    margin-bottom: 5px;
 }
     .tab-mediabtn, .tab-favicon, .tab-close {
         width: 16px; 

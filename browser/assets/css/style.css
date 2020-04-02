@@ -58,7 +58,7 @@
 
 #LeftMenu .TabContainer {
 	max-height: none;
-	padding: 0;
+	padding: 5px;
 }
 
 #LeftMenu .tabcommands {

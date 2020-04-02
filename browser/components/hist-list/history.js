@@ -5,40 +5,53 @@ module.exports = class HistoryEl extends HTMLElement {
 		super();
 		const shadowEl = this.attachShadow({mode: 'open'});
 		shadowEl.innerHTML = `
-			<style>				
-				.Datetitle {
-					margin: 0;
-					padding: 10px;
-					background-color: #d2d4f2;
-					font-size: 13px;
+			<style>	
+				.HistList{
+					padding: 5px;
 				}
+					.HistDayList{
+						margin-bottom: 5px;
+						border-radius: 5px;
+					}			
+						.Datetitle {
+							margin: 0;
+							padding: 5px;
+							background-color: #d2d4f2;
+							font-size: 13px;
+							border-radius: 5px 5px 0 0;
+						}
+						.itemList{
+							padding: 5px;
+							background: #fff;
+							border-radius: 0 0 5px 5px;
+						}
 
-				.histitem {
-					margin: 10px 5px;
-				}
+							.histitem {
+								margin: 10px 5px;
+							}
 
-				.hist_img {
-					height: 18px;
-					width: 18px;
-					margin-right: 10px;
-					float: left;
-				}
+								.hist_img {
+									height: 18px;
+									width: 18px;
+									margin-right: 10px;
+									float: left;
+								}
 
-				.hist_link {
-					display: inline-block;
-					width: 100px;
-					height: 20px;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
-					line-height: 20px;
-					font-size: 13px;
-				}
+								.hist_link {
+									display: inline-block;
+									width: 100px;
+									height: 20px;
+									overflow: hidden;
+									text-overflow: ellipsis;
+									white-space: nowrap;
+									line-height: 20px;
+									font-size: 13px;
+								}
 
-				.hist_datetime {
-					float: right;
-					font-size: 13px;
-				}
+								.hist_datetime {
+									float: right;
+									font-size: 13px;
+								}
 			</style>
 			<div class="HistDiv">
 			</div>
@@ -54,15 +67,21 @@ module.exports = class HistoryEl extends HTMLElement {
 				domHistList.innerHTML = `
 					<div id="HistList" class="HistList">
 						${extract(arry).map(item => `
-							<p class='Datetitle'>${Convert_DateTitle(item.date)}</p>
-							${item.items.map((thisitem => `
-								<div class='histItem'>
-									<img class='hist_img' src='${thisitem.icon}'/>
-									<a class='hist_link' href='javascript:OhHaiBrowser.tabs.activePage.navigate("${thisitem.url}");'>${thisitem.title}</a>
-									<span class='hist_datetime'>${Convert_TimeStamp(thisitem.timestamp)}</span>
-									<div class='clear'></div>	
+
+							<div class='HistDayList'>
+								<p class='Datetitle'>${Convert_DateTitle(item.date)}</p>
+								<div class='itemList'>
+								${item.items.map((thisitem => `
+									<div class='histItem'>
+										<img class='hist_img' src='${thisitem.icon}'/>
+										<a class='hist_link' href='javascript:OhHaiBrowser.tabs.activePage.navigate("${thisitem.url}");'>${thisitem.title}</a>
+										<span class='hist_datetime'>${Convert_TimeStamp(thisitem.timestamp)}</span>
+										<div class='clear'></div>	
+									</div>
+								`)).join('')}
 								</div>
-							`)).join('')}
+							</div>
+
 						`).join('')}
 					<div>
 				`;

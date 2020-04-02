@@ -1,6 +1,6 @@
 
 
-#Tabs{max-height:-webkit-calc(100% - 38px);overflow:hidden;width:200px;outline:none;}
+#Tabs{max-height:-webkit-calc(100% - 38px);overflow:hidden;outline:none;}
 #Tabs ul{margin:0;padding:0;list-style:none;}
 
     /* Global tab styles */
