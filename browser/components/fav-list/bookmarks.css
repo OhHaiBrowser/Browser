@@ -13,7 +13,11 @@
 }
 
 .NoData{
-
+    text-align: center;
+    padding-top: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+    color: #fff;
 }
 
 .bookmark{
