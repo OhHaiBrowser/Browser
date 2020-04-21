@@ -1,5 +1,3 @@
-const {clipboard, remote} = require('electron');
-const {Menu, MenuItem} = remote;
 const {tabs} = require('./tabs.service');
 const validate = require('../system_assets/modules/OhHaiBrowser.Validation');
 const core = require('../system_assets/modules/OhHaiBrowser.Core');

@@ -26,11 +26,17 @@ module.exports.accordionPanel = class extends HTMLElement {
 		panel.classList.add('active');
 		panel.setAttribute('active', 'true');
 	}
+	panels(){
+		return this.children;
+	}
 };
 
 module.exports.accordionItem = class extends HTMLElement {
 	static get observedAttributes() {
-		return ['active'];
+		return [
+			'active',
+			'title'
+		];
 	}
 
 	constructor(){
@@ -65,11 +71,14 @@ module.exports.accordionItem = class extends HTMLElement {
 		this.accTitle.textContent = this.hasAttribute('title') ? this.getAttribute('title') : 'Title';
 	}
 
-	attributeChangedCallback(attrName){
+	attributeChangedCallback(attrName, oldVal, newVal){
 		switch(attrName){
 		case 'active':
 			this.accHeader.classList.toggle('active');
 			this.accBody.classList.toggle('active');
+			break;
+		case 'title': 
+			this.accTitle.textContent = newVal;
 			break;
 		}
 	}

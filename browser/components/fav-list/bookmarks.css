@@ -17,16 +17,32 @@
 }
 
 .bookmark{
-
+    padding: 5px;
 }
 .bookmark a{
-
+    background: #fff;
+    font-size: 14px;
+    display: flex;
+    flex-direction: row;
+    user-select: none;
+    height: 34px;
+    min-width: 34px;
+    transition: background-color 0.5s;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    text-decoration: none;
+    color: #000;
 }
 .bookmark a img{
-
+    height: 16px;
+    width: 16px;
+    margin: 9px;
 }
 .bookmark a span{
-
+    line-height: 34px;
+    flex: auto;
+    overflow: hidden;
 }
 
 #dragOverUi{

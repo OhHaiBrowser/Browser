@@ -128,7 +128,7 @@
 
 .AddTab::before {
     content: "+";
-    color: #fff;
+    color: #aba0a0;
 }
 
 .AddTab {
@@ -137,13 +137,17 @@
     margin: 10px auto;
     border-radius: 4px;
     border: none;
-    background-color: rgba(23, 36, 103, 0.6);
+    background-color: rgba(162, 167, 194, 0.2);
     transition: background-color 0.5s;
     cursor: pointer;
 }
 
+.AddTab:hover::before {
+    content: "+";
+    color: #fff;
+}
 .AddTab:hover {
-    background-color: rgba(23, 36, 103, 0.8);
+    background-color: rgba(162, 167, 194, 0.8);
 }
 
 .AddTab:active {
