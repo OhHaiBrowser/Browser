@@ -27,8 +27,14 @@ let functions = {
 		controls.lbl_TabCount().textContent = window.OhHaiBrowser.tabs.count;
 	},
 	updateURLBar: function (webview, callback) {
+		const favList = document.getElementById('FavoritesList');
 		controls.txt_urlbar().value = webview.getURL();
 		this.updatePageInfo(webview);
+
+		favList.isBookmarked(webview.getURL(), (id) => {
+			controls.txt_urlbar().bookmarkId = id;
+		});
+
 		if (typeof callback == 'function') {
 			callback(true);
 		}
