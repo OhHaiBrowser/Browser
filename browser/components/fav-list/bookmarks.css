@@ -75,12 +75,22 @@
 #newFavUi.active{
     display: block;
     box-sizing: border-box;
-    padding: 10px;
+    padding: 5px;
 }
-#newFavUi p{
-    margin: 5px 0;
-    border-bottom: 1px solid #999;
+
+#newFavUi > .panel {
+    background: #fff;
+    border-radius: 5px;
 }
+    #newFavUi > .panel > .header {
+        margin: 0;
+        padding: 5px;
+        background-color: #d2d4f2;
+        font-size: 13px;
+        border-radius: 5px 5px 0 0;
+    }
+
+
 #newFavUi #ImgIcon{
     width: 40px;
     height: 40px;
@@ -88,22 +98,22 @@
     display: block;
 }
 #newFavUi #Txtname{
-    width: 100%;
-    margin: 5px 0;
+    margin: 5px;
     padding: 3px;
+    box-sizing: border-box;
 }
 #newFavUi #Txturl{
-    width: 100%;
-    margin: 5px 0;
+    margin: 5px;
     padding: 3px;
+    box-sizing: border-box;
 }
 #newFavUi #BtnSave{
-    width: 49%;
-    margin: 5px 0;
+    width: 44%;
+    margin: 5px;
     padding: 3px;
 }
 #newFavUi #Btncancel{
-    width: 48%;
-    margin: 5px 0;
+    width: 43%;
+    margin: 5px;
     padding: 3px;
 }

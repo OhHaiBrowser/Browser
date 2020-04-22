@@ -16,12 +16,16 @@ module.exports = class FavoritesEl extends HTMLElement {
 				<p class="label">Drop to create bookmark.</p>
 			</div>
 			<div id="newFavUi" class="fillArea">
-				<p>New bookmark</p>
-				<img src="#" id="ImgIcon"/>
-				<input type="text" value="" placeholder="name" id="Txtname"/>
-				<input type="text" value="" placeholder="url" id="Txturl"/>
-				<input type="button" value="Save" id="BtnSave"/>
-				<input type="button" value="Cancel" id="Btncancel"/>
+				<div class='panel'>
+					<p class='header'>New bookmark</p>
+					<div class='form'>
+						<img src="#" id="ImgIcon"/>
+						<input type="text" value="" placeholder="name" id="Txtname"/>
+						<input type="text" value="" placeholder="url" id="Txturl"/>
+						<input type="button" value="Save" id="BtnSave"/>
+						<input type="button" value="Cancel" id="Btncancel"/>
+					</div>
+				</div>
 			</div>
 		`;
 
@@ -35,7 +39,7 @@ module.exports = class FavoritesEl extends HTMLElement {
 		this.addEventListener('drop', (e) => {
 			e.preventDefault();
 			let data = event.dataTransfer.getData('Text');
-			showNewBookmarkView(shadowEl, data);
+			this.add(data, '', '');
 		});
 
 		this.updateData();
@@ -44,9 +48,37 @@ module.exports = class FavoritesEl extends HTMLElement {
 		let favlist = this.shadowRoot.getElementById('Favlist');
 		buildQuickLinksList(favlist);
 	}
-	add(url, title, icon, text, desc){
-		Quicklinks.Add(url, title, icon, text, desc).then((resp) => {
-			this.updateData();
+	add(url, title, icon){
+		const URLBar = document.getElementById('URLBar');
+		const sideBar = document.getElementById('Sid');
+		sideBar.showPanel(sideBar.panels().item(1));
+
+		showDragOverView(this.shadowRoot, false);
+		let favList = this.shadowRoot.getElementById('Favlist');
+		favList.classList.add('hidden');
+		let newFavUi = this.shadowRoot.getElementById('newFavUi');
+		newFavUi.classList.add('active');
+	
+		let iconEl = this.shadowRoot.getElementById('ImgIcon');
+		let nameEl = this.shadowRoot.getElementById('Txtname');
+		let urlEl = this.shadowRoot.getElementById('Txturl');
+	
+		iconEl.src = icon;
+		nameEl.value = title;
+		urlEl.value = url;
+	
+		this.shadowRoot.getElementById('BtnSave').addEventListener('click', () => {
+			Quicklinks.Add(urlEl.value, nameEl.value, iconEl.src, '', '').then((resp) => {
+				buildQuickLinksList(favList);
+				favList.classList.remove('hidden');
+				newFavUi.classList.remove('active');
+				URLBar.bookmarkId = resp;
+			});
+		});
+		this.shadowRoot.getElementById('Btncancel').addEventListener('click', () => {
+			favList.classList.remove('hidden');
+			newFavUi.classList.remove('active');
+			URLBar.bookmarkId = null;
 		});
 	}
 	remove(id){
@@ -107,31 +139,4 @@ function showDragOverView(shadowEl, active){
 	let dragOverUi = shadowEl.getElementById('dragOverUi');
 	dragOverUi.classList.toggle('active', active);
 
-}
-
-function showNewBookmarkView(shadowEl, data){
-	showDragOverView(shadowEl, false);
-	let favList = shadowEl.getElementById('Favlist');
-	favList.classList.add('hidden');
-	let newFavUi = shadowEl.getElementById('newFavUi');
-	newFavUi.classList.add('active');
-
-	let icon = shadowEl.getElementById('ImgIcon');
-	let name = shadowEl.getElementById('Txtname');
-	let url = shadowEl.getElementById('Txturl');
-
-	name.value = '';
-	url.value = data;
-
-	shadowEl.getElementById('BtnSave').addEventListener('click', () => {
-		Quicklinks.Add(url.value, name.value, icon.src, '', '').then((resp) => {
-			buildQuickLinksList(favList);
-			favList.classList.remove('hidden');
-			newFavUi.classList.remove('active');
-		});
-	});
-	shadowEl.getElementById('Btncancel').addEventListener('click', () => {
-		favList.classList.remove('hidden');
-		newFavUi.classList.remove('active');
-	});
 }

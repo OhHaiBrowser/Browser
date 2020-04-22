@@ -44,14 +44,12 @@ function createNavEvents() {
 	//URL bar functions
 	//-----------------------------------------------------------------------------------------------------
 	controls.txt_urlbar().addEventListener('favorited', (e) => {
-		var popuplocation = {
-			'left': e.currentTarget.offsetLeft,
-			'top': e.currentTarget.offsetTop
-		};
+		const favBar = document.getElementById('FavoritesList');
+
 		if(e.detail) {
 			//Add new bookmark
 			const cSession = tabs.getCurrent();
-			window.OhHaiBrowser.bookmarks.add(cSession.webview.getTitle(), cSession.webview.getURL(), '', '', popuplocation, function (newqlink) {});
+			favBar.add(cSession.webview.getURL(), cSession.webview.getTitle(), '')
 		} else {
 			//Remove bookmark	
 			var ThisId = Number(controls.txt_urlbar().bookmarkId);
