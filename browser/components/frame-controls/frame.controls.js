@@ -17,6 +17,11 @@ class FrameControls extends HTMLElement {
 	setupWindowsControls() {
 		this.shadowRoot.innerHTML = `
             <style>
+                @font-face {
+                    font-family: Segoe MDL2 Assets;
+                    src: url("../../assets/fonts/SegMDL2.ttf");
+                }
+
                 #window-controls {
                     display: grid;
                     grid-template-columns: repeat(3, 46px);

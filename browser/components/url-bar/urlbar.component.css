@@ -1,3 +1,8 @@
+@font-face {
+	font-family: Segoe MDL2 Assets;
+	src: url("../../assets/fonts/SegMDL2.ttf");
+}
+
 *{ margin: 0; padding: 0; box-sizing: border-box; outline: none; font-family: Arial, Helvetica, sans-serif;}
 button, input[type=text] { border: none; }
 

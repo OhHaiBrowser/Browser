@@ -3,6 +3,11 @@
 @import url("./navbar.css");
 @import	url("../../system_assets/modules/Contextuals/Contextuals.css");
 
+@font-face {
+	font-family: Segoe MDL2 Assets;
+	src: url("../fonts/SegMDL2.ttf");
+}
+
 * {
 	margin: 0;
 	padding: 0;
