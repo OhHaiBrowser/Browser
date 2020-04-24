@@ -2,6 +2,7 @@ var {Settings} = require('./../../modules/OhHaiBrowser.Data');
 var core = require('./../../modules/OhHaiBrowser.Core');
 
 module.exports = function load(){
+
 	let settingsMenu = core.generateElement(`
 		<div class='SettingsList'>
 			<p>When browser opens</p>
@@ -53,43 +54,39 @@ module.exports = function load(){
 	// On Load functions
 	var IP_LoadDefault = settingsMenu.querySelector('#Rad_LoadDefault');
 	IP_LoadDefault.addEventListener('click',()=>{
-		Settings.Set('Launch',IP_LoadDefault.value,function(){});
+		Settings.Set('Launch',IP_LoadDefault.value);
 	});
 	var IP_LoadNew = settingsMenu.querySelector('#Rad_LoadNew');
 	IP_LoadNew.addEventListener('click',()=>{
-		Settings.Set('Launch',IP_LoadNew.value,function(){});
+		Settings.Set('Launch',IP_LoadNew.value);
 	});
 
-	Settings.Get('Launch',function(item){
-		if(item != undefined){
-			if(item.value == 'fresh'){
-				IP_LoadNew.setAttribute('checked','checked');
-			}else{
-				IP_LoadDefault.setAttribute('checked','checked');
-			}
+	Settings.Get('Launch').then((item) => {
+		if(item.value == 'fresh'){
+			IP_LoadNew.setAttribute('checked','checked');
 		}else{
 			IP_LoadDefault.setAttribute('checked','checked');
 		}
+	}).catch(() => {
+		IP_LoadDefault.setAttribute('checked','checked');
 	});
 
 	// Home Page functions
 	var Input2_Text = settingsMenu.querySelector('#Txt_Homepage');
-	Input2_Text.setAttribute('onchange','Settings.Set(\'Home\',this.value,function(){});');
+	Input2_Text.setAttribute('onchange','Settings.Set(\'Home\',this.value);');
 	var SetHome_Default = settingsMenu.querySelector('#A_DefaultHome');
-	SetHome_Default.setAttribute('href','javascript:Settings.Set(\'Home\',\'default\',function(){});');
+	SetHome_Default.setAttribute('href','javascript:Settings.Set(\'Home\',\'default\');');
 
-	Settings.Get('Home',function(item){
-		if(item != undefined){
-			Input2_Text.setAttribute('value',item.value);
-		}else{
-			Input2_Text.setAttribute('value','default');
-		}
+	Settings.Get('Home').then((item) => {
+		Input2_Text.setAttribute('value',item.value);
+	}).catch(() => {
+		Input2_Text.setAttribute('value','default');
 	});
 
 	// Search functions
 	var Search_Input1 = settingsMenu.querySelector('#Settings_Search');
 	Search_Input1.addEventListener('change',()=>{
-		Settings.Set('Search',Search_Input1.value,function(){});
+		Settings.Set('Search',Search_Input1.value);
 	});
 
 	var Searches =[{Name:'Google' ,URL:'https://www.google.co.uk/search?q='},{Name:'Yahoo',URL:'https://search.yahoo.com/search;?p='},{Name:'Bing',URL:'http://www.bing.com/search?go=Submit&q='},{Name:'Duck duck go',URL:'https://duckduckgo.com/?t=h_&q='}];
@@ -97,11 +94,9 @@ module.exports = function load(){
 		let Search_Option = core.generateElement(`
 			<option value='${item.URL}'>${item.Name}</option>
 		`);
-		Settings.Get('Search',function(sitem){
-			if(item != undefined){
-				if(item.URL == sitem.value){
-					Search_Option.setAttribute('selected','selected');
-				}
+		Settings.Get('Search').then((sitem) => {
+			if(item.URL == sitem.value){
+				Search_Option.setAttribute('selected','selected');
 			}
 		});
 		Search_Input1.appendChild(Search_Option);
@@ -109,10 +104,10 @@ module.exports = function load(){
 		
 	// Adblocker functions
 	//var IP_AdBlockYes =	settingsMenu.querySelector('#Rad_AdBlockYes');
-	//IP_AdBlockYes.setAttribute('onclick','Settings.Set("adBlock",this.value,function(){});');
+	//IP_AdBlockYes.setAttribute('onclick','Settings.Set("adBlock",this.value);');
 
 	//var IP_AdBlockNo = settingsMenu.querySelector('#Rad_AdBlockNo');
-	//IP_AdBlockNo.setAttribute('onclick','Settings.Set("adBlock",this.value,function(){});');
+	//IP_AdBlockNo.setAttribute('onclick','Settings.Set("adBlock",this.value);');
 
 	//Settings.Get('adBlock',function(item){
 	//	if(item != undefined){
@@ -128,10 +123,10 @@ module.exports = function load(){
 
 	
 	//var IP_TrackBlockYes = settingsMenu.querySelector('#Rad_TrackBlockYes');
-	//IP_TrackBlockYes.setAttribute('onclick','Settings.Set("trackBlock",this.value,function(){});');
+	//IP_TrackBlockYes.setAttribute('onclick','Settings.Set("trackBlock",this.value);');
 		
 	//var IP_TrackBlockNo = settingsMenu.querySelector('#Rad_TrackBlockNo');
-	//IP_TrackBlockNo.setAttribute('onclick','Settings.Set("trackBlock",this.value,function(){});');
+	//IP_TrackBlockNo.setAttribute('onclick','Settings.Set("trackBlock",this.value);');
 
 	//Settings.Get("trackBlock",function(item){
 	//	if(item != undefined){

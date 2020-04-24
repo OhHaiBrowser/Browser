@@ -1,0 +1,101 @@
+/* Core tab styles */
+.ohhai-tab {
+    display: flex; 
+    flex-direction: row; 
+    user-select: none; 
+    height: 34px; 
+    min-width: 34px; 
+    transition: background-color 0.5s; 
+    cursor: pointer; 
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+    .tab-mediabtn, .tab-favicon, .tab-close {
+        width: 16px; 
+        height: 16px; 
+        margin: 9px;
+    }
+        .tab-mediabtn.playing {}
+        .tab-mediabtn.paused {}
+    .tab-title {
+        font-size: 13px; 
+        flex: 1; 
+        margin: 7px 4px 7px 4px; 
+        height: 20px; 
+        overflow: hidden; 
+        text-overflow: ellipsis; 
+        white-space: nowrap; 
+        line-height: 20px;
+    }
+    .tab-close {
+        border-radius: 8px; 
+        transition: background 0.3s, opacity 0.3s; 
+        margin: 9px 5px; 
+        opacity: 0;
+    }
+        .tab-close::before {
+            content: "\2716"; 
+            line-height: 16px; 
+            width: 16px; 
+            text-align: center; 
+            display: block; 
+            font-size: 10px;
+        }
+            .tab-close:hover::before {
+                color:#fff;
+            }
+        .tab-close:hover {
+            background: #f53355;
+        }
+
+.ohhai-tab.selected .tab-close, .ohhai-tab:hover .tab-close {
+    opacity: 1;
+}
+
+.hidden, .ohhai-tab.pinned .tab-title, .ohhai-tab.pinned .tab-close {
+    display: none;
+}
+
+.ohhai-tab.default, .ohhai-tab.incog {
+    width: 100%; 
+}
+
+/* Default tab styles */   
+.ohhai-tab.default {   
+    background: var(--tab_default_bg);
+}
+    .ohhai-tab.default:hover {
+        background: var(--tab_default_hover_bg);
+    }
+    .ohhai-tab.default.selected {
+        background: var(--tab_default_selected_bg); 
+    }
+
+/* Incog tab styles */
+.ohhai-tab.incog {
+    background: var(--tab_incog_bg);
+}
+    .ohhai-tab.incog:hover {
+
+    }
+    .ohhai-tab.incog .tab-title {
+        color:#fff;
+    }
+    .ohhai-tab.incog .tab-close::before {
+        color: #e4e4e4;
+    }
+    .ohhai-tab.incog.selected {
+        background: var(--tab_incog_selected);
+    }
+
+/* Pinned tab styles */
+.ohhai-tab.pinned {
+    background: var(--tab_pinned_bg); 
+    width: 34px;
+}
+    .ohhai-tab.pinned:hover {
+        background: var(--tab_pinned_hover_bg);
+    }
+    .ohhai-tab.pinned.selected {
+        background: var(--tab_pinned_selected_bg); 
+    }

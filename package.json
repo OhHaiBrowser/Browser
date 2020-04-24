@@ -1,5 +1,5 @@
 {
-  "name": "OhHaiBrowser",
+  "name": "ohhaibrowser",
   "version": "3.3.0",
   "license": "ISC",
   "description": "Browser the internet",
@@ -10,7 +10,8 @@
   },
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "lint": "eslint -c .eslintrc.json . --ext .js --fix",
+    "debug": "electron .",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "postinstall": "electron-builder install-app-deps"
@@ -21,23 +22,23 @@
     "node_modules"
   ],
   "build": {
-    "icon": "window/assets/icon.png",
+    "icon": "browser/assets/imgs/frame/icon.png",
     "appId": "OhHai.Browser",
     "mac": {
-      "icon": "window/assets/mac_icon.icns",
+      "icon": "browser/assets/imgs/frame/mac_icon.icns",
       "category": "public.app-category.utilities",
       "target": [
         "default"
       ]
     },
     "linux": {
-      "icon": "window/assets/linux_icon.png",
+      "icon": "browser/assets/imgs/frame/linux_icon.png",
       "target": [
         "deb"
       ]
     },
     "win": {
-      "icon": "window/assets/win_icon.ico",
+      "icon": "browser/assets/imgs/frame/win_icon.ico",
       "target": [
         {
           "target": "nsis",
@@ -70,10 +71,11 @@
   },
   "dependencies": {
     "dexie": "^2.0.4",
-    "electron-store": "^3.3.0"
+    "publicsuffixlist": "^0.3.0"
   },
   "devDependencies": {
-    "electron": "^4.0.4",
-    "electron-builder": "^20.38.5"
+    "electron": "^8.2.0",
+    "electron-builder": "^22.4.1",
+    "eslint": "^6.8.0"
   }
 }

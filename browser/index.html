@@ -1,123 +1,76 @@
-<html>
-
-<head>
-	<title>OhHai Browser</title>
-	<link rel="StyleSheet" href="system_assets/style.css" />
-	<link id="ThemeStyle" rel="StyleSheet" href="themes/default.css" />
-	<link rel="StyleSheet" href="system_assets/ohhai_ui.css" />
-	<!--Window controls-->
-	<link rel="StyleSheet" href="../window/controls.css" />
-</head>
-
-<body>
-	<input type="hidden" id="CurWebWin" value="">
-	<div id="AppBound">
-		<header class="Navbar">
-			<!--== nav controls start ================================================================================-->
-			<div class="ControlsArea">
-				<div class="FlexControl">
-					<button id="HideShow" title="Open or close tab menu" class="ControlButton TabMenu">
-						<span id="HideShowCount">1</span>
-					</button>
-				</div>
-				<div class="Center">
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>OhHai Browser</title>
+		<link rel="StyleSheet" href="assets/css/style.css" />
+		<link id="ThemeStyle" rel="StyleSheet" href="themes/default.css" />
+	</head>
+	<body>
+		<div id="AppBound">
+			<header class="Navbar">
+				<!--== nav controls start ================================================================================-->
+				<div class="ControlsArea">
 					<div class="FlexControl">
-						<button id="Back" title="Click to go back" class="ControlButton Back"></button>
+						<button id="HideShow" title="Open or close tab menu" class="ControlButton TabMenu">
+							<span id="HideShowCount">1</span>
+						</button>
 					</div>
-					<div id="URLBackColour" class="CenterCenter">
-						<a id="SecureCheck" class="DoubleURLBtn"></a>
-						<input class="URLBar" type="text" id="URLBar" />
-						<button id="BtnQuicklink" class="URLButton"></button>
-						<button id="Refresh" title="Refresh this page" class="URLButton Refresh"></button>
-						<div id="URLAutoComplete" class="URL_AutoComplete AutoComplete_hidden"></div>
-					</div>
-					<button id="Forward" title="Click to go forward" class="ControlButton Forward"></button>
-				</div>
-				<div class="FlexControl">
-					<button id="Menu" title="Browser options menu" class="ControlButton OverflowMenu"></button>
-				</div>
-			</div>
-			<!--== nav controls end ==================================================================================-->
-		</header>
-
-		<div id="Content">
-			<div id="LeftMenu" class="OhHai-TabMenu LeftMenuShow">
-				<div id="leftAccordion">
-					<div class="acc_panel acc_active">
-						<div class="acc_header">
-							<span class="acc_title">Tabs</span>
-							<span class="acc_controls">
-							</span>
+					<div class="Center">
+						<div class="FlexControl">
+							<button id="Back" title="Click to go back" class="ControlButton Back"></button>
 						</div>
-						<div class="acc_content">
+						<div class="CenterCenter">
+							<url-bar id="URLBar"></url-bar>
+						</div>
+						<div class="FlexControl">
+							<button id="Forward" title="Click to go forward" class="ControlButton Forward"></button>
+						</div>
+					</div>
+					<div class="FlexControl">
+						<button id="Menu" title="Browser options menu" class="ControlButton OverflowMenu"></button>
+					</div>
+				</div>
+				<!--== nav controls end ==================================================================================-->
+			</header>
+
+			<div id="Content">
+				<div id="LeftMenu" class="OhHai-TabMenu LeftMenuShow">
+					<acc-panel id="Sid">
+						<acc-item title='Tabs' active='true'>
 							<div class="TabContainer">
 								<div id="Tabs">
-									<ul id="tabs-dock" class="ohhai-docktabs"></ul>
-									<ul id="tabs-menu" class="ohhai-maintabs"></ul>
+									<div id="tabs-dock" class="ohhai-docktabs"></div>
+									<div id="tabs-menu" class="ohhai-maintabs"></div>
 								</div>
-								<button id="AddTab" title="Add a new tab" onclick="AddTabButton();"
-									class="CommandBtn AddTab"></button>
+								<button id="AddTab" title="Add a new tab" class="CommandBtn AddTab"></button>
 							</div>
-						</div>
-					</div>
-					<div class="acc_panel">
-						<div class="acc_header">
-							<span class="acc_title">Bookmarks</span>
-							<span class="acc_controls">
-							</span>
-						</div>
-						<div class="acc_content">
-							<div id="BookmarkContainer"></div>
-						</div>
-					</div>
-					<div class="acc_panel">
-						<div class="acc_header">
-							<span class="acc_title">History</span>
-							<span class="acc_controls">
-							</span>
-						</div>
-						<div class="acc_content">
-							<div id="HistoryContainer"></div>
-						</div>
-					</div>
+						</acc-item>
+						<acc-item title='Bookmarks'>
+							<fav-list id="FavoritesList"></fav-list>
+						</acc-item>
+						<acc-item title='History'>
+							<hist-list id="HistoryList"></hist-list>
+						</acc-item>
+					</acc-panel>
 				</div>
+				<div id="BrowserWin"></div>
 			</div>
-			<div id="BrowserWin"></div>
 		</div>
-	</div>
 
-	<div id='BlurBg' style='display:none;'>
-	</div>
-	<div id="modelPopup" style='display:none;'>
-		<div class="modeltitleBar">
-			<span class="modeltitle">title</span>
-			<button class="modelClose">x</button>
+		<div id='BlurBg' style='display:none;'>
 		</div>
-		<div id="modelContent"></div>
-	</div>
-	<div id="lockedPopup" style='display:none;'>
-		<input type="password" placeholder="" id="" />
-		<input type="button" value="Unlock" id="" />
-	</div>
+		<div id="modelPopup" style='display:none;'>
+			<div class="modeltitleBar">
+				<span class="modeltitle">title</span>
+				<button class="modelClose">x</button>
+			</div>
+			<div id="modelContent"></div>
+		</div>
 
-	<!--== window controls start =============================================================================-->
-	<ul id="Win_Controls" class="Window_Controls">
-		<li><a id="Left_FrameBtn" class="Left_FrameBtn"></a></li>
-		<li><a id="Center_FrameBtn" class="Center_FrameBtn"></a></li>
-		<li><a id="Right_FrameBtn" class="Right_FrameBtn"></a></li>
-	</ul>
-	<!--== window controls end ===============================================================================-->
-
-	<!-- Load 3rd party & browser window scripts -->
-	<script src="../window/functions.js"></script>
-	<script>
-		window.$ = window.jQuery = require('./system_assets/scripts/jquery-2.1.4.min.js');
-	</script>
-	<script src="system_assets/scripts/jquery-ui.min.js"></script>
-	<!-- Load main functionality scripts -->
-	<script src="system_assets/scripts/browser_framework.js"></script>
-	<script src="system_assets/services/startup.js"></script>
-	<script src="system_assets/components/nav_bar/functions.js"></script>
-</body>
-
+		<!--== window controls start =============================================================================-->
+		<frame-controls id="frameControls"></frame-controls>
+		<!--== window controls end ===============================================================================-->
+	</body>
 </html>

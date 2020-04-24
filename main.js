@@ -1,76 +1,14 @@
 'use strict';
-const {electron,app, protocol,BrowserWindow,globalShortcut} = require('electron'),
-	Store = require('electron-store');
+const {electron,app, protocol,globalShortcut} = require('electron');
+const {MainWindow} = require('./browser/components/main_window/mainwindow');
 
 let mainWindow = null;
 global.sharedObject = {prop1: process.argv};
 
-// First instantiate the class
-const store = new Store({
-	// We'll call our data file 'user-preferences'
-	name: 'window-state',
-	schema: {
-		windowBounds: {
-			type: 'object',
-			default: {width: 900, height: 600}
-		},
-		isMaximised: {
-			type: 'boolean',
-			default: false
-		}
-	}
-});
-
-let { width, height } = store.get('windowBounds');
-
-function CreateWindow(){
-
-	// Create the browser window.
-	mainWindow = new BrowserWindow({
-		width: width,
-		height: height,
-		frame: false,
-		icon: `${__dirname}/window/assets/icon.png`,
-		show: false,
-		minHeight: 350,
-		minWidth: 485,
-		webPreferences: {
-			nodeIntegration: true
-		}
-	});
-
-	if(store.get('isMaximised')){
-		mainWindow.maximize();
-	}
-
-	mainWindow.setMenu(null);	
-	mainWindow.loadURL(`file://${__dirname}/browser/index.html`);
-
-	mainWindow.on('closed', function () {
-		// Dereference the window object, usually you would store windows
-		// in an array if your app supports multi windows, this is the time
-		// when you should delete the corresponding element.
-		mainWindow = null;
-	});
-
-	mainWindow.show();
-	mainWindow.focus();
-
-	mainWindow.on('resize', () => {
-		let { width, height } = mainWindow.getBounds();
-		if(!mainWindow.isMaximized()){
-			store.set('windowBounds', { width, height });
-		}
-		store.set('isMaximised',mainWindow.isMaximized());
-	});
-
-}
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
-
-	CreateWindow();
+	mainWindow = new MainWindow();
 
 	globalShortcut.register('CommandOrControl+Shift+D', () => {
 		if(mainWindow.isFocused() == true){
@@ -78,11 +16,9 @@ app.on('ready', function() {
 		}
 	});
 
-	protocol.registerStringProtocol('mailto', function (req, cb) {
+	protocol.registerStringProtocol('mailto', function (req) {
 		electron.shell.openExternal(req.url);
-		return null;
-	}, function (error) {});
-
+	});
 });
 
 // Quit when all windows are closed.
@@ -98,6 +34,6 @@ app.on('activate', function () {
 	// On macOS it's common to re-create a window in the app when the
 	// dock icon is clicked and there are no other windows open.
 	if (mainWindow === null) {
-		CreateWindow()
+		mainWindow = new MainWindow();
 	}
 });

@@ -1,5 +1,6 @@
 var Dexie = require('dexie');
 const db = new Dexie('ohhai_browser_db');
+
 //Version 1
 db.version(1).stores({
 	quicklinks: '++id,&url, title, icon, text, desc, timestamp',
@@ -14,90 +15,200 @@ db.version(2).stores({
 	currentsession: '&sessionid, url, icon, title, mode, parent, timestamp',
 	firstrun: null
 });
-db.open().then(function () {}).catch(function (err) {console.warn('database error occured', error)});
+db.open().then(function () {}).catch(function (err) { console.warn('database error occured', err); });
+
+module.exports.db = db;
 
 //===== Quicklink functions ====================================================
 module.exports.Quicklinks = {
-	List: function(callbackfun){
-		db.quicklinks.toArray(callbackfun);
+	List: () => {
+		return new Promise((resolve) => {
+			db.quicklinks.toArray((arry) => {
+				resolve(arry);
+			});
+		});
 	},
-	Add: function(u,t,i,ut,d,callbackfun){
-		db.quicklinks.add({url: u, title: t, icon: i,text: ut,desc: d, timestamp: Date.now()}).then(callbackfun);
+	Add: (u, t, i, ut, d) => {
+		return new Promise((resolve, reject) => {
+			db.quicklinks.add({url: u, title: t, icon: i,text: ut,desc: d, timestamp: Date.now()}).then((newqlink) => {
+				var ReturnVal = ((newqlink != 0 || -1) ? newqlink : null);
+				if (ReturnVal != null) {
+					resolve(ReturnVal);
+				} else {
+					reject('error');
+				}
+			});
+		});
 	},
-	Remove: function(i,callbackfun){
-		db.quicklinks.where('id').equals(i).delete().then(callbackfun);
+	Remove: (i) => {
+		return new Promise((resolve, reject) => {
+			db.quicklinks.where('id').equals(i).delete().then((recordsdeleted) => {
+				if (recordsdeleted != 0 || undefined) {
+					resolve();
+				} else {
+					reject(false);
+				}
+			});
+		});
+		
 	},
-	IsBookmarked: function(url,callbackfun){
-		db.quicklinks.where('url').equals(url).first(callbackfun);
+	IsBookmarked: (url) => {
+		return new Promise((resolve, reject) => {
+			db.quicklinks.where('url').equals(url).first((item) => {
+				if (item != undefined) {
+					resolve(item.id);
+				} else {
+					reject('no item');
+				}
+			});
+		});
 	}
 };
   
 //===== History functions ======================================================
 module.exports.History = {
-	List: function(callbackfun){
-		db.history.reverse().toArray(callbackfun);
-	},
-	ListMostViewed: function(callbackfun){
-		db.history.orderBy('parentSite').limit(9).uniqueKeys(callbackfun);
-	},
-	GetItemByID: function(id,callbackfun){
-		db.history.where('parentSite').equals(id).first(callbackfun);
-	},
-	Add: function(u,t,i,ps){
-		db.history.add({url: u, title: t, icon: i,visitCount: 1,lastVisit: Date.now(),parentSite: ps,extraData:'',timestamp: Date.now() }).then(function(){
-			//Complete
-		}).catch(function(error){
-			//Error
+	List: () => {
+		return new Promise((resolve) => {
+			db.history.reverse().toArray((arry) => {
+				resolve(arry);
+			});
 		});
 	},
-	GetLastItem: function(callbackfun){
-		db.history.orderBy('timestamp').last(callbackfun);
+	ListMostViewed: () => {
+		return new Promise((resolve) => {
+			db.history.orderBy('parentSite').limit(9).uniqueKeys((items) => {
+				resolve(items);
+			});
+		});
 	},
-	Clear: function(callbackfun){
-		db.history.clear().then(callbackfun);
+	GetItemByID: (id) => {
+		return new Promise((resolve) => {
+			db.history.where('parentSite').equals(id).first((item) => {
+				resolve(item);
+			});
+		});
+	},
+	Add: function(u,t,i,ps){
+		return new Promise((resolve, reject) => {
+			db.history.add({url: u, title: t, icon: i,visitCount: 1,lastVisit: Date.now(),parentSite: ps,extraData:'',timestamp: Date.now() }).then(function(){
+				resolve();
+			}).catch(function(error){
+				reject(error);
+			});
+		});
+	},
+	GetLastItem: () => {
+		return new Promise((resolve, reject) => {
+			db.history.orderBy('timestamp').last((lastitem) => {
+				if(lastitem != undefined){
+					resolve(lastitem);
+				} else {
+					reject('no item found');
+				}
+			});
+		});
+	},
+	Clear: () => {
+		return new Promise((resolve) => {
+			db.history.clear().then(() => {
+				resolve();
+			});
+		});
 	}
 };
   
 //===== Settings functions =====================================================
 module.exports.Settings = {
-	Set: function(n,v,callbackfun){
-		db.settings.put({name: n, value: v}).then(callbackfun);
+	Set: (n,v) => {
+		return new Promise((resolve) => {
+			db.settings.put({name: n, value: v}).then((id) => {
+				resolve(id);
+			});
+		});
 	},
-	Get: function(n,callbackfun){
-		db.settings.where('name').equalsIgnoreCase(n).first(callbackfun);
+	Get: (n) => {
+		return new Promise((resolve, reject) => {
+			db.settings.where('name').equalsIgnoreCase(n).first((item) => {
+				if (item !== undefined) {
+					resolve(item);
+				} else {
+					reject('No item found');
+				}
+			});
+		});
 	}
 };
-  
+
 //===== Session functions ======================================================
 module.exports.Sessions = {
-	Get: function(callbackfun){
-		db.currentsession.toArray(callbackfun);
+	Get: () => {
+		return new Promise((resolve) => {
+			db.currentsession.toArray((list) => {
+				resolve(list);
+			});
+		});
 	},
-	Set: function(s,u,t,m,i,callback){
-		db.currentsession.put({sessionid: s, url: u, title: t, mode: m, icon: i, timestamp:Date.now()}).then(callback);
+	Set: (s, u, t, m, i) => {
+		return new Promise((resolve, reject) => {
+			db.currentsession.put({sessionid: s, url: u, title: t, mode: m, icon: i, timestamp:Date.now()}).then((id) => {
+				if (id != null) {
+					resolve();
+				} else {
+					reject();
+				}
+			});
+		});
 	},
-	UpdateWebPage: function(s,u,t,i,callback){
-		db.currentsession.update(s, {url: u, title: t, icon: i}).then(callback);
+	UpdateWebPage: (s,u,t,i) => {
+		return new Promise((resolve) => {
+			db.currentsession.update(s, {url: u, title: t, icon: i}).then((id) => {
+				resolve(id);
+			});
+		});
 	},
-	UpdateMode: function(s,m,callback){
-		db.currentsession.update(s, {mode: m}).then(callback);
+	UpdateMode: (s,m) => {
+		return new Promise((resolve) => {
+			db.currentsession.update(s, {mode: m}).then((id) => {
+				resolve(id);
+			});
+		});
 	},
-	UpdateParent: function(s,p,callback){
-		db.currentsession.update(s, {parent: p}).then(callback);
+	UpdateParent: (s,p) => {
+		return new Promise((resolve) => {
+			db.currentsession.update(s, {parent: p}).then((id) => {
+				resolve(id);
+			});
+		});
 	},
-	Remove: function(i,callbackfun){
-		db.currentsession.where('sessionid').equals(i).delete().then(callbackfun);
+	Remove: (i) => {
+		return new Promise((resolve) => {
+			db.currentsession.where('sessionid').equals(i).delete().then((result) => {
+				resolve(result);
+			});
+		});
 	}
 };
-  
+
 module.exports.Groups = {
-	Get: function(_callbackfun){
-		db.browser_groups.toArray(_callbackfun);
+	Get: () => {
+		return new Promise((responce) => {
+			db.browser_groups.toArray((arry) => {
+				responce(arry);
+			});
+		});
 	},
-	Upsert: function(_Gid,_Gname,_callbackfun){
-		db.browser_groups.put({groupid: _Gid, name: _Gname, timestamp: Date.now()}).then(_callbackfun);
+	Upsert: (_Gid,_Gname) => {
+		return new Promise((resolve) => {
+			db.browser_groups.put({groupid: _Gid, name: _Gname, timestamp: Date.now()}).then((id) => {
+				resolve(id);
+			});
+		});
 	},
-	Remove: function(_Id,_callbackfun){
-		db.browser_groups.where('groupid').equals(_Id).delete().then(_callbackfun);
+	Remove: (_Id) => {
+		return new Promise((resolve) => {
+			db.browser_groups.where('groupid').equals(_Id).delete().then((result) => {
+				resolve(result);
+			});
+		});
 	}
 };

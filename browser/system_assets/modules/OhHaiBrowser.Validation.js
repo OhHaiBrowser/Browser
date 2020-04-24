@@ -8,7 +8,7 @@ module.exports = {
 			url: testvalue,
 			valid: true
 		};
-		let testUri = function(turi){ return urlWithoutProtocolTest.test(turi) };
+		let testUri = function(turi){ return urlWithoutProtocolTest.test(turi); };
 
 		if(testUri(testvalue)){
 			testvalue = (testvalue.indexOf('://') == -1) ? 'http://' + testvalue : testvalue;
@@ -18,6 +18,13 @@ module.exports = {
 		}
 
 		callback(callbackResp);	
+	},
+	isIpAddress(ipaddress) {
+		if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress))
+		{
+			return (true)
+		}
+		return (false)
 	},
 	string: function(input){
 		return typeof input === 'string' || input instanceof String;
@@ -35,7 +42,7 @@ module.exports = {
 		}
 	},
 	internalpage: function(input){
-		const RunDir = decodeURI(process.cwd().toLocaleLowerCase()).replace(/\\/g, "/");
+		const RunDir = decodeURI(process.cwd().toLocaleLowerCase()).replace(/\\/g, '/');
 		return input.toLocaleLowerCase().indexOf(RunDir) !=0 -1;
 	}
-}
+};

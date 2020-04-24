@@ -1,0 +1,64 @@
+
+
+#Tabs{max-height:-webkit-calc(100% - 38px);overflow:hidden;outline:none;}
+#Tabs ul{margin:0;padding:0;list-style:none;}
+
+    /* Global tab styles */
+    .tab{cursor: pointer;outline:none;box-sizing: border-box;background-color:#e9e9e9;min-width:38px;height:34px;transition:background-color 0.5s;}
+    .tab:hover{background-color: #dcdcdc;}
+    .tab:hover .TabClose{opacity: 1;}
+    .tab .ohhai-tab-txt{cursor:default;float:left;margin:7px 4px 7px 4px;font-size:13px;width:120px;height:20px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; line-height: 20px;-webkit-user-select: none;cursor: pointer;}
+    .tab .TabClose{float:right;height:16px;width:16px;display:block;border-radius:10px;margin:9px 4px;transition:background-color 0.5s, opacity 0.5s;color:#708090;opacity: 0;}
+    .tab .TabClose:hover{background-color:#f53355;}
+    .tab .ohhai-tab-fav{float:left;width:16px;height:16px;margin:9px;-webkit-user-select: none;}
+    .tab .tabMediaBtn{width: 16px; height: 16px; display: inline-block; position: absolute; margin: 9px;}
+    .tab .tabMute{background: url('../../assets/imgs/audio-mute.png') no-repeat center center;}
+    .tab .tabPlaying{background: url('../../assets/imgs/audio-playing.png') no-repeat center center;}
+
+    .tab.current{background-color:#a2a7c2;}
+    .tab.current:hover{background-color:#a2a7c2;}
+    .tab.current .TabClose{opacity: 1;}
+
+
+    .tab:not(.current) + .tab:not(.current) {
+        box-sizing: border-box;
+        border-top: 1px solid #cccccc;
+    }
+
+    /* Default tab styles */
+
+    /* Incog tab styles */
+    .tab.IncognitoTab{background-color:#708090 !important;}
+    .tab.IncognitoTab .ohhai-tab-txt{color:#fff !important;}
+    .tab.IncognitoTab.current{background-color: #2F4F4F !important;}
+
+    /* Dock tab styles */
+    .tab.DockTab{background-color:#e9e9e9;width:34px;height:34px;display:inline-block;transition:background-color 0.5s;}
+    .tab.DockTab .ohhai-tab-txt{display:none;}
+    .tab.DockTab .TabClose{display: none;}
+
+    .hidden{display:none;}        
+
+#tabs-menu .group{border:none;border-bottom:1px solid #999;height: inherit;}
+#tabs-menu .group .ohhai-group-header{padding: 5px;font-size: 14px;background-color: #c4c4c4;}
+
+    #tabs-menu .group .ohhai-group-txt{background-color: transparent;border: none;outline:none;width:150px;}
+    #tabs-menu .group .ohhai-group-txt:hover{background-color: #dadada;}
+    #tabs-menu .group .ohhai-group-txt:focus{background-color: #fff;}
+
+    #tabs-menu .group .ohhai-togglegroup::before{content:"\21F3";display: block;text-align: center;line-height: 14px;}
+    #tabs-menu .group .ohhai-togglegroup{margin: 1px;background-color: #e4e4e4;float:right;height:16px;width:16px;display:block;border-radius:10px;transition:background-color 0.5s;color:#708090;}
+    #tabs-menu .group .ohhai-group-children.ClosedGroup{
+        display: none;
+    }
+    #tabs-menu .group .ohhai-group-children .tab{margin: 5px 0px;}    
+        #tabs-menu .group .ohhai-group-children .tab .ohhai-tab-txt{width:114px;}
+
+/*Browser Window*/
+#BrowserWin{background-color:#fff;overflow: auto;flex: 1 1 auto; display: flex; flex-flow: row;}
+#BrowserWin webview{outline: none; flex: 1 1 auto;}
+#BrowserWin webview[hidden]{display:flex !important;visibility: hidden;}
+#BrowserWin webview.Hidden {visibility: hidden; display: none;}
+
+
+
