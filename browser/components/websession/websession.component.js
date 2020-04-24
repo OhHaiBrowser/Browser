@@ -7,8 +7,16 @@ const {clipboard, remote} = require('electron'),
 	validate = require('../../system_assets/modules/OhHaiBrowser.Validation'),
 	{tabItem} = require('../tab/tab.component') ;
 
+/**
+ * @class WebSession
+ */
 class WebSession {
+	/**
+	 * 
+	 * @param {Object} opts 
+	 */
 	constructor(opts) {
+
 		this.sessionEventAdded = false;
 		this.id = opts.id;
 		this.webReady = false;
@@ -26,6 +34,10 @@ class WebSession {
 
 		this.tab = new tabItem({id: opts.id});
 
+		/**
+		 * Webview property
+		 * @type {Electron.WebviewTag}
+		 */
 		this.webview = CoreFunctions.generateElement(`<webview id='wv_${opts.id}' src='${parseOpenPage(opts.url)}' class='Hidden'></webview>`);
 		if (opts) {
 			if (opts.mode) {
@@ -231,6 +243,13 @@ class WebSession {
 				ViewMenu.popup(remote.getCurrentWindow());
 			});
 	
+		});
+
+		const nextPage_p = document.getElementById('hov_url');
+		this.webview.addEventListener('update-target-url', (e) => {
+			//User is focusing or hovering over a link we should show a popup of some sort?
+			nextPage_p.textContent = e.url;
+			nextPage_p.classList.toggle('show', (e.url !== ''));
 		});
 	}
 

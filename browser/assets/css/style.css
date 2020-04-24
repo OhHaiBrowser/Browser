@@ -430,3 +430,18 @@ button:focus {
 		border-bottom-left-radius: 5px;
 		border-bottom-right-radius: 5px;
 	}
+
+	#hov_url{
+		display: none;
+		position: fixed;
+		bottom: 0;
+		right: 0;
+		padding: 2px 4px;
+		background-color: rgba(24, 23, 23, 0.8);
+		color: #dcdcdc;
+		font-size: 12px;
+		border-radius: 4px 0 0 0;
+	}
+		#hov_url.show {
+			display: block;
+		}
