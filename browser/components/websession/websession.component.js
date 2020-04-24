@@ -412,13 +412,6 @@ class WebSession {
 		const webviewcontent = this.webview.getWebContents();
 		const Web_menu = new Menu();
 
-		
-	
-
-		webviewcontent.on('context-menu', (e, params) => {
-
-		});
-
 		if (params.linkURL != '') {
 			Web_menu.append(new MenuItem({
 				id: '',
