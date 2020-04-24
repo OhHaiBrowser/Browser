@@ -236,7 +236,8 @@ class WebSession {
 				Sessions.UpdateWebPage(this.id, this.webview.getURL(), this.webview.getTitle(), this.tab.icon);
 			}
 	
-			var webviewcontent = this.webview.getWebContents();	
+			var webviewcontent = this.webview.getWebContents();
+
 			webviewcontent.on('context-menu', (e, params) => {
 				e.preventDefault();
 				var ViewMenu = this.viewContextualMenu(params);
@@ -409,15 +410,21 @@ class WebSession {
 
 	viewContextualMenu(params){
 		const webviewcontent = this.webview.getWebContents();
+		const Web_menu = new Menu();
 
-		var Web_menu = new Menu();
+		
+	
+
+		webviewcontent.on('context-menu', (e, params) => {
+
+		});
+
 		if (params.linkURL != '') {
 			Web_menu.append(new MenuItem({
+				id: '',
 				label: 'Open link in new tab',
-				click() {
-					window.OhHaiBrowser.tabs.add(params.linkURL, undefined, {
-						selected: true
-					});
+				click: () => {
+					window.OhHaiBrowser.tabs.add(params.linkURL, undefined, { selected: true });
 				}
 			}));
 			Web_menu.append(new MenuItem({
