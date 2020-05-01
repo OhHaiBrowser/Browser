@@ -1,5 +1,5 @@
 const { Sessions, Groups } = require('../../system_assets/modules/OhHaiBrowser.Data'),
-	Tabbar = require('../../system_assets/modules/OhHaiBrowser.Tabbar'),
+	{tabbar} = require('../../services/tabbar.service'),
 	{ remote } = require('electron'),
 	{Menu,	MenuItem} = remote,
 	CoreFunctions = require('../../system_assets/modules/OhHaiBrowser.Core'),
@@ -57,10 +57,10 @@ module.exports.Group = class {
 	}
 
 	removeTab(_tab) {
-		Tabbar.tabcontainer.appendChild(_tab);
+		tabbar.tabcontainer.appendChild(_tab);
 
 		var TabSessionId = _tab.getAttribute('data-session');
-		Sessions.UpdateParent(TabSessionId, Tabbar.tabcontainer.id);
+		Sessions.UpdateParent(TabSessionId, tabbar.tabcontainer.id);
 		Sessions.UpdateMode(TabSessionId, 'default');
 
 		if (this.children.length == 0) {
@@ -78,7 +78,7 @@ module.exports.Group = class {
 		GroupMenu.append(new MenuItem({
 			label: 'Add tab to group',
 			click() {
-				tabs.add(OhHaiBrowser.settings.homepage, undefined, {
+				tabs.add(window.OhHaiBrowser.settings.homepage, undefined, {
 					selected: true,
 					mode: 'grouped',
 					parent: this.children

@@ -15,10 +15,10 @@ module.exports.AutoComplete = (value,callback) => { callback(new urlAutoComplete
 let controls = {
 	btn_ToggleTabBar() { return document.getElementById('HideShow'); },
 	lbl_TabCount() {return document.getElementById('HideShowCount');},
-	btn_back() {return document.getElementById('Back')},
-	txt_urlbar() {return document.getElementById('URLBar')},
-	btn_forward() {return document.getElementById('Forward')},
-	btn_overflow() {return document.getElementById('Menu')}
+	btn_back() {return document.getElementById('Back');},
+	txt_urlbar() {return document.getElementById('URLBar');},
+	btn_forward() {return document.getElementById('Forward');},
+	btn_overflow() {return document.getElementById('Menu');}
 };
 module.exports.controls = controls;
 
@@ -26,6 +26,11 @@ let functions = {
 	updateTabCounter: function () {
 		controls.lbl_TabCount().textContent = window.OhHaiBrowser.tabs.count;
 	},
+	/**
+	 * 
+	 * @param {Electron.WebviewTag} webview 
+	 * @param {void} callback 
+	 */
 	updateURLBar: function (webview, callback) {
 		const favList = document.getElementById('FavoritesList');
 		controls.txt_urlbar().value = webview.getURL();
@@ -39,6 +44,10 @@ let functions = {
 			callback(true);
 		}
 	},
+	/**
+	 * 
+	 * @param {Electron.WebviewTag} webview 
+	 */
 	updatePageInfo: function (webview) {
 		var webviewcontent = webview.getWebContents();
 		webviewcontent.on('certificate-error', (e, url, error, cert) => {

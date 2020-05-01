@@ -1,12 +1,12 @@
 const { remote } = require('electron');
 const thisWindow = remote.getCurrentWindow();
 const {controls} = require('./navbar.service');
-const tabbar = require('../system_assets/modules/OhHaiBrowser.Tabbar.js');
+const {tabbar} = require('./tabbar.service');
 const {tabs} = require('./tabs.service');
 const { Quicklinks } = require('../system_assets/modules/OhHaiBrowser.Data');
 const Contextuals = require('../system_assets/modules/Contextuals/Contextuals');
-const AboutMenu = require('../system_assets/scripts/addons/about');
-const SettingsMenu = require('../system_assets/scripts/addons/settings');
+const AboutMenu = require('../components/about/about');
+const SettingsMenu = require('../components/settings/settings');
 
 
 module.exports.initUi = () => {
@@ -49,7 +49,7 @@ function createNavEvents() {
 		if(e.detail) {
 			//Add new bookmark
 			const cSession = tabs.getCurrent();
-			favBar.add(cSession.webview.getURL(), cSession.webview.getTitle(), '')
+			favBar.add(cSession.webview.getURL(), cSession.webview.getTitle(), '');
 		} else {
 			//Remove bookmark	
 			var ThisId = Number(controls.txt_urlbar().bookmarkId);
