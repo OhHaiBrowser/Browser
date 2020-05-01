@@ -4,7 +4,7 @@
 # OhHai Browser
 
 ![GitHub All Releases](https://img.shields.io/github/downloads/OhHaiBrowser/Browser/total)
-<a href="#"> ![Discord](https://img.shields.io/discord/702441664995917935?label=Discord) </a>
+<a href="https://discord.gg/Q8QAdTs"> ![Discord](https://img.shields.io/discord/702441664995917935?label=Discord) </a>
 
 A browser built on top of `Electron` using nothing but pure web technologies.
 
