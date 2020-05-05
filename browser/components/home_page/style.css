@@ -1,2 +1,5 @@
-body{margin:0;font-family:arial;background-color:#f2f5f9;}
-	#MainContent{max-width:1000px;min-width:200px;margin:200px auto 0 auto;}
+body{
+	margin:0;
+	font-family:arial;
+	background: url('https://source.unsplash.com/1600x900/?nature') center center no-repeat #f2f5f9;
+}
