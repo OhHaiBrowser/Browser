@@ -2,7 +2,6 @@ const { accordionPanel, accordionItem } = require('./components/accordion/accord
 const { tabItem } = require('./components/tab/tab.component');
 const { frameControls } = require('./components/frame-controls/frame.controls');
 const { urlbar } = require('./components/url-bar/urlbar.component');
-const {NavBtn} = require('./components/nav-btn/nav-btn.component');
 const favoritesList = require('./components/fav-list/bookmarks');
 const histList = require('./components/hist-list/history');
 const { initUi } = require('./services/ui.service');
@@ -17,7 +16,6 @@ customElements.define('frame-controls', frameControls);
 customElements.define('fav-list', favoritesList);
 customElements.define('hist-list', histList);
 customElements.define('url-bar', urlbar);
-customElements.define('nav-btn', NavBtn);
 definePublicAPIs();
 
 //Load core ui functions
