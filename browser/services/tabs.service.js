@@ -6,18 +6,7 @@ let CoreFunctions = require('../system_assets/modules/OhHaiBrowser.Core'),
 	{ Group } = require('../components/group/group.component');
 
 const Tabs = {
-	countInternal: 0,
-	countListener: (val) => { console.log(val); },
-	set count(val) {
-		this.countInternal = val;
-		this.countListener(val);
-	},
-	get count() {
-		return this.countInternal;
-	},
-	registerCountListener: (listener) => {
-		this.countListener = listener;
-	},
+	count: 0,
 	tabMap: new Array(),
 	/**
  * 
@@ -71,7 +60,6 @@ const Tabs = {
 						break;
 					case 'default':
 					default:
-						console.log(tabbar);
 						tabbar.tabcontainer().appendChild(NewWS.tab);
 					}
 				} else {

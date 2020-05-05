@@ -8,7 +8,6 @@ const Contextuals = require('../system_assets/modules/Contextuals/Contextuals');
 const AboutMenu = require('../components/about/about');
 const SettingsMenu = require('../components/settings/settings');
 
-
 module.exports.initUi = () => {
 	createFrameControls();
 	createNavEvents();

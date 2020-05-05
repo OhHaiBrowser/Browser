@@ -33,7 +33,7 @@ class MainWindow extends BrowserWindow {
 			win.maximize();
 		}
 	
-		win.setMenu(null);
+		win.removeMenu();
 		win.loadURL(`${path.join('file://', app.getAppPath(), '/browser/index.html')}`);
 	
 		win.on('closed', () => {

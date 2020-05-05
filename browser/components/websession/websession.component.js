@@ -91,7 +91,6 @@ class WebSession {
 			if(this.tab.title != null){
 				this.tab.title = this.webview.getTitle();
 			}
-			console.log(this.tab.icon);
 			if(this.tab.icon == null || this.tab.icon == undefined){
 				this.tab.icon = 'assets/imgs/favicon_default.png';
 			}
@@ -152,7 +151,7 @@ class WebSession {
 				this.tab.icon = 'assets/imgs/loader.gif';
 			}
 			// if(!this.sessionEventAdded){
-			// 	var thisWebContent =  this.webview.getWebContents();
+			// 	var thisWebContent =  remote.webContents.fromId(this.webview.getWebContentsId());
 			// 	var thisSession = thisWebContent.session;
 			// 	if(thisSession){
 			// 		thisSession.webRequest.onBeforeRequest(['*://*./*'], function(details, callback) {
@@ -236,7 +235,7 @@ class WebSession {
 				Sessions.UpdateWebPage(this.id, this.webview.getURL(), this.webview.getTitle(), this.tab.icon);
 			}
 	
-			var webviewcontent = this.webview.getWebContents();
+			var webviewcontent = remote.webContents.fromId(this.webview.getWebContentsId());
 
 			webviewcontent.on('context-menu', (e, params) => {
 				e.preventDefault();
@@ -409,7 +408,7 @@ class WebSession {
 	}
 
 	viewContextualMenu(params){
-		const webviewcontent = this.webview.getWebContents();
+		const webviewcontent = remote.webContents.fromId(this.webview.getWebContentsId());
 		const Web_menu = new Menu();
 
 		if (params.linkURL != '') {
