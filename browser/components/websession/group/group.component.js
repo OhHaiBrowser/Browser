@@ -1,9 +1,9 @@
-const { Sessions, Groups } = require('../../system_assets/modules/OhHaiBrowser.Data'),
-	{tabbar} = require('../../services/tabbar.service'),
+const { Sessions, Groups } = require('../../../system_assets/modules/OhHaiBrowser.Data'),
+	{tabbar} = require('../../../services/tabbar.service'),
 	{ remote } = require('electron'),
 	{Menu,	MenuItem} = remote,
-	CoreFunctions = require('../../system_assets/modules/OhHaiBrowser.Core'),
-	{tabs} = require('../../services/tabs.service');
+	CoreFunctions = require('../../../system_assets/modules/OhHaiBrowser.Core'),
+	{tabs} = require('../../../services/tabs.service');
 	
 module.exports.Group = class {
 

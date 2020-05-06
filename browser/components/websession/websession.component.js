@@ -5,7 +5,9 @@ const {clipboard, remote} = require('electron'),
 	{Sessions, History} = require('../../system_assets/modules/OhHaiBrowser.Data'),
 	CoreFunctions = require('../../system_assets/modules/OhHaiBrowser.Core'),
 	validate = require('../../system_assets/modules/OhHaiBrowser.Validation'),
-	{tabItem} = require('../tab/tab.component') ;
+	{tabItem} = require('./tab/tab.component') ;
+
+customElements.define('tab-item', tabItem);
 
 /**
  * @class WebSession

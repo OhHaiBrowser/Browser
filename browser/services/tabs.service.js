@@ -3,7 +3,7 @@ let CoreFunctions = require('../system_assets/modules/OhHaiBrowser.Core'),
 	{tabbar} = require('./tabbar.service'),
 	{ functions } = require('./navbar.service'),
 	{ WebSession } = require('../components/websession/websession.component'),
-	{ Group } = require('../components/group/group.component');
+	{ Group } = require('../components/websession/group/group.component');
 
 const Tabs = {
 	count: 0,

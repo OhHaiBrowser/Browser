@@ -1,5 +1,5 @@
 
-module.exports.accordionPanel = class extends HTMLElement {
+class AccordionPanel extends HTMLElement {
 	constructor(){
 		super();
 	}
@@ -29,9 +29,17 @@ module.exports.accordionPanel = class extends HTMLElement {
 	panels(){
 		return this.children;
 	}
-};
+	/**
+	 * 
+	 * @param {AccordionItem} item 
+	 */
+	add(item) {
+		this.appendChild(item);
+	}
+}
+module.exports.accordionPanel = AccordionPanel;
 
-module.exports.accordionItem = class extends HTMLElement {
+class AccordionItem extends HTMLElement {
 	static get observedAttributes() {
 		return [
 			'active',
@@ -82,4 +90,5 @@ module.exports.accordionItem = class extends HTMLElement {
 			break;
 		}
 	}
-};
+}
+module.exports.accordionItem = AccordionItem;
