@@ -83,31 +83,16 @@ module.exports.definePublicAPIs = () => {
 			navbar: functions,
 			tabbar,
 			toggleModel: (content, menuTitle) => {
-				let mainWin = document.getElementById('AppBound');
-				let bgWin = document.getElementById('BlurBg');
 				let modelPopup = document.getElementById('modelPopup');
-				let modelTitle =modelPopup.querySelector('.modeltitle');
-				let modelContent = document.getElementById('modelContent');
-				
-				let modelClose = modelPopup.querySelector('.modelClose');
-				modelClose.addEventListener('click',() => {
-					window.OhHaiBrowser.ui.toggleModel('','');
+
+				modelPopup.setAttribute('title', menuTitle);
+				modelPopup.appendChild(content);
+
+				modelPopup.addEventListener('close', () => {
+					modelPopup.removeChild(modelPopup.lastChild);
 				});
-	
-				if(bgWin.getAttribute('style') == 'display:none;'){
-					//Show window
-					mainWin.classList.add('blurBrowser');
-					bgWin.setAttribute('style','display:block;');
-					modelTitle.textContent = menuTitle;
-					modelContent.appendChild(content);
-					modelPopup.setAttribute('style','display:block;');
-				}else{
-					//Hide window
-					mainWin.classList.remove('blurBrowser');
-					bgWin.setAttribute('style','display:none;');
-					modelPopup.setAttribute('style','display:none;');
-					modelContent.removeChild(modelContent.lastChild);
-				}
+
+				modelPopup.toggle();
 			}
 		},
 		validate,
