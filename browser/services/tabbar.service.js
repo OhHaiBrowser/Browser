@@ -4,7 +4,7 @@ const {Settings} = require('../system_assets/modules/OhHaiBrowser.Data');
 const {tabs} = require('./tabs.service');
 
 const tabbar = {
-	panel() {return document.getElementById('LeftMenu');},
+	panel() {return document.getElementById('Sid');},
 	tabcontainer() {return document.getElementById('tabs-menu');},
 	pinnedtabcontainer() {return document.getElementById('tabs-dock');},
 	webviewcontainer() {return document.getElementById('BrowserWin');},
