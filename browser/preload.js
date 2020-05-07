@@ -7,6 +7,7 @@ const {ModelPopup} = require('./components/model-popup/model.component');
 const { initUi } = require('./services/ui.service');
 const { runStartup } = require('./services/startup.service');
 const { definePublicAPIs } = require('./services/public.api.service');
+const feather = require('feather-icons');
 
 //Define custom controls
 customElements.define('acc-panel', accordionPanel);
@@ -22,4 +23,5 @@ definePublicAPIs();
 document.addEventListener('DOMContentLoaded', function(){
 	initUi();
 	runStartup();
+	feather.replace();
 });

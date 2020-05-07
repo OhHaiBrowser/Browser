@@ -71,6 +71,7 @@
     }
   },
   "dependencies": {
+    "feather-icons": "^4.28.0",
     "publicsuffixlist": "^0.3.0"
   },
   "devDependencies": {
