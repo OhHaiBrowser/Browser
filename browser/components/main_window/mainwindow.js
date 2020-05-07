@@ -13,17 +13,20 @@ class MainWindow extends BrowserWindow {
 			}
 		});
 		let { width, height } = store.get('windowBounds');
+		let iconPath = path.join(app.getAppPath(), '/browser/assets/imgs/frame/icon.png');
+		let preloadScript = path.join(app.getAppPath(), '/browser/preload.js');
+
 		super({
 			width,
 			height,
 			titleBarStyle: 'hiddenInset',
 			frame: false,
-			icon: `${path.join(app.getAppPath(), '/browser/assets/imgs/frame/icon.png')}`,
+			icon: iconPath,
 			show: false,
 			minHeight: 350,
 			minWidth: 485,
 			webPreferences: {
-				preload: `${path.join(app.getAppPath(), '/browser/preload.js')}`,
+				preload: preloadScript,
 				webviewTag: true
 			}
 		});
