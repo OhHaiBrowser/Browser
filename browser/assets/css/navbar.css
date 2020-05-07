@@ -6,18 +6,13 @@
 }
 
 .ControlsArea {
-    display: -webkit-box;
-    padding: 5px;
+    display: flex;
+    padding: 5px 0 2px 0;
     width: 70%;
     min-width: 450px;
     margin-left: auto;
     margin-right: auto;
     transition: all 0.5s;
-}
-
-.FlexControl {
-    box-flex: 0;
-    -webkit-box-flex: 0;
 }
 
 .ControlButton {
@@ -37,25 +32,27 @@
     color: var(--controls);
     text-align: center;
 }
+    .ControlButton > svg {
+        pointer-events: none;
+    }
+
     .ControlButton:hover {
         background-color: rgba(255, 255, 255, 0.2);
         cursor: pointer;
     }
 
 .Center {
-    display: -webkit-box;
+    display: flex;
     max-width: 900px;
     min-width: 300px;
     margin-left: auto;
     margin-right: auto;
-    -webkit-box-flex: 2;
-    box-flex: 2;
+    flex: auto;
     transition: all 0.5s;
 }
 
 .CenterCenter {
-    -webkit-box-flex: 2;
-    box-flex: 2;
+    flex: auto;
 }
 
 .CenterFocus {
