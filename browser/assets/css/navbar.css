@@ -109,10 +109,6 @@
 
 }
 
-.TabMenu::before {
-    content: "\25A2";
-}
-
 .TabMenu {
     text-align: center;
     text-decoration: none;
@@ -123,7 +119,7 @@
 #HideShowCount {
     font-size: 10px;
     position: relative;
-    top: -29px;
+    top: -32px;
 }
 
 .AddTab::before {
@@ -153,48 +149,4 @@
 .AddTab:active {
     box-shadow: inset 0px 5px 10px #c4c4c4;
     background-color: rgb(247, 241, 241);
-}
-
-.Back::before {
-    content: "\276E";
-}
-
-.Refresh::before {
-    content: "\21BB";
-}
-
-.Forward::before {
-    content: "\276F";
-}
-
-.OverflowMenu::before {
-    content: "\2630";
-}
-
-
-.WebThings {
-    display: inline-block;
-}
-
-#BTN_WCF {
-    border-radius: 22px;
-    height: 18px;
-    width: 18px;
-    padding: 3.5px;
-    background-color: #00ffff;
-}
-
-.Pan_Webthings {
-    position: absolute;
-    width: 150px;
-    min-height: 100px;
-    border-radius: 4px;
-    background-color: #fff;
-    z-index: 500;
-    border: 1px solid #c4c4c4;
-    box-shadow: 0px 5px 10px #c4c4c4;
-}
-
-.Pan_Webthings.hidden {
-    display: none;
 }
