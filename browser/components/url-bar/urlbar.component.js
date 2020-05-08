@@ -78,13 +78,19 @@ class UrlBar extends HTMLElement {
 		return txtUrlBar.getAttribute('data-text-swap');
 	}
 	set value(val){
-		let checkURI = tld1(val);
-
 		let txtUrlBar = this.shadowRoot.getElementById('URLBar');
-		txtUrlBar.setAttribute('data-text-swap', checkURI.url);
+		if(validate.internalpage(decodeURI(val))) {
+			txtUrlBar.setAttribute('data-text-swap', '');
+			txtUrlBar.value = '';
+			txtUrlBar.setAttribute('data-text-original', '');
+		} else {
+			let checkURI = tld1(val);
 
-		txtUrlBar.value = checkURI.tld1;
-		txtUrlBar.setAttribute('data-text-original', checkURI.tld1);
+			txtUrlBar.setAttribute('data-text-swap', checkURI.url);
+	
+			txtUrlBar.value = checkURI.tld1;
+			txtUrlBar.setAttribute('data-text-original', checkURI.tld1);
+		}
 
 		this.updateCertBtn();
 	}
