@@ -362,7 +362,7 @@ const Tabs = {
 			width: 800,
 			height: 600,
 			frame: false,
-			icon: `file://${__dirname}/assets/imgs/frame/icon.png`,
+			icon: `file://${__dirname}/assets/icons/icon.png`,
 			show: false,
 			webPreferences: {
 				preload: `file://${__dirname}/preload.js`,

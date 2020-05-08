@@ -13,7 +13,7 @@ class MainWindow extends BrowserWindow {
 			}
 		});
 		let { width, height } = store.get('windowBounds');
-		let iconPath = path.join(app.getAppPath(), '/browser/assets/imgs/frame/icon.png');
+		let iconPath = path.join(app.getAppPath(), '/browser/assets/icons/icon.png');
 		let preloadScript = path.join(app.getAppPath(), '/browser/preload.js');
 
 		super({

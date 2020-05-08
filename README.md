@@ -1,5 +1,5 @@
 <div align="center">
-<a href="https://ohhaibrowser.com"><img src="browser/assets/imgs/frame/icon.png" width="128"></a>
+<a href="https://ohhaibrowser.com"><img src="browser/assets/icons/icon.png" width="128"></a>
 
 # OhHai Browser
 
