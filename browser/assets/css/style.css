@@ -181,10 +181,6 @@ button:focus {
 	padding: 7px;
 }
 
-.SettingsList {
-	padding: 10px;
-}
-
 #DoodlePopUp {
 	width: 400px;
 	position: fixed;
@@ -259,14 +255,17 @@ button:focus {
 	background: var(--BTN-HOVER);
 }
 
-
-
-
-.SettingsList {}
+.SettingsList {
+	padding: 10px;
+}
 
 .SettingsList p {
 	font-size: 20px;
 	border-bottom: 1px solid;
+}
+.SettingsList span {
+	margin: 5px 0;
+	display: inline-block;
 }
 
 .SettingsList .txtbox {

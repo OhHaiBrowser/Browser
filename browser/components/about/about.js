@@ -8,7 +8,13 @@ module.exports = function load(){
 
 		<p>Update Status</p>
 		<span>Your browser is upto date :)</span>
+
+		<p>Join the community</p>
+		<a href='javascript:window.OhHaiBrowser.tabs.activePage.navigate("https://discord.gg/Q8QAdTs");'>Discord server</a>
+
 	</div>`);
+
+
 
 	return aboutPage;
 };
