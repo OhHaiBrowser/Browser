@@ -49,7 +49,8 @@
             "ia32"
           ]
         }
-      ]
+      ],
+      "requestedExecutionLevel": "asInvoker"
     },
     "fileAssociations": {
       "ext": [
@@ -68,7 +69,7 @@
       "role": "Viewer"
     },
     "nsis": {
-      "perMachine": "true"
+      "perMachine": true
     }
   },
   "dependencies": {
