@@ -19,6 +19,7 @@ class MainWindow extends BrowserWindow {
 		super({
 			width,
 			height,
+			title: app.name,
 			titleBarStyle: 'hiddenInset',
 			frame: false,
 			icon: iconPath,

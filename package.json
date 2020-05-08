@@ -1,5 +1,6 @@
 {
   "name": "ohhaibrowser",
+  "productName": "OhHai Browser",
   "version": "3.4.0",
   "license": "ISC",
   "description": "Browser the internet",

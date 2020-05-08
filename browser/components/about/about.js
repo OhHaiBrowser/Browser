@@ -4,7 +4,7 @@ module.exports = function load(){
 	let aboutPage = core.generateElement(`
 	<div class='SettingsList'>
 		<p>Browser Version</p>
-		<span>3.3.0</span>
+		<span>${window.OhHaiBrowser.version}</span>
 
 		<p>Update Status</p>
 		<span>Your browser is upto date :)</span>
