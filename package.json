@@ -73,11 +73,11 @@
     }
   },
   "dependencies": {
+    "dexie": "^3.0.1",
     "feather-icons": "^4.28.0",
     "publicsuffixlist": "^0.3.0"
   },
   "devDependencies": {
-    "dexie": "^3.0.0",
     "electron": "^8.2.5",
     "electron-builder": "^22.6.0",
     "eslint": "^6.8.0"
