@@ -36,7 +36,8 @@
       "icon": "browser/assets/icons/linux_icon.png",
       "category": "",
       "target": [
-        "deb"
+        "deb",
+        "rpm"
       ]
     },
     "win": {
