@@ -21,7 +21,7 @@ class MainWindow extends BrowserWindow {
 			width,
 			height,
 			title: app.name,
-			titleBarStyle: 'hiddenInset',
+			titleBarStyle: 'hidden',
 			frame: false,
 			icon: iconPath,
 			show: false,
@@ -39,13 +39,14 @@ class MainWindow extends BrowserWindow {
 		}
 	
 		win.removeMenu();
-		win.loadURL(`${path.join('file://', app.getAppPath(), '/browser/index.html')}`);
+		win.loadFile(`${path.join(app.getAppPath(), '/browser/index.html')}`);
 	
+		win.once('ready-to-show', win.show);
+
 		win.on('closed', () => {
 			win = null;
 		});
 	
-		win.show();
 		win.focus();
 	
 		win.on('resize', () => {
