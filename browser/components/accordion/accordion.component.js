@@ -52,7 +52,12 @@ class AccordionItem extends HTMLElement {
 		this.attachShadow({mode: 'open'});
 		this.shadowRoot.innerHTML = `
             <link rel='stylesheet' href='${__dirname}/accordion.component.css' />
-            <div class='acc-header'><span class="panTitle"></span></div>
+			<div class='acc-header'>
+				<span class="panTitle"></span>
+				<div class='contextBtns'>
+					<slot name='context-btns'></slot>
+				</div>
+			</div>
             <div class='acc-body'>
                 <slot></slot>
             </div>
@@ -66,6 +71,19 @@ class AccordionItem extends HTMLElement {
 		});
 		this.accHeader.addEventListener('click', () => {
 			this.dispatchEvent(new CustomEvent('clickTitle', { detail: this}));
+		});
+
+		const accContextBtns = this.shadowRoot.querySelector('.contextBtns');
+		this.addEventListener('mousemove', () => {
+			if(this.hasAttribute('active') && !accContextBtns.classList.contains('visible')) {
+				if(this.getAttribute('active') === 'true') {
+					accContextBtns.classList.add('visible');
+				}
+			}
+		});
+
+		this.addEventListener('mouseleave', (e) => {
+			accContextBtns.classList.remove('visible');
 		});
 	}
 

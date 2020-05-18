@@ -47,6 +47,23 @@
 	border-right: 1px solid #190a25;
 }
 
+.acc-slot-btns{
+	display: flex;
+}
+.acc-context-btn {
+	border: none;
+    padding: 0;
+    margin: 0;
+    background: transparent;
+    color: #fff;
+    height: 20px;
+	width: 20px;
+    text-align: center;
+    box-sizing: border-box;
+	display: inline-flex;
+	justify-content: center;
+}
+
 .SidControls{
 	padding: 5px;
 }

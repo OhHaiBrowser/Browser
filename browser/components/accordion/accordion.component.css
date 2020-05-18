@@ -12,6 +12,7 @@
     padding: 5px;
     cursor: pointer;
     transition: background 0.2s;
+    display: flex;
 }   
     .acc-header .panTitle{
         text-transform: uppercase;
@@ -19,6 +20,14 @@
         font-size: 11px;
         user-select: none;
         color: var(--sidebar_header_title);
+        flex: auto;
+    }
+    .acc-header .contextBtns {
+        opacity: 0;
+        transition: opacity 0.5s;
+    }
+    .acc-header .contextBtns.visible {
+        opacity: 1;
     }
 
  .acc-header.active::before{
