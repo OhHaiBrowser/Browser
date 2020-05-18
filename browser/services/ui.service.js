@@ -92,4 +92,13 @@ function createNavEvents() {
 			selected: true
 		});
 	});
+
+	document.getElementById('btnTabOverview').addEventListener('click', () => {
+		const temp = tabs.tabMap.map(ws => {
+			const wContent = remote.webContents.fromId(ws.webview.getWebContentsId());
+			return wContent.capturePage().then(img => img.toPNG());
+		});
+
+		console.log(temp);
+	});
 }

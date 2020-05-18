@@ -1,3 +1,6 @@
+
+const {remote} = require('electron');
+
 class urlAutoComplete{
 	constructor(url) {
 		let searchProvider = window.OhHaiBrowser.settings.search;
@@ -49,7 +52,7 @@ let functions = {
 	 * @param {Electron.WebviewTag} webview 
 	 */
 	updatePageInfo: function (webview) {
-		var webviewcontent = webview.getWebContents();
+		var webviewcontent = remote.webContents.fromId(webview.getWebContentsId());
 		webviewcontent.on('certificate-error', (e, url, error, cert) => {
 			controls.txt_urlbar().updateCertBtn('error');
 		});
