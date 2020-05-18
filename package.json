@@ -75,6 +75,7 @@
   },
   "dependencies": {
     "dexie": "^3.0.1",
+    "electron-is-dev": "^1.2.0",
     "feather-icons": "^4.28.0",
     "publicsuffixlist": "^0.3.0"
   },

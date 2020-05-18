@@ -1,5 +1,6 @@
 'use strict';
 const {electron,app, protocol,globalShortcut} = require('electron');
+const isDev = require('electron-is-dev');
 const {MainWindow} = require('./browser/components/main_window/mainwindow');
 
 let mainWindow = null;
@@ -10,11 +11,9 @@ global.sharedObject = {prop1: process.argv};
 app.on('ready', function() {
 	mainWindow = new MainWindow();
 
-	globalShortcut.register('CommandOrControl+Shift+D', () => {
-		if(mainWindow.isFocused() == true){
-			mainWindow.webContents.openDevTools();
-		}
-	});
+	if(isDev) {
+		mainWindow.webContents.openDevTools();
+	}
 
 	protocol.registerStringProtocol('mailto', function (req) {
 		electron.shell.openExternal(req.url);
