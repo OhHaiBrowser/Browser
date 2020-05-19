@@ -93,12 +93,8 @@ function createNavEvents() {
 		});
 	});
 
-	document.getElementById('btnTabOverview').addEventListener('click', () => {
-		const temp = tabs.tabMap.map(ws => {
-			const wContent = remote.webContents.fromId(ws.webview.getWebContentsId());
-			return wContent.capturePage().then(img => img.toPNG());
-		});
-
-		console.log(temp);
-	});
+	// document.getElementById('btnTabOverview').addEventListener('click', () => {
+	// 	const Webimgs = tabs.tabMap.map(ws => ws.contentImg);
+	// 	console.log(Webimgs);
+	// });
 }

@@ -22,6 +22,7 @@ class WebSession {
 		this.sessionEventAdded = false;
 		this.id = opts.id;
 		this.webReady = false;
+		this.contentImg = null;
 
 		var parseOpenPage = (url) => {
 			switch (url) {
@@ -33,6 +34,13 @@ class WebSession {
 				return url;
 			}
 		};
+
+		var updateContentImg = () => {
+			const wContent = remote.webContents.fromId(this.webview.getWebContentsId());
+			wContent.capturePage().then(img => {
+				this.contentImg = img.toDataURL();
+			});
+		}
 
 		this.tab = new tabItem({id: opts.id});
 
@@ -88,6 +96,7 @@ class WebSession {
 					window.OhHaiBrowser.bookmarks.updateBtn(returnval);
 				});
 			}
+			updateContentImg();
 		};
 		var updateTab = () => {
 			if(this.tab.title != null){
