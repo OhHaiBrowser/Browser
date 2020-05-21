@@ -1,4 +1,5 @@
 const {BrowserWindow, app} = require('electron');
+const {startMessagingAgent} = require('../../main/messaging');
 const Store = require('../../services/store.service');
 const path = require('path');
 
@@ -33,6 +34,8 @@ class MainWindow extends BrowserWindow {
 			}
 		});
 		let win = this;
+
+		startMessagingAgent();
 
 		if(store.get('isMaximised')){
 			win.maximize();
