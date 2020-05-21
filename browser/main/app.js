@@ -17,7 +17,7 @@ class AppWindow extends BrowserWindow {
 		let { width, height } = store.get('windowBounds');
 		
 		let iconPath = path.join(app.getAppPath(), '/browser/assets/icons/icon.png');
-		let preloadScript = path.join(app.getAppPath(), '/browser/preload.js');
+		let preloadScript = path.join(app.getAppPath(), '/browser/main/preload.js');
 
 		super({
 			width,
