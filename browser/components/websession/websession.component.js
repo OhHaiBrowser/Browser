@@ -103,7 +103,7 @@ class WebSession {
 				this.tab.title = this.webview.getTitle();
 			}
 			if(this.tab.icon == null || this.tab.icon == undefined){
-				this.tab.icon = 'assets/imgs/favicon_default.png';
+				this.tab.icon = '../assets/imgs/favicon_default.png';
 			}
 		};
 		//View event listeners
