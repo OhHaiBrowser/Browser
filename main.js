@@ -1,7 +1,7 @@
 'use strict';
-const {electron,app, protocol,globalShortcut} = require('electron');
+const {electron,app, protocol} = require('electron');
 const isDev = require('electron-is-dev');
-const {MainWindow} = require('./browser/components/main_window/mainwindow');
+const {AppWindow} = require('./browser/main/app');
 
 let mainWindow = null;
 global.sharedObject = {prop1: process.argv};
@@ -9,7 +9,7 @@ global.sharedObject = {prop1: process.argv};
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function() {
-	mainWindow = new MainWindow();
+	mainWindow = new AppWindow();
 
 	if(isDev) {
 		mainWindow.webContents.openDevTools();
@@ -33,6 +33,6 @@ app.on('activate', function () {
 	// On macOS it's common to re-create a window in the app when the
 	// dock icon is clicked and there are no other windows open.
 	if (mainWindow === null) {
-		mainWindow = new MainWindow();
+		mainWindow = new AppWindow();
 	}
 });
