@@ -1,5 +1,6 @@
 const {BrowserWindow, app} = require('electron');
 const {startMessagingAgent} = require('./messaging');
+const {startKeyboardShortcuts} = require('./keyboardShortcuts');
 const Store = require('../services/store.service');
 const path = require('path');
 
@@ -38,6 +39,7 @@ class AppWindow extends BrowserWindow {
 		let win = this;
         
 		startMessagingAgent();
+		startKeyboardShortcuts();
 
 		if(store.get('isMaximised')){
 			win.maximize();

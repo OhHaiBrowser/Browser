@@ -5,7 +5,6 @@ const favoritesList = require('../components/fav-list/bookmarks');
 const histList = require('../components/hist-list/history');
 const {ModelPopup} = require('../components/model-popup/model.component');
 const { initUi } = require('../services/ui.service');
-const { initShortcuts } = require('../services/keyboardShortcuts.service');
 const { runStartup } = require('../services/startup.service');
 const { definePublicAPIs } = require('../services/public.api.service');
 const feather = require('feather-icons');
@@ -23,7 +22,6 @@ definePublicAPIs();
 //Load core ui functions
 document.addEventListener('DOMContentLoaded', function(){
 	initUi();
-	initShortcuts();
 	runStartup();
 	feather.replace();
 });
