@@ -39,8 +39,7 @@ class AppWindow extends BrowserWindow {
 		let win = this;
         
 		startMessagingAgent();
-		startKeyboardShortcuts();
-
+		
 		if(store.get('isMaximised')){
 			win.maximize();
 		}
