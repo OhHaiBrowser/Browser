@@ -33,7 +33,10 @@ class AppWindow extends BrowserWindow {
 			webPreferences: {
 				preload: preloadScript,
 				webviewTag: true,
-				nodeIntegration: true
+				nodeIntegration: true,
+				plugins: true,
+				webSecurity: true,
+				javascript: true,
 			}
 		});    
         
