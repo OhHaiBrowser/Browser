@@ -1,0 +1,19 @@
+- name: Electron Builder Action
+  uses: samuelmeuli/action-electron-builder@v1.5.0
+  with:
+    # GitHub authentication token
+    #github_token: 
+    # Base64-encoded code signing certificate for macOS
+    #mac_certs: # optional
+    # Password for decrypting `mac_certs`
+    #mac_certs_password: # optional
+    # Whether the app should be released after a successful build
+    release: true
+    # Base64-encoded code signing certificate for Windows
+    #windows_certs: # optional
+    # Password for decrypting `windows_certs`
+    #windows_certs_password: # optional
+    # Directory where NPM/Yarn commands should be run
+    #package_root: # optional, default is .
+    # Whether the action should execute the NPM build script before running `electron-builder`
+    skip_build: false
