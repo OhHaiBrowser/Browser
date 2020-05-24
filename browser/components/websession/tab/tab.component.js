@@ -16,7 +16,7 @@ class tabItem extends HTMLElement{
             <link rel='stylesheet' href='${__dirname}/tab.component.css' />
             <div class='ohhai-tab ${opts.mode ? opts.mode : 'default'} ${opts.selected ? 'selected' : ''}'>
                 <a class='tab-mediabtn hidden'></a>
-                <img src='${opts.icon ? opts.icon : '../assets/imgs/favicon_default.png'}' class='tab-favicon'/>
+                <img src='${opts.icon ? opts.icon : 'assets/imgs/favicon_default.png'}' class='tab-favicon'/>
                 <span class='tab-title'>${opts.title ? opts.title : 'New Tab'}</span>
                 <a class='tab-close'></a>
             </div>
