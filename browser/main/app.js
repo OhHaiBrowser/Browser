@@ -1,6 +1,6 @@
 const {BrowserWindow, app} = require('electron');
 const {startMessagingAgent} = require('./messaging');
-const {startKeyboardShortcuts} = require('./keyboardShortcuts');
+const {AppMenu} = require('./menus/main');
 const Store = require('../services/store.service');
 const path = require('path');
 
@@ -48,7 +48,7 @@ class AppWindow extends BrowserWindow {
 			win.maximize();
 		}
 	
-		win.removeMenu();
+		win.setMenu(AppMenu());
 		win.loadFile(`${path.join(app.getAppPath(), '/browser/index.html')}`);
 	
 		win.once('ready-to-show', win.show);
