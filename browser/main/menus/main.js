@@ -1,4 +1,4 @@
-const { Menu, app, MenuItem } = require('electron');
+const { Menu, app } = require('electron');
 
 const isMac = process.platform === 'darwin';
 
