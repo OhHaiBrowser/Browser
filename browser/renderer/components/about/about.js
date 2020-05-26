@@ -1,4 +1,4 @@
-let core = require('../../system_assets/modules/OhHaiBrowser.Core');
+let core = require('../../../system_assets/modules/OhHaiBrowser.Core');
 
 module.exports = function load(){
 	let aboutPage = core.generateElement(`

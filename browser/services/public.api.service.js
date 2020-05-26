@@ -7,7 +7,7 @@ const {tabbar} = require('./tabbar.service');
 
 module.exports.definePublicAPIs = () => {
 	window.OhHaiBrowser = {
-		version: '3.4.0',
+		version: '3.5.0',
 		sessionStartTime: '',
 		sessionDuration: () => {
 			return Date.now() - window.OhHaiBrowser.sessionStartTime;

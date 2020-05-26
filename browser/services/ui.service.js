@@ -5,7 +5,7 @@ const {tabbar} = require('./tabbar.service');
 const {tabs} = require('./tabs.service');
 const { Quicklinks } = require('../system_assets/modules/OhHaiBrowser.Data');
 const Contextuals = require('../system_assets/modules/Contextuals/Contextuals');
-const AboutMenu = require('../components/about/about');
+const AboutMenu = require('../renderer/components/about/about');
 const SettingsMenu = require('../components/settings/settings');
 
 module.exports.initUi = () => {
@@ -61,17 +61,17 @@ function createNavEvents() {
 	//-------------------------------------------------------------------------------------------------------------------------
 	controls.btn_overflow().addEventListener('click',() => {
 		new Contextuals.menu([
-			{title:'New tab', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
+			{title:'New tab', tip:'', icon:'../assets/imgs/transparent.png', onclick:() => {
 				tabs.add(window.OhHaiBrowser.settings.homepage,undefined,{selected: true});
 			}},
-			{title:'New incognito tab', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
+			{title:'New incognito tab', tip:'', icon:'../assets/imgs/transparent.png', onclick:() => {
 				tabs.add(window.OhHaiBrowser.settings.homepage,undefined,{selected: true,mode:'incog'});
 			}},
 			{seperator:true},
-			{title:'Settings', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
+			{title:'Settings', tip:'', icon:'../assets/imgs/transparent.png', onclick:() => {
 				window.OhHaiBrowser.ui.toggleModel(SettingsMenu(),'Settings');
 			}},
-			{title:'About', tip:'', icon:'assets/imgs/transparent.png', onclick:() => {
+			{title:'About', tip:'', icon:'../assets/imgs/transparent.png', onclick:() => {
 				window.OhHaiBrowser.ui.toggleModel(AboutMenu(),'OhHai Browser');
 			}}
 		]);

@@ -1,7 +1,7 @@
 
 class ModelPopup extends HTMLElement {
 
-    static get observedAttributes() {
+	static get observedAttributes() {
 		return [
 			'title'
 		];
@@ -18,7 +18,60 @@ class ModelPopup extends HTMLElement {
 	render() {
 		const title = this.hasAttribute('title') ? this.getAttribute('title') : '';
 		this.shadowRoot.innerHTML = `
-            <link rel='stylesheet' href='${__dirname}/model.component.css'/>
+			<style>
+				#BlurBg{
+					z-index: 500;
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					overflow: hidden;
+				}
+				
+				#modelPopup{
+					z-index: 501;
+					position: fixed;
+					width: 600px;
+					height: 400px;
+					background: #fff;
+					border-radius: 5px;
+					left: calc(50% - 300px);
+					top: calc(50% - 200px);
+					box-shadow: 0px 0px 15px #000;
+				}
+					.modeltitleBar{
+						height: 30px;
+						box-sizing: border-box;
+						padding: 5px;
+						background: var(--main);
+						border-top-right-radius: 5px;
+						border-top-left-radius: 5px;
+					}
+						.modeltitle{
+							color: #fff;
+						}
+						.modelClose{
+							float: right;
+							height: 20px;
+							width: 20px;
+							border: none;
+							border-radius: 20px;
+							text-align: center;
+							background: transparent;
+							color: #fff;
+						}
+						.modelClose:hover{
+							background-color:#f53355;
+						}
+				
+					#modelContent{
+						overflow: auto;
+						height: calc(100% - 30px);
+						border-bottom-left-radius: 5px;
+						border-bottom-right-radius: 5px;
+					}
+			</style>
             <div id='BlurBg' style='display:none;'>
             </div>
             <div id="modelPopup" style='display:none;'>
@@ -44,11 +97,11 @@ class ModelPopup extends HTMLElement {
 			this.shadowRoot.querySelector('#BlurBg').setAttribute('style', 'display:none;');
 			this.shadowRoot.querySelector('#modelPopup').setAttribute('style', 'display:none;');
 		}
-    }
+	}
     
-    attributeChangedCallback(attrName, oldVal, newVal){
-        this.render();
-     }
+	attributeChangedCallback(attrName, oldVal, newVal){
+		this.render();
+	}
 }
 
 module.exports.ModelPopup = ModelPopup;

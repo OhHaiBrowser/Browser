@@ -8,13 +8,15 @@ module.exports = {
 			url: testvalue,
 			valid: true
 		};
-		let testUri = function(turi){ return urlWithoutProtocolTest.test(turi); };
+		if(testvalue.indexOf('ohhai://') === -1) {
+			let testUri = function(turi){ return urlWithoutProtocolTest.test(turi); };
 
-		if(testUri(testvalue)){
-			testvalue = (testvalue.indexOf('://') == -1) ? 'http://' + testvalue : testvalue;
-			callbackResp.url = testvalue;         
-		}else{
-			callbackResp.valid = false;
+			if(testUri(testvalue)){
+				testvalue = (testvalue.indexOf('://') == -1) ? 'http://' + testvalue : testvalue;
+				callbackResp.url = testvalue;         
+			}else{
+				callbackResp.valid = false;
+			}
 		}
 
 		callback(callbackResp);	
@@ -22,9 +24,9 @@ module.exports = {
 	isIpAddress(ipaddress) {
 		if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress))
 		{
-			return (true)
+			return (true);
 		}
-		return (false)
+		return (false);
 	},
 	string: function(input){
 		return typeof input === 'string' || input instanceof String;

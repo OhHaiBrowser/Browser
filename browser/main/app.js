@@ -49,7 +49,7 @@ class AppWindow extends BrowserWindow {
 		}
 	
 		win.setMenu(AppMenu());
-		win.loadFile(`${path.join(app.getAppPath(), '/browser/index.html')}`);
+		win.loadFile(`${path.join(app.getAppPath(), '/browser/renderer/index.html')}`);
 	
 		win.once('ready-to-show', win.show);
 

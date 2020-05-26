@@ -5,9 +5,7 @@ const {clipboard, remote} = require('electron'),
 	{Sessions, History} = require('../../system_assets/modules/OhHaiBrowser.Data'),
 	CoreFunctions = require('../../system_assets/modules/OhHaiBrowser.Core'),
 	validate = require('../../system_assets/modules/OhHaiBrowser.Validation'),
-	{tabItem} = require('./tab/tab.component') ;
-
-customElements.define('tab-item', tabItem);
+	{tabItem} = require('../../renderer/components/tab/tab.component') ;
 
 /**
  * @class WebSession
@@ -29,7 +27,7 @@ class WebSession {
 			case 'default':
 			case undefined:
 			case '':
-				return 'components/home_page/index.html';
+				return '../components/home_page/index.html';
 			default:
 				return url;
 			}
@@ -114,7 +112,7 @@ class WebSession {
 			window.OhHaiBrowser.tabs.remove(this);
 		});
 		this.webview.addEventListener('did-fail-load', (e) => {
-			if (e.errorCode != -3 && e.validatedURL == e.target.getURL()) {this.webview.loadURL(`file://${__dirname}/components/error_page/index.html?code=${e.errorCode}&url=${e.validatedURL}`);}
+			if (e.errorCode != -3 && e.validatedURL == e.target.getURL()) {this.webview.loadURL(`../components/error_page/index.html?code=${e.errorCode}&url=${e.validatedURL}`);}
 		});
 		this.webview.addEventListener('new-window', (e) => {
 			switch(e.disposition){
@@ -159,7 +157,7 @@ class WebSession {
 				let urlBar = document.getElementById('URLBar');
 				urlBar.updateCertBtn('Loading');
 				this.tab.title = 'Loading...';
-				this.tab.icon = 'assets/imgs/loader.gif';
+				this.tab.icon = '../assets/imgs/loader.gif';
 			}
 			// if(!this.sessionEventAdded){
 			// 	var thisWebContent =  remote.webContents.fromId(this.webview.getWebContentsId());
@@ -225,7 +223,7 @@ class WebSession {
 				//This is not an internal page.
 				if(this.mode !== 'incog'){
 					var TabIcon = this.tab.icon;
-					if(TabIcon == 'assets/imgs/loader.gif'){TabIcon = '';}
+					if(TabIcon == '../assets/imgs/loader.gif'){TabIcon = '';}
 	
 					History.GetLastItem().then((lastitem) => {
 						if(lastitem.url != this.webview.getURL()){
