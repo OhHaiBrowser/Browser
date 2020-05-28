@@ -137,5 +137,5 @@ button, input[type=text] { border: none; }
 }
 
 .Loading {
-    background: transparent url("../../assets/imgs/loader.gif") no-repeat center;
+    background: transparent url("../../../assets/imgs/loader.gif") no-repeat center;
 }

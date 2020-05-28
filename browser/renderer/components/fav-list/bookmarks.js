@@ -1,10 +1,10 @@
 var {remote} = require('electron');
 const {Menu, MenuItem} = remote;
-var {Quicklinks} = require('../../system_assets/modules/OhHaiBrowser.Data');
-var core = require('../../system_assets/modules/OhHaiBrowser.Core');
-var {tabs} = require('../../services/tabs.service');
+var {Quicklinks} = require('../../../system_assets/modules/OhHaiBrowser.Data');
+var core = require('../../../system_assets/modules/OhHaiBrowser.Core');
+var {tabs} = require('../../../services/tabs.service');
 
-module.exports = class FavoritesEl extends HTMLElement {
+module.exports.favoritesList = class FavoritesEl extends HTMLElement {
 	constructor() {
 		super();
 		const shadowEl = this.attachShadow({mode: 'open'});

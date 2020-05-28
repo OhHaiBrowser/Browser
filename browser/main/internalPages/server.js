@@ -11,8 +11,6 @@ module.exports.registerScheme = () => {
 module.exports.initInternalPages = () => {
 	protocol.registerStreamProtocol('ohhai', (req, cb) => {
 		const uri = url.parse(req.url);
-		console.log(uri);
-        
 		switch(uri.host) {
 		case 'settings':
 			cb(pathControler(req, uri));

@@ -1,6 +1,6 @@
-var {History} = require('../../system_assets/modules/OhHaiBrowser.Data');
+var {History} = require('../../../system_assets/modules/OhHaiBrowser.Data');
 
-module.exports = class HistoryEl extends HTMLElement {
+module.exports.histList = class HistoryEl extends HTMLElement {
 	constructor() {
 		super();
 		const shadowEl = this.attachShadow({mode: 'open'});

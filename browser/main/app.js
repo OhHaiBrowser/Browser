@@ -18,7 +18,6 @@ class AppWindow extends BrowserWindow {
 		let { width, height } = store.get('windowBounds');
 		
 		let iconPath = path.join(app.getAppPath(), '/browser/assets/icons/icon.png');
-		let preloadScript = path.join(app.getAppPath(), '/browser/main/preload.js');
 
 		super({
 			width,
@@ -31,7 +30,6 @@ class AppWindow extends BrowserWindow {
 			minHeight: 350,
 			minWidth: 485,
 			webPreferences: {
-				preload: preloadScript,
 				webviewTag: true,
 				nodeIntegration: true,
 				plugins: true,
@@ -47,8 +45,8 @@ class AppWindow extends BrowserWindow {
 		if(store.get('isMaximised')){
 			win.maximize();
 		}
-	
-		win.setMenu(AppMenu());
+
+		win.setMenu(AppMenu(win));
 		win.loadFile(`${path.join(app.getAppPath(), '/browser/renderer/index.html')}`);
 	
 		win.once('ready-to-show', win.show);

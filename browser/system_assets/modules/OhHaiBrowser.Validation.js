@@ -44,7 +44,11 @@ module.exports = {
 		}
 	},
 	internalpage: function(input){
-		const RunDir = decodeURI(process.cwd().toLocaleLowerCase()).replace(/\\/g, '/');
-		return input.toLocaleLowerCase().indexOf(RunDir) !=0 -1;
+		if (input.toLocaleLowerCase().indexOf('ohhai://') === 0) {
+			return true;
+		} else {
+			const RunDir = decodeURI(process.cwd().toLocaleLowerCase()).replace(/\\/g, '/');
+			return input.toLocaleLowerCase().indexOf(RunDir) !=0 -1;
+		}
 	}
 };

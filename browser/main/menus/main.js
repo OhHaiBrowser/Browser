@@ -1,4 +1,4 @@
-const { Menu, app } = require('electron');
+const { Menu, app, ipcMain } = require('electron');
 
 const isMac = process.platform === 'darwin';
 
@@ -12,7 +12,7 @@ const createSubItems = (accelerators, click, label = null) => {
 	return items;
 };
 
-module.exports.AppMenu = () => {
+module.exports.AppMenu = (win) => {
 
 	return Menu.buildFromTemplate([
 		...(isMac ? [
@@ -38,68 +38,41 @@ module.exports.AppMenu = () => {
 					accelerator: 'CmdOrCtrl+T',
 					label: 'New tab',
 					visible: true,
-					click: () => {
-						console.log('New tab');
-					}       
+					click: () => {win.webContents.send('shortcut-key', 'tab-new');}       
 				},
 				{
 					accelerator: 'CmdOrCtrl+Shift+N',
 					label: 'New incognito tab',
 					visible: true,
-					click: () => {
-						console.log('New incog tab');
-					}       
+					click: () => {win.webContents.send('shortcut-key', 'tab-new-incog');}        
 				},
 				...createSubItems(['CmdOrCtrl+W', 'CmdOrCtrl+F4'], () => {
-					console.log('Close tab');
+					win.webContents.send('shortcut-key', 'tab-close');
 				}, 'Close tab'),
 				{
 					accelerator: 'CmdOrCtrl+Shift+W',
 					label: 'Close window',
 					visible: true,
 					click: () => {
-						console.log('Close window');
+						win.webContents.send('shortcut-key', 'window-close');
 					}       
 				},
 				{
 					type: 'separator',
 				},
 				...createSubItems(['Ctrl+Space', 'CmdOrCtrl+L', 'Alt+D', 'F6'], ()=> {
-					console.log('Select navbar');
+					win.webContents.send('shortcut-key', 'navbar-select');
 				})
 			]
 		}, 
 		{
-			label: 'Edit', 
-			submenu: [
-				{ role: 'undo' },
-				{ role: 'redo' },
-				{ type: 'separator' },
-				{ role: 'cut' },
-				{ role: 'copy' },
-				{ role: 'paste' },
-				...(isMac
-					? [
-						{ role: 'pasteAndMatchStyle' },
-						{ role: 'delete' },
-						{ role: 'selectAll' },
-						{ type: 'separator' },
-						{
-							label: 'Speech',
-							submenu: [{ role: 'startspeaking' }, { role: 'stopspeaking' }],
-						},
-					]
-					: [{ role: 'delete' }, { type: 'separator' }, { role: 'selectAll' }]),
-			]
-		},
-		{
 			label: 'View', 
 			submenu: [
 				...createSubItems(['CmdOrCtrl+R', 'F5'], () => {
-					console.log('Refresh page');
+					win.webContents.send('shortcut-key', 'web-refresh');
 				}, 'Reload'),
 				...createSubItems(['CmdOrCtrl+Shift+R', 'Shift+F5'], () => {
-					console.log('Refresh page');
+					win.webContents.send('shortcut-key', 'web-refresh-hard');
 				}, 'Reload ignoring cache')
 			]
 		},
@@ -107,14 +80,14 @@ module.exports.AppMenu = () => {
 			label: 'History',
 			submenu: [
 				...createSubItems(isMac ? ['Cmd+[', 'Cmd+Left'] : ['Alt+Left'], () => {
-					console.log('Go back');
+					win.webContents.send('shortcut-key', 'web-back');
 				}, 'Go back'),
 				...createSubItems(isMac ? ['Cmd+]', 'Cmd+Right'] : ['Alt+Right'], () => {
-					console.log('Go forward');
+					win.webContents.send('shortcut-key', 'web-forward');
 				}, 'Go forward'),
 				{ type: 'separator' },
 				...createSubItems(isMac ? ['Cmd+Y'] : ['Ctrl+H'], () => {
-					console.log('Show history');
+					win.webContents.send('shortcut-key', 'history-show');
 				}, 'Manage history'),
 			]
 		},
@@ -122,10 +95,10 @@ module.exports.AppMenu = () => {
 			label: 'Bookmarks',
 			submenu: [
 				...createSubItems(['CmdOrCtrl+B'], () => {
-					console.log('Show bookmarks');
+					win.webContents.send('shortcut-key', 'bookmarks-show');
 				}, 'Show bookmarks'),
 				...createSubItems(['CmdOrCtrl+D'], () => {
-					console.log('Add this website to bookmarks');
+					win.webContents.send('shortcut-key', 'bookmarks-new');
 				}, 'Add this website to bookmarks'),
 			]
 		},
@@ -139,11 +112,11 @@ module.exports.AppMenu = () => {
 							label: 'View source',
 							accelerator: 'CmdOrCtrl+U',
 							click: () => {
-								console.log('View source')
+								win.webContents.send('shortcut-key', 'web-view-source');
 							}
 						},
 						...createSubItems(['CmdOrCtrl+Shift+I', 'CmdOrCtrl+Shift+J', 'F12'], () => {
-							console.log('Open developer tools');
+							win.webContents.send('shortcut-key', 'web-inspect');
 						}, 'Developer tools...')
 					]
 				}
@@ -153,10 +126,10 @@ module.exports.AppMenu = () => {
 			label: 'Tab',
 			submenu: [
 				...createSubItems(['CmdOrCtrl+D'], () => {
-					console.log('Show next tab');
+					win.webContents.send('shortcut-key', 'tab-select-next');
 				}, 'Show next tab'),
 				...createSubItems(['CmdOrCtrl+D'], () => {
-					console.log('Show previous tab');
+					win.webContents.send('shortcut-key', 'tab-select-previous');
 				}, 'Show previous tab'),
 			]
 		},

@@ -27,7 +27,7 @@ class WebSession {
 			case 'default':
 			case undefined:
 			case '':
-				return '../components/home_page/index.html';
+				return 'ohhai://home';
 			default:
 				return url;
 			}
@@ -112,7 +112,7 @@ class WebSession {
 			window.OhHaiBrowser.tabs.remove(this);
 		});
 		this.webview.addEventListener('did-fail-load', (e) => {
-			if (e.errorCode != -3 && e.validatedURL == e.target.getURL()) {this.webview.loadURL(`../components/error_page/index.html?code=${e.errorCode}&url=${e.validatedURL}`);}
+			if (e.errorCode != -3 && e.validatedURL == e.target.getURL()) {this.webview.loadURL(`ohhai://errror?code=${e.errorCode}&url=${e.validatedURL}`);}
 		});
 		this.webview.addEventListener('new-window', (e) => {
 			switch(e.disposition){
