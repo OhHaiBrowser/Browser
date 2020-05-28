@@ -1,19 +1,29 @@
-- name: BuildAction
-  uses: samuelmeuli/action-electron-builder@v1.5.0
-  with:
-    # GitHub authentication token
-    #github_token: 
-    # Base64-encoded code signing certificate for macOS
-    #mac_certs: # optional
-    # Password for decrypting `mac_certs`
-    #mac_certs_password: # optional
-    # Whether the app should be released after a successful build
-    release: true
-    # Base64-encoded code signing certificate for Windows
-    #windows_certs: # optional
-    # Password for decrypting `windows_certs`
-    #windows_certs_password: # optional
-    # Directory where NPM/Yarn commands should be run
-    #package_root: # optional, default is .
-    # Whether the action should execute the NPM build script before running `electron-builder`
-    skip_build: false
+name: Build Action
+on: [push]
+jobs:
+  release:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v1
+
+      - name: Install Node.js, NPM and Yarn
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+
+      - name: Build/release Electron app
+        uses: samuelmeuli/action-electron-builder@v1
+        with:
+          # GitHub token, automatically provided to the action
+          # (No need to define this secret in the repo settings)
+          github_token: ${{ secrets.github_token }}
+
+          # If the commit is tagged with a version (e.g. "v1.0.0"),
+          # release the app after building
+          release: ${{ startsWith(github.ref, 'refs/tags/v') }}
