@@ -42,7 +42,7 @@
         "rpm"
       ]
     },
-    "win": {
+    "windows": {
       "icon": "browser/assets/icons/win_icon.ico",
       "target": [
         {
