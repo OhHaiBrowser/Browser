@@ -6,6 +6,7 @@
 <a href="https://github.com/OhHaiBrowser/Browser/releases"> ![GitHub All Releases](https://img.shields.io/github/downloads/OhHaiBrowser/Browser/total) </a>
 ![GitHub stars](https://img.shields.io/github/stars/ohhaibrowser/browser)
 ![GitHub contributors](https://img.shields.io/github/contributors/ohhaibrowser/browser)
+<a href="https://discord.gg/Q8QAdTs">![Discord](https://discordapp.com/api/guilds/702441664995917935/widget.png)</a>
 
 
 A productivity focused web browser built on top of `Electron` using nothing but pure web technologies.
