@@ -1,0 +1,122 @@
+* {box-sizing: border-box;}
+body {
+    margin: 0;
+    font-size: 62.5%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.app {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 300px auto 300px;
+    grid-template-rows: 35px auto;
+    grid-template-areas: 
+        "content content header"
+        "content content timeline";
+    background: var(--sidebar);
+    overflow: hidden;
+}
+.app.mac {
+    grid-template-areas: 
+    "header content content"
+    "timeline content content";
+}
+
+/* Content */
+    .app > #content {
+        grid-area: content;
+        background: #fff;
+        box-shadow: 0px 0px 5px #000;
+    }
+        .app > #content > webview {
+            width: 100%;
+            height: 100%;
+        }
+        .app > #content > webview[hidden="true"] {
+            display: none !important;
+        }
+
+/* Titlebar */
+    .app > .titlebar {
+        grid-area: header;
+        display: flex;
+        flex-direction: row;
+        padding: 0px 13px;
+        -webkit-app-region: drag;
+    }
+    .app.mac > .titlebar {
+        flex-direction: row-reverse;
+    }
+
+/* Sidebar Timeline */
+    .app > .sidebar {
+        grid-area: timeline;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+        .sidebar > .seperator {
+            height: 2px;
+            background-color: var(--controls-default);
+            box-shadow: 0px 0px 4px rgb(0 0 0 / 50%);
+            border-radius: 5px;
+            margin: 0 15px;
+        }
+        .sidebar > web-controls {
+            margin: 0 15px;
+        }
+        .sidebar > .timeline {
+            flex: auto;
+            overflow-y: overlay;
+            padding: 0px 11px;
+            margin: 0px 4px;
+        }
+            .sidebar > .timeline::-webkit-scrollbar {
+                width: 0px;
+            }
+            .sidebar >  .timeline:hover::-webkit-scrollbar {
+                width: 6px;
+            }     
+            .sidebar >  .timeline::-webkit-scrollbar-thumb {
+                opacity: 0.5;
+                background: rgb(23 36 103 / 20%);
+                transition: background 0.5s;
+                border-radius: 10px; 
+            }
+                .sidebar > .timeline::-webkit-scrollbar-thumb:hover {
+                    background: rgb(23 36 103 / 80%);
+                }
+
+/* Action buttons */
+.action_btn {
+    height: 22px;
+    width: 22px;
+    border-radius: 2px;
+    border: none;
+    background-color: var(--controls-default);
+    outline: none;
+    cursor: pointer;    
+    display: block;
+    margin: 2.5px 0;
+}
+    .action_btn:hover {
+        background-color: var(--controls-hover);
+    }
+    .action_btn:active {
+        background-color: var(--controls-active);
+    }
+    .action_btn > i {
+        height: 100%;
+        width: 100%;
+        font-size: 12px;
+        text-align: center;
+        line-height: 22px;
+        color: var(--controls-icon-default);
+    }
+        .action_btn:hover > i {
+            color: var(--controls-icon-hover);
+        }
+        .action_btn:active > i {
+            color: var(--controls-icon-active);
+        }

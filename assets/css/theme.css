@@ -1,0 +1,14 @@
+:root {
+    --sidebar: #EFEFEF;
+
+    --controls-disabled: rgb(255 255 255 / 30%);
+    --controls-default: rgb(255 255 255 / 55%);
+    --controls-hover: rgb(255 255 255 / 70%);
+    --controls-active: rgb(255 255 255 / 100%);
+
+    --controls-icon-disabled: rgb(23 36 103 / 30%);
+    --controls-icon-default: rgb(23 36 103 / 55%);
+    --controls-icon-hover: rgb(23 36 103 / 70%);
+    --controls-icon-active: #172467;
+
+}

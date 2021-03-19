@@ -1,46 +1,59 @@
-'use strict';
-const {electron,app, protocol} = require('electron');
-const isDev = require('electron-is-dev');
-const {AppWindow} = require('./browser/main/app');
-const {registerScheme, initInternalPages} = require('./browser/main/internalPages/server');
+// Modules to control application life and create native browser window
+const {app, BrowserWindow} = require('electron')
+const path = require('path')
+const { ipcMain } = require('electron')
 
-let mainWindow = null;
-global.sharedObject = {prop1: process.argv};
-registerScheme();
+function createWindow () {
+  // Create the browser window.
+  const mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    frame: false,
+    webPreferences: {
+      preload: path.join(__dirname, 'src/main/preload.js'),
+      webviewTag: true
+    }
+  })
+
+  // and load the index.html of the app.
+  mainWindow.loadFile('src/renderer/index.html')
+
+  // Open the DevTools.
+  mainWindow.webContents.openDevTools();
+
+
+  ipcMain.on('minimize', (event, arg) => {mainWindow.minimize()});
+  ipcMain.on('restore', (event, arg) => {mainWindow.restore()});
+  ipcMain.on('maximize', (event, arg) => {mainWindow.maximize()});
+  ipcMain.on('close', (event, arg) => {mainWindow.close()});
+  ipcMain.on('isMaximized', (event, arg) => {
+    event.reply('isMaximized', mainWindow.isMaximized());
+  });
+
+  mainWindow.on('resize', () => {
+    mainWindow.webContents.send('isMaximized', mainWindow.isMaximized());
+  });
+}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
-app.on('ready', function() {
-	mainWindow = new AppWindow();
+// Some APIs can only be used after this event occurs.
+app.whenReady().then(() => {
+  createWindow()
+  
+  app.on('activate', function () {
+    // On macOS it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  })
+})
 
-	if(isDev) {
-		mainWindow.webContents.openDevTools();
-	}
+// Quit when all windows are closed, except on macOS. There, it's common
+// for applications and their menu bar to stay active until the user quits
+// explicitly with Cmd + Q.
+app.on('window-all-closed', function () {
+  if (process.platform !== 'darwin') app.quit()
+})
 
-	protocol.registerStringProtocol('mailto', function (req) {
-		electron.shell.openExternal(req.url);
-	});
-
-	initInternalPages();
-
-});
-
-// Quit when all windows are closed.
-app.on('window-all-closed', function() {
-	// On OS X it is common for applications and their menu bar
-	// to stay active until the user quits explicitly with Cmd + Q
-	protocol.unregisterProtocol('mailto');
-	protocol.unregisterProtocol('ohhai');
-
-	if (process.platform != 'darwin') {
-		app.quit();
-	}
-});
-
-app.on('activate', function () {
-	// On macOS it's common to re-create a window in the app when the
-	// dock icon is clicked and there are no other windows open.
-	if (mainWindow === null) {
-		mainWindow = new AppWindow();
-	}
-});
+// In this file you can include the rest of your app's specific main process
+// code. You can also put them in separate files and require them here.

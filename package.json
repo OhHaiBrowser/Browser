@@ -1,91 +1,19 @@
 {
-  "name": "ohhaibrowser",
-  "productName": "OhHai Browser",
-  "version": "3.4.0",
-  "license": "ISC",
-  "description": "Browser the internet",
-  "homepage": "https://ohhaibrowser.com",
-  "author": {
-    "name": "Lucas Reade",
-    "email": "lucas.reade@gmail.com"
-  },
+  "name": "electron-quick-start",
+  "version": "1.0.0",
+  "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
-    "lint": "eslint -c .eslintrc.json . --ext .js --fix",
-    "dev": "nodemon --exec electron .",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "postinstall": "electron-builder install-app-deps",
-    "build": "electron-builder --mac --windows --linux",
-    "release": "electron-builder --mac --windows --linux --publish always",
     "start": "electron ."
   },
-  "files": [
-    "*.js",
-    "build",
-    "node_modules"
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "Electron"
   ],
-  "build": {
-    "icon": "browser/assets/icons/icon.png",
-    "appId": "OhHai.Browser",
-    "mac": {
-      "icon": "browser/assets/icons/mac_icon.icns",
-      "category": "public.app-category.utilities",
-      "target": [
-        "default"
-      ]
-    },
-    "linux": {
-      "icon": "browser/assets/icons/linux_icon.png",
-      "category": "",
-      "target": [
-        "deb",
-        "rpm"
-      ]
-    },
-    "win": {
-      "icon": "browser/assets/icons/win_icon.ico",
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
-        }
-      ],
-      "requestedExecutionLevel": "asInvoker"
-    },
-    "fileAssociations": {
-      "ext": [
-        "html",
-        "htm"
-      ],
-      "name": "Web files",
-      "role": "Viewer"
-    },
-    "protocols": {
-      "name": "Web urls",
-      "schemes": [
-        "http",
-        "https"
-      ],
-      "role": "Viewer"
-    },
-    "nsis": {
-      "perMachine": true
-    }
-  },
-  "dependencies": {
-    "dexie": "^3.0.1",
-    "electron-is-dev": "^1.2.0",
-    "feather-icons": "^4.28.0",
-    "publicsuffixlist": "^0.3.0"
-  },
+  "author": "GitHub",
+  "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^8.2.5",
-    "electron-builder": "^22.6.0",
-    "eslint": "^6.8.0",
-    "nodemon": "^2.0.4"
-  }
+    "electron": "^12.0.1"
+  },
+  "dependencies": {}
 }
