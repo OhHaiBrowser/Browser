@@ -1,0 +1,147 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    scroll-behavior: smooth;
+}
+
+.appOuter {
+    display: grid;
+    grid-template-columns:auto;
+    grid-template-rows: 30px auto;
+    grid-template-areas: 
+        "titlebar"
+        "windows";
+
+    width: 100vw;
+    height: 100vh;
+    background: #172467;
+}
+    .titlebar {
+        grid-area: titlebar;
+        -webkit-app-region: drag;
+        -webkit-user-select: none;
+        z-index: 500;
+
+    }
+        .tabbar {
+            -webkit-app-region: none;
+            -webkit-user-select: auto;
+            display: flex;
+            flex-direction: row;
+            padding: 5px;
+            z-index: 501;
+            border-radius: 0px 0px 20px 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 7px rgb(0 0 0 / 50%);
+            max-width: 700px;
+            width: 50%;
+            min-width: 300px;
+            margin: auto;
+        }
+        .tabbar > .tablist {
+            flex: auto;
+        }
+            .tablist div.tab {
+                width: 20px;
+                height: 20px;
+                border: none;
+                padding: 0;
+                border-radius: 2px;
+                background: rgba(0, 0, 0, 0.65);
+                transition: background 0.25s;
+                outline: none;
+                display: inline-block;
+            }
+                .tablist div.tab > img {
+                    width: 16px;
+                    height: 16px;
+                    margin: 2px;
+                }
+
+                .tablist  div.tab[aria-selected=true] {
+                    background: rgba(0, 0, 0);
+                }
+
+            .tablist div.tab + div.tab {
+                margin-left: 10px;
+            }
+
+
+        .tabbar > .addbtn {
+            width: 20px;
+            height: 20px;
+            border: none;
+            padding: 0;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.65);
+            transition: background 0.25s;
+            outline: none;
+            color: rgba(0, 0, 0, 0.8);
+            cursor: pointer;
+        }
+            .tabbar > .addbtn:hover{
+                background: #5FDC5D;
+                color: #000;
+            }
+            .tabbar > .addbtn > i {
+                font-size: 10px;
+            }
+
+            .tabbar > .settings {
+                padding: 0;               
+                width: 20px;
+                height: 20px;
+                border: none;
+                border-radius: 2px;
+                background: rgba(255, 255, 255, 0.65);
+                transition: background 0.25s, color 0.25s;
+                outline: none;
+                color: rgba(0, 0, 0, 0.8);
+                cursor: pointer;
+            }
+                .tabbar > .settings > i {
+                    font-size: 18px;
+                }
+                .settings:hover { 
+                    background: rgba(255, 255, 255);
+                    color: #000;
+                }
+
+    .container {
+        grid-area: windows;
+        overflow: overlay;
+        overflow-y: hidden;
+        white-space: nowrap;
+        padding: 15px;
+    }  
+        .container resize-window {
+            outline: none;
+            display: inline-block;
+            height: 100%;        
+        }
+            .container resize-window + resize-window {
+                margin-left: 5px;
+            }
+
+            .container resize-window:last-of-type{
+                margin-right: 500px;
+            }
+
+            .container resize-window browser-window {
+                height:100%;
+            }
+
+        .container::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .container::-webkit-scrollbar-thumb {
+            opacity: 0.5;
+            background: rgba(255, 255, 255, 0.2);
+            transition: background 0.5s;
+        }
+            .container::-webkit-scrollbar-thumb:hover {
+                background: rgba(255, 255, 255, 0.8); 
+            }
+

@@ -1,18 +1,49 @@
-// This file is required by the index.html file and will
-// be executed in the renderer process for that window.
-// No Node.js APIs are available in this process because
-// `nodeIntegration` is turned off. Use `preload.js` to
-// selectively enable features needed in the rendering
-// process.
+import {ResizeWindow} from './components/resize_window.js';
+import {FrameControls} from './components/frame_controls.js';
+import {BrowserWindow} from './components/browser_win.js'
 
-document.addEventListener('DOMContentLoaded', () => {
+customElements.define('resize-window', ResizeWindow);
+customElements.define('frame-controls', FrameControls);
+customElements.define('browser-window', BrowserWindow);
 
-    const tc = new NanoTabs('tablist','content', {showAddBtn:false});
+const tc = new NanoTabs('TabList', 'ContentContainer', {showAddBtn: false});
 
-    document.getElementById('addTab').addEventListener('click', () => {
-        tc.addTab();
+document.getElementById('AddTabBtn').addEventListener('click', () => {
+    tc.addTab();
+});
+
+tc.on('tab-added', (tab, content) => {
+
+    content.addEventListener('click', () => {
+        if(tab.getAttribute('aria-selected') != "true"){
+            tc.selectTab(tab.id);
+        }
+    });
+    content.querySelector('browser-window').addEventListener('close', () => {
+        tc.removeTab(tab.id);
     });
 
-    
+    content.addEventListener('startDrag', ()=> {
+        document.querySelectorAll('browser-window').forEach(el => {
+            el.style.pointerEvents = 'none';
+        });
+    });
+    content.addEventListener('endDrag', ()=> {
+        document.querySelectorAll('browser-window').forEach(el => {
+            el.style.pointerEvents = '';
+        });
+    });
 
+    setTimeout(()=> {
+        content.scrollIntoView({behavior: 'smooth'});
+    }, 50);
+});
+
+tc.on('tab-selected', (tab, content) => {
+    //console.log('tab selected', tab, content);
+    content.scrollIntoView({behavior: 'smooth'});
+});
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    tc.addTab();
 });

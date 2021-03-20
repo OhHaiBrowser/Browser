@@ -2,11 +2,10 @@ export class FrameControls extends HTMLElement {
     static get observedAttributes() { return ['platform', 'maximized', 'fullscreen']; }
     constructor() {
         super();
-        this.attachShadow({mode: 'open'});
-        this.setupWinControls();
+        this.attachShadow({mode: 'open'});     
     }
     connectedCallback(){
-        
+        this.setupWinControls();  
     }
     attributeChangedCallback(name, oldValue, newValue) {
         switch(name) {
@@ -14,7 +13,12 @@ export class FrameControls extends HTMLElement {
 
                 break;
             case 'maximized':
-
+                const centerBtn = this.shadowRoot.getElementById('center-button');
+                if(newValue == 'true') {
+                    centerBtn.innerHTML = '&#xE923;';
+                } else {
+                    centerBtn.innerHTML = '&#xE922;';
+                }
                 break;
             case 'fullscreen':
 
@@ -26,7 +30,7 @@ export class FrameControls extends HTMLElement {
         <style>
             @font-face {
                 font-family: Segoe MDL2 Assets;
-                src: url("../../assets/fonts/SegMDL2.ttf");
+                src: url("./assets/fonts/SegMDL2.ttf");
             }
 
             #window-controls {
@@ -50,6 +54,7 @@ export class FrameControls extends HTMLElement {
                     user-select: none;
                     cursor: default;
                     font-family: "Segoe MDL2 Assets";
+                    color:#fff;
                 }
 
                 #left-button {
@@ -63,10 +68,10 @@ export class FrameControls extends HTMLElement {
                 }
             
                 .button:hover {
-                    background: rgba(0,0,0,0.1);
+                    background: rgba(255,255,255,0.1);
                 }
                 .button:active {
-                    background: rgba(0,0,0,0.2);
+                    background: rgba(255,255,255,0.2);
                 }
             
                 #right-button:hover {
@@ -88,14 +93,12 @@ export class FrameControls extends HTMLElement {
         });
         const centerBtn = this.shadowRoot.getElementById('center-button');
         centerBtn.addEventListener('click', () => {
-            if(this.windowMaximised){
+            if(this.getAttribute('maximized') == 'true'){
                 this.dispatchEvent(new Event('restore', {bubbles: true, composed: true}));
                 centerBtn.innerHTML = '&#xE922;';
-                this.windowMaximised = false;
             }else{
                 this.dispatchEvent(new Event('maximise', {bubbles: true, composed: true}));
                 centerBtn.innerHTML = '&#xE923;';
-                this.windowMaximised = true;
             }
         });
         this.shadowRoot.getElementById('right-button').addEventListener('click', () => {

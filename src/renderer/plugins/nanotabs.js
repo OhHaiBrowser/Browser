@@ -87,7 +87,7 @@ class NanoTabs {
         newContent.setAttribute('role', 'tabpanel');
         newContent.setAttribute('tabindex', 0);
         newContent.setAttribute('aria-labelledby', `t_${uId}`);
-        newContent.setAttribute('hidden', true);
+        //newContent.setAttribute('hidden', true);
         
         this.tabList.appendChild(newT);
         this.tabContent.appendChild(newC);
@@ -137,8 +137,8 @@ class NanoTabs {
             this.tabList.querySelectorAll('[aria-selected="true"]').forEach(t => t.setAttribute("aria-selected", false));
             targetTab.setAttribute("aria-selected", true);
     
-            this.tabContent.querySelectorAll('[role="tabpanel"]').forEach(p => p.setAttribute("hidden", true));
-            targetContent.removeAttribute('hidden');
+            this.tabContent.querySelectorAll('[role="tabpanel"]').forEach(p => p.setAttribute("aria-selected", false));
+            targetContent.setAttribute("aria-selected", true);
             
             if (!muffleEvent) this.events.filter(e => e.event === 'tab-selected').forEach(e => e.func(targetTab, targetContent));
         }

@@ -1,47 +1,35 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
-    <title>OhHai Browser 4.0</title>
-    <link rel="stylesheet" href="../../assets/css/theme.css">
-    <link rel="stylesheet" href="../../assets/css/app.css">
-    <link rel="stylesheet" href="../../assets/iconmonstr/css/iconmonstr-iconic-font.min.css">
-    <script src="components/index.js" type="module"></script>
-  </head>
-  <body>
-    <div class="app">
-      <div id="content"><template><webview src="http://www.google.com"/></template></div>
-      <header class="titlebar">
-        <frame-controls id="frameControls"></frame-controls>
-      </header>
-      <div class="sidebar">
-        <web-controls id="webControls"></web-controls>
-        <span class="seperator"></span>
-        <div class="timeline">
-          <timeline-section title="Tabs">
-            <div slot="action-btns">
-              <a id="addTab" class="action_btn"><i class="im im-plus"></i></a>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Multiview</title>
+    <link rel="stylesheet" href="assets/css/scaffold.css"/>
+    <link rel="stylesheet" href="assets/iconmonstr-iconic/css/iconmonstr-iconic-font.min.css"/>
+</head>
+<body>
+    <div class="appOuter">
+        <div class="titlebar">
+
+            <div class="tabbar">
+                <button id="AddTabBtn" class="addbtn"><i class="im im-plus"></i></button>
+                <div id="TabList" class="tablist">
+                    <template><div class="tab"><img src="assets/images/favicon_default.png"/></div></template>
+                </div>
+                <button class="settings"><i class="im im-gear"></i></button>
             </div>
-            <div id="tablist">
-              <template>
-                <tab-element></tab-element>
-              </template>
-            </div>
-          </timeline-section>
-          <timeline-section title="Bookmarks">
-            <div slot="action-btns">
-              <a id="addFav" class="action_btn"><i class="im im-plus"></i></a>
-            </div>
-            <bookmarks-list id="bookmarkslist"></bookmarks-list>
-          </timeline-section>
-          <timeline-section title="History">
-            <history-list id="histlist"></history-list>
-          </timeline-section>
+
+            <frame-controls id="frameControls"></frame-controls>
         </div>
-      </div>
+        <div id="ContentContainer" class="container">
+            <template><!--
+                --><resize-window>
+                    <browser-window></browser-window>
+                </resize-window><!--
+            --></template>
+        </div>
     </div>
-    <!-- You can also require other files to run in this process -->
     <script src="plugins/nanotabs.js"></script>
-    <script src="./renderer.js"></script>
-  </body>
+    <script type="module" src="renderer.js"></script>
+</body>
 </html>
