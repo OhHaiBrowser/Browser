@@ -21,17 +21,14 @@ html, body {
         grid-area: titlebar;
         -webkit-app-region: drag;
         -webkit-user-select: none;
-        z-index: 500;
-
     }
         .tabbar {
             -webkit-app-region: none;
             -webkit-user-select: auto;
             display: flex;
             flex-direction: row;
-            padding: 5px;
-            z-index: 501;
-            border-radius: 0px 0px 20px 20px;
+            padding: 3px;
+            border-radius: 0px 0px 10px 10px;
             background-color: #fff;
             box-shadow: 0px 0px 7px rgb(0 0 0 / 50%);
             max-width: 700px;
@@ -39,72 +36,74 @@ html, body {
             min-width: 300px;
             margin: auto;
         }
+
+            .tabbar > .addbtn {
+                width: 24px;
+                height: 24px;
+                border: none;
+                margin-right: 3px;
+                border-radius: 8px;
+                background: rgba(255, 255, 255, 0.65);
+                transition: background 0.25s;
+                outline: none;
+                color: rgba(0, 0, 0, 0.8);
+                cursor: pointer;
+            }
+                .tabbar > .addbtn:hover{
+                    background: #5FDC5D;
+                    color: #000;
+                }
+                .tabbar > .addbtn > i {
+                    font-size: 10px;
+                }
+
+
         .tabbar > .tablist {
             flex: auto;
         }
             .tablist div.tab {
-                width: 20px;
-                height: 20px;
+                width: 24px;
+                height: 24px;
                 border: none;
                 padding: 0;
-                border-radius: 2px;
-                background: rgba(0, 0, 0, 0.65);
+                border-radius: 8px;
+                background: rgba(165, 165, 165, 0.50);
                 transition: background 0.25s;
                 outline: none;
-                display: inline-block;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
             }
                 .tablist div.tab > img {
                     width: 16px;
                     height: 16px;
-                    margin: 2px;
                 }
 
                 .tablist  div.tab[aria-selected=true] {
-                    background: rgba(0, 0, 0);
+                    background: rgba(165, 165, 165);
                 }
 
             .tablist div.tab + div.tab {
-                margin-left: 10px;
-            }
-
-
-        .tabbar > .addbtn {
-            width: 20px;
-            height: 20px;
-            border: none;
-            padding: 0;
-            border-radius: 2px;
-            background: rgba(255, 255, 255, 0.65);
-            transition: background 0.25s;
-            outline: none;
-            color: rgba(0, 0, 0, 0.8);
-            cursor: pointer;
-        }
-            .tabbar > .addbtn:hover{
-                background: #5FDC5D;
-                color: #000;
-            }
-            .tabbar > .addbtn > i {
-                font-size: 10px;
+                margin-left: 3px;
             }
 
             .tabbar > .settings {
                 padding: 0;               
-                width: 20px;
-                height: 20px;
+                width: 24px;
+                height: 24px;
                 border: none;
-                border-radius: 2px;
-                background: rgba(255, 255, 255, 0.65);
+                border-radius: 8px;
                 transition: background 0.25s, color 0.25s;
                 outline: none;
                 color: rgba(0, 0, 0, 0.8);
                 cursor: pointer;
             }
                 .tabbar > .settings > i {
-                    font-size: 18px;
+                    font-size: 14px;
+                    margin-top: 4px;
                 }
                 .settings:hover { 
-                    background: rgba(255, 255, 255);
+                    background: rgba(165, 165, 165);
                     color: #000;
                 }
 
