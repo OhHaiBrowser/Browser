@@ -14,19 +14,24 @@ export class BrowserWindow extends HTMLElement {
                 }
                 .navbar {
                     width: 100%;
-                    height: 35px;
+                    height: 30px;
+                    padding: 3px;
                     background: #15427D;
                     border-radius: 2px 2px 0 0;
                     display: flex;
                     flex-direction: row;
+                    box-sizing: border-box;
                 }
                     .navbar > .btn {
-                        width: 35px;
+                        width: 24px;
+                        height: 24px;
                         border: none;
                         background: transparent;
                         transition: background 0.25s;
                         outline: none;
                         color: #fff;
+                        box-sizing: border-box;
+                        border-radius:8px;
                     }
                         .navbar > .btn > i {
                             font-size: 12px;
@@ -37,6 +42,26 @@ export class BrowserWindow extends HTMLElement {
                     .navbar > .center {
                         flex: auto;
                     }
+                        .navbar > .center > .url_outer {
+                            max-width: 700px;
+                            min-width: 300px;
+                            width: 60%;
+                            height: 24px;
+                            margin: auto;
+                            background: rgb(255 255 255 / 25%);
+                            border-radius:8px;
+                            display:flex;
+                            flex-direction:row;
+                        }
+                            .url_outer > button {
+                                width:24px;
+                                border:none;
+                            }
+                            .url_outer > #urlTxt {
+                                flex:auto;
+                                background:transparent;
+                                border:none;
+                            }
     
                 .view {
                     flex: auto;
@@ -48,6 +73,11 @@ export class BrowserWindow extends HTMLElement {
                     <button id="refresh" class="btn refresh"><i class="im im-redo"></i></button>
                     <button id="forward" class="btn forward"><i class="im im-angle-right"></i></button>
                     <div class="center">
+                        <div class='url_outer'>
+                            <button></button>
+                            <input type='text' id='urlTxt'/>
+                            <button></button>
+                        </div>
                     </div>
                     <button class="btn hidden"></button>
                     <button class="btn hidden"></button>

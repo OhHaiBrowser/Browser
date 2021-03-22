@@ -3,6 +3,7 @@ html, body {
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     scroll-behavior: smooth;
+    box-sizing: border-box;
 }
 
 .appOuter {
@@ -100,7 +101,7 @@ html, body {
             }
                 .tabbar > .settings > i {
                     font-size: 14px;
-                    margin-top: 4px;
+                    margin-top: 2px;
                 }
                 .settings:hover { 
                     background: rgba(165, 165, 165);
@@ -112,7 +113,7 @@ html, body {
         overflow: overlay;
         overflow-y: hidden;
         white-space: nowrap;
-        padding: 15px;
+        padding: 5px 0px 15px 10px;
     }  
         .container resize-window {
             outline: none;
